@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunksave_world_web_tg_app"]=self["webpackChunksave_world_web_tg_app"]||[]).push([[594],{5609:function(a,e,n){n.r(e),n.d(e,{default:function(){return l}});var t=n(6768);const u={class:"about"};function r(a,e){return(0,t.uX)(),(0,t.CE)("div",u,e[0]||(e[0]=[(0,t.Lk)("h1",null,"This is an about page",-1)]))}var s=n(1241);const c={},o=(0,s.A)(c,[["render",r]]);var l=o}}]);
-//# sourceMappingURL=about.df07963c.js.map
