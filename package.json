@@ -15,12 +15,14 @@
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
     "pinia": "^2.2.2",
+    "three": "^0.168.0",
     "vue": "^3.2.13",
     "vue-i18n": "^10.0.1",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "@types/three": "^0.168.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
