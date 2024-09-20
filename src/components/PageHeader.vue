@@ -1,6 +1,9 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n();
 
 const username = ref("Loading...");
 const firstName = ref("Loading...");
@@ -33,7 +36,6 @@ onMounted(async () => {
       username.value = user.username || "No username";
       firstName.value = user.first_name || "Unknown";
       lastName.value = user.last_name || "Unknown";
-      photoUrl.value = user.photo_url || "";
 
       console.log(firstName.value);
       console.log(photoUrl.value);
@@ -46,21 +48,61 @@ onMounted(async () => {
   } else {
     console.error("Telegram WebApp API не доступен.");
   }
+  document.addEventListener("click", handleClickOutsideLanguageSettings);
 });
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutsideLanguageSettings);
+});
+
+const languageSettingsIsVisible = ref(false);
+
+const toggleLanguageSettings = () => {
+  languageSettingsIsVisible.value = !languageSettingsIsVisible.value;
+};
+
+const setLanguage = (language) => {
+  locale.value = language;
+  languageSettingsIsVisible.value = false;
+};
+
+const handleClickOutsideLanguageSettings = (event) => {
+  const languageSettingsElement = document.querySelector(".language-settings");
+  const languageWrapperElement = document.querySelector(".language-wrapper");
+
+  if (
+    languageSettingsIsVisible.value &&
+    languageSettingsElement &&
+    !languageSettingsElement.contains(event.target) &&
+    !languageWrapperElement.contains(event.target)
+  ) {
+    languageSettingsIsVisible.value = false;
+  }
+};
 </script>
 
 <template>
   <header>
     <div class="container">
       <div class="header-content">
-        <div class="language-wrapper">
-          <img src="../assets/svg/lang.svg" alt="Language" />
+        <button class="language-wrapper" @click="toggleLanguageSettings">
+          <img src="../assets/svg/header/lang.svg" alt="Language" />
+        </button>
+        <div class="language-settings" v-if="languageSettingsIsVisible">
+          <button @click="setLanguage('en')" class="language-btn">
+            <img src="../assets/svg/flags/eng.svg" alt="English language" />
+            {{ t("english") }}
+          </button>
+          <button @click="setLanguage('ru')" class="language-btn">
+            <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
+            {{ t("russian") }}
+          </button>
         </div>
         <div class="user-wrapper">
           <p>{{ firstName }}</p>
         </div>
         <router-link to="/settings" class="settings-wrapper">
-          <img src="../assets/svg/settings.svg" alt="Настройки" />
+          <img src="../assets/svg/header/settings.svg" alt="Настройки" />
         </router-link>
       </div>
     </div>
@@ -78,6 +120,7 @@ header
   color: $c-light-text
 
 .header-content
+  position: relative
   width: 100%
   display: flex
   align-items: center
@@ -93,6 +136,25 @@ header
   background: $c-gradient
   box-shadow: $c-dark-element-shadow
 
+.language-settings
+  position: absolute
+  background: $c-light-text
+  height: fit-content
+  width: 200px
+  top: 47px
+  display: flex
+  flex-direction: column
+  align-items: start
+  padding: 10px
+  gap: 10px
+  border-radius: 10px
+
+  .language-btn
+    display: flex
+    align-items: center
+    gap: 10px
+    font-size: 20px
+    color: $c-main-text
 
 .user-wrapper
   display: flex

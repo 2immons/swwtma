@@ -4,7 +4,7 @@
       <div class="stats-content">
         <div class="rank-wrapper">
           <div class="progress-circle">
-            <img src="../assets/svg/car.svg" alt="Rank progress" />
+            <img src="../assets/svg/stats/car.svg" alt="Rank progress" />
           </div>
           <div class="rank-title-wrapper">
             <p class="rank-title">Your Ecology<br />Rank</p>
@@ -13,7 +13,10 @@
         <div class="stats-wrapper">
           <div class="green-coin-wrapper">
             <div class="logo-wrapper">
-              <img src="../assets/svg/green-coin.svg" alt="Green Coin Logo" />
+              <img
+                src="../assets/svg/stats/green-coin.svg"
+                alt="Green Coin Logo"
+              />
             </div>
             <div class="info-wrapper">
               <p class="amount">4.000.00</p>
@@ -22,10 +25,10 @@
           <hr />
           <div class="profit-wrapper">
             <div class="logo-wrapper">
-              <img src="../assets/svg/profit.svg" alt="Profit Logo" />
+              <img src="../assets/svg/stats/profit.svg" alt="Profit Logo" />
             </div>
             <div class="info-wrapper">
-              <p class="description">Profit per day</p>
+              <p class="description">{{ t("profit-per-day") }}</p>
               <p class="amount">+ 0.1</p>
             </div>
           </div>
@@ -35,7 +38,9 @@
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// TODO: запросы к серверу для получения статистики (ранг + прогресс, коины, профит)
+</script>
 
 <style scoped lang="sass">
 @import "src/styles/variables"

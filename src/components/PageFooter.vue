@@ -5,54 +5,58 @@
     <div class="container">
       <nav class="footer-content">
         <router-link to="/" class="nav-item">
-          <img v-if="$route.path !== '/'" src="../assets/svg/home.svg" alt="" />
+          <img
+            v-if="$route.path !== '/'"
+            src="../assets/svg/footer/home.svg"
+            alt=""
+          />
           <div v-if="$route.path === '/'" class="active-nav-item">
-            <img src="../assets/svg/home.svg" alt="" />
-            <p>Home</p>
+            <img src="../assets/svg/footer/home.svg" alt="" />
+            <p>{{ t("home") }}</p>
           </div>
         </router-link>
         <router-link to="/balance" class="nav-item">
           <img
             v-if="$route.path !== '/balance'"
-            src="../assets/svg/balance.svg"
+            src="../assets/svg/footer/balance.svg"
             alt=""
           />
           <div v-if="$route.path === '/balance'" class="active-nav-item">
-            <img src="../assets/svg/balance.svg" alt="" />
-            <p>Balance</p>
+            <img src="../assets/svg/footer/balance.svg" alt="" />
+            <p>{{ t("balance") }}</p>
           </div>
         </router-link>
         <router-link to="/green-coin" class="nav-item">
           <img
             v-if="$route.path !== '/test'"
-            src="../assets/svg/test.svg"
+            src="../assets/svg/footer/test.svg"
             alt=""
           />
           <div v-if="$route.path === '/test'" class="active-nav-item">
-            <img src="../assets/svg/test.svg" alt="" />
-            <p>Test</p>
+            <img src="../assets/svg/footer/test.svg" alt="" />
+            <p>{{ t("test") }}</p>
           </div>
         </router-link>
         <router-link to="/profile" class="nav-item">
           <img
             v-if="$route.path !== '/test'"
-            src="../assets/svg/profile.svg"
+            src="../assets/svg/footer/profile.svg"
             alt=""
           />
           <div v-if="$route.path === '/test'" class="active-nav-item">
-            <img src="../assets/svg/profile.svg" alt="" />
-            <p>Test</p>
+            <img src="../assets/svg/footer/profile.svg" alt="" />
+            <p>{{ t("profile") }}</p>
           </div>
         </router-link>
         <router-link to="/settings" class="nav-item">
           <img
             v-if="$route.path !== '/settings'"
-            src="../assets/svg/test.svg"
+            src="../assets/svg/footer/test.svg"
             alt=""
           />
           <div v-if="$route.path === '/settings'" class="active-nav-item">
-            <img src="../assets/svg/test.svg" alt="" />
-            <p>Settings</p>
+            <img src="../assets/svg/footer/test.svg" alt="" />
+            <p>{{ t("settings") }}</p>
           </div>
         </router-link>
       </nav>

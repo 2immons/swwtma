@@ -14,7 +14,7 @@ const quests = computed(() => {
   <section class="quests">
     <div class="container">
       <div class="quests-content">
-        <h2>Quests</h2>
+        <h2>{{ t("tasks") }}</h2>
         <div class="quests-list">
           <QuestItem
             v-for="(item, index) in quests"
