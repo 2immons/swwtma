@@ -24,7 +24,7 @@ const joinQuest = async (quest: any) => {
   <div class="quest-item">
     <h3>{{ quest.title }}</h3>
     <p>{{ quest.description }}</p>
-    <button @click="joinQuest(quest)">ACCEPT</button>
+    <button @click="joinQuest(quest)">{{ t("accept-task") }}</button>
   </div>
 </template>
 

@@ -25,7 +25,7 @@
               <img src="../assets/svg/profit.svg" alt="Profit Logo" />
             </div>
             <div class="info-wrapper">
-              <p class="description">Profit per day</p>
+              <p class="description">{{ t("profit-per-day") }}</p>
               <p class="amount">+ 0.1</p>
             </div>
           </div>
@@ -35,7 +35,9 @@
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// TODO: запросы к серверу для получения статистики (ранг + прогресс, коины, профит)
+</script>
 
 <style scoped lang="sass">
 @import "src/styles/variables"

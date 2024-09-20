@@ -8,7 +8,7 @@
           <img v-if="$route.path !== '/'" src="../assets/svg/home.svg" alt="" />
           <div v-if="$route.path === '/'" class="active-nav-item">
             <img src="../assets/svg/home.svg" alt="" />
-            <p>Home</p>
+            <p>{{ t("home") }}</p>
           </div>
         </router-link>
         <router-link to="/balance" class="nav-item">
@@ -19,7 +19,7 @@
           />
           <div v-if="$route.path === '/balance'" class="active-nav-item">
             <img src="../assets/svg/balance.svg" alt="" />
-            <p>Balance</p>
+            {{ t("balance") }}
           </div>
         </router-link>
         <router-link to="/green-coin" class="nav-item">
@@ -30,7 +30,7 @@
           />
           <div v-if="$route.path === '/test'" class="active-nav-item">
             <img src="../assets/svg/test.svg" alt="" />
-            <p>Test</p>
+            {{ t("test") }}
           </div>
         </router-link>
         <router-link to="/profile" class="nav-item">
@@ -41,7 +41,7 @@
           />
           <div v-if="$route.path === '/test'" class="active-nav-item">
             <img src="../assets/svg/profile.svg" alt="" />
-            <p>Test</p>
+            {{ t("test") }}
           </div>
         </router-link>
         <router-link to="/settings" class="nav-item">
@@ -52,7 +52,7 @@
           />
           <div v-if="$route.path === '/settings'" class="active-nav-item">
             <img src="../assets/svg/test.svg" alt="" />
-            <p>Settings</p>
+            {{ t("settings") }}
           </div>
         </router-link>
       </nav>

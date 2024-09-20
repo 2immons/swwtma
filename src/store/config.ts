@@ -1,3 +1,3 @@
 export const config = {
-  backendURL: "http://localhost:3333",
+  backendURL: "http://localhost:8000",
 };

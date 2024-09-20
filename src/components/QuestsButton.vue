@@ -2,7 +2,7 @@
 
 <template>
   <div class="quests-btn-wrapper">
-    <router-link to="/quests" class="quests-btn">TASKS</router-link>
+    <router-link to="/quests" class="quests-btn">{{ t("tasks") }}</router-link>
   </div>
 </template>
 
