@@ -42,7 +42,7 @@ const joinQuest = async (quest: any) => {
   padding: 15px
   border-radius: 31px
   gap: 15px
-  box-shadow: $c-light-element-shadow
+  box-shadow: $c-element-shadow
 
   h3
     font-size: 30px
@@ -59,11 +59,11 @@ const joinQuest = async (quest: any) => {
   button
     padding: 7px 25px
     width: fit-content
-    color: $c-light-text
-    background: $c-element-bg
-    box-shadow: $c-light-element-shadow
+    background: $c-active-element
+    box-shadow: $c-element-shadow
     align-self: end
     border-radius: 25px
     font-size: 25px
     text-transform: uppercase
+    color: $c-main-text
 </style>

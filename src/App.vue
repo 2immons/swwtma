@@ -24,7 +24,23 @@ const { t } = useI18n({ useScope: "global" });
 html, body
   height: 100%
   overflow-x: hidden
-  background: $c-bg
+  background-color: $c-bg
+  position: relative
+
+html::before
+  content: ""
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-image: url("./assets/images/bg.png")
+  background-repeat: no-repeat
+  background-position: center
+  background-size: cover
+  opacity: 0.8
+  z-index: -1
+
 
 #app
   font-family: "Roboto Light", sans-serif

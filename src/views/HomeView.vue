@@ -3,7 +3,6 @@
   <main>
     <StatsSection />
     <MainLogo />
-    <QuestsButton />
   </main>
   <PageFooter />
 </template>
@@ -12,8 +11,6 @@
 import MainLogo from "@/components/MainLogo.vue";
 import PageHeader from "@/components/PageHeader.vue";
 import PageFooter from "@/components/PageFooter.vue";
-import QuestsList from "@/components/QuestsList.vue";
-import QuestsButton from "@/components/QuestsButton.vue";
 import StatsSection from "@/components/StatsSection.vue";
 </script>
 

@@ -133,8 +133,8 @@ header
   border-radius: 10px
   width: 40px
   height: 40px
-  background: $c-gradient
-  box-shadow: $c-dark-element-shadow
+  background: $c-stats-section
+  box-shadow: $c-element-shadow
 
 .language-settings
   position: absolute
@@ -175,6 +175,6 @@ header
   border-radius: 10px
   width: 40px
   height: 40px
-  background: $c-gradient
-  box-shadow: $c-dark-element-shadow
+  background: $c-stats-section
+  box-shadow: $c-element-shadow
 </style>

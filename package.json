@@ -21,6 +21,7 @@
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
+    "@tresjs/core": "^4.2.10",
     "@types/jest": "^27.0.1",
     "@types/three": "^0.168.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
