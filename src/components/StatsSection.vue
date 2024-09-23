@@ -56,8 +56,8 @@
   align-items: center
   height: 100%
   width: 100%
-  box-shadow: $c-light-element-shadow
-  background: $c-element-bg
+  box-shadow: $c-element-shadow
+  background: $c-stats-section
   border-radius: 31px
   grid-template-columns: 4fr 7fr
 

@@ -1,5 +1,4 @@
 {
-  "tasks": "TASKS",
   "accept-task": "START",
   "russian": "Russian",
   "english": "English",
@@ -8,5 +7,6 @@
   "settings": "Settings",
   "home": "Home",
   "balance": "Balance",
-  "profile": "Profile"
+  "profile": "Profile",
+  "tasks": "Tasks"
 }

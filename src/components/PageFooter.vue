@@ -26,15 +26,15 @@
             <p>{{ t("balance") }}</p>
           </div>
         </router-link>
-        <router-link to="/green-coin" class="nav-item">
+        <router-link to="/quests" class="nav-item">
           <img
-            v-if="$route.path !== '/test'"
-            src="../assets/svg/footer/test.svg"
+            v-if="$route.path !== '/quests'"
+            src="../assets/svg/footer/tasks.svg"
             alt=""
           />
-          <div v-if="$route.path === '/test'" class="active-nav-item">
-            <img src="../assets/svg/footer/test.svg" alt="" />
-            <p>{{ t("test") }}</p>
+          <div v-if="$route.path === '/quests'" class="active-nav-item">
+            <img src="../assets/svg/footer/tasks.svg" alt="" />
+            <p>{{ t("tasks") }}</p>
           </div>
         </router-link>
         <router-link to="/profile" class="nav-item">
@@ -67,6 +67,7 @@
 <style scoped lang="sass">
 @import "src/styles/variables"
 footer
+  font-family: "Poppins", sans-serif
   bottom: 0
   height: 135px
   width: 100%
@@ -88,6 +89,7 @@ hr
   height: 74px
   align-items: center
   background: $c-element-bg
+  box-shadow: $c-element-shadow
   border-radius: 75px
   padding: 12px
 .nav-item
@@ -109,7 +111,7 @@ hr
   overflow: hidden
   padding: 15px
   height: 54px
-  background: $c-element-bg
+  background: $c-active-element
   p
     color: $c-main-text
     font-size: 13px
