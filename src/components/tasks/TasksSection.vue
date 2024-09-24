@@ -1,10 +1,26 @@
 <script setup lang="ts">
-import QuestItem from "@/components/TaskItem.vue";
+import QuestItem from "@/components/tasks/TaskItem.vue";
 import { questsStore } from "@/store/quests";
-import { computed, ref } from "vue";
-import TaskItem from "@/components/TaskItem.vue";
-import PromoTask from "@/components/PromoTask.vue";
-import TasksCategory from "@/components/TasksCategory.vue";
+import { computed, onMounted, ref } from "vue";
+import TaskItem from "@/components/tasks/TaskItem.vue";
+import PromoTask from "@/components/tasks/PromoTask.vue";
+import TasksCategory from "@/components/tasks/TasksCategory.vue";
+
+const isAtStart = ref(true);
+const isAtEnd = ref(false);
+
+const handleScroll = (event: Event) => {
+  const target = event.target as HTMLElement;
+  isAtStart.value = target.scrollLeft === 0;
+  isAtEnd.value = target.scrollLeft + target.offsetWidth >= target.scrollWidth;
+};
+
+onMounted(() => {
+  const navElement = document.querySelector(".nav");
+  if (navElement) {
+    navElement.addEventListener("scroll", handleScroll);
+  }
+});
 
 const availableTasks = ref(10);
 
@@ -13,8 +29,8 @@ const isWeeklyQuests = ref(false);
 
 const questsStoreInstance = questsStore();
 
-const quests = computed(() => {
-  return questsStoreInstance.quests;
+const promoTasks = computed(() => {
+  return questsStoreInstance.promoTasks;
 });
 
 const activeCategory = ref(0);
@@ -44,7 +60,7 @@ const categoryTitleClass = (index: number) => {
         <div class="promo-tasks-wrapper no-scrollbar" v-if="isPromoQuests">
           <div class="promo-tasks">
             <TaskItem
-              v-for="(item, index) in quests"
+              v-for="(item, index) in promoTasks"
               :key="index"
               :quest="item"
             />
@@ -54,15 +70,19 @@ const categoryTitleClass = (index: number) => {
           {{ t("weekly") }}
         </h3>
         <div class="regular-tasks">
-          <div class="nav no-scrollbar">
-            <button
-              v-for="(category, index) in categories"
-              :key="index"
-              :class="categoryTitleClass(index)"
-              @click="setActiveCategory(index)"
-            >
-              {{ category.title }}
-            </button>
+          <div class="nav-wrapper">
+            <div class="nav no-scrollbar">
+              <button
+                v-for="(category, index) in categories"
+                :key="index"
+                :class="categoryTitleClass(index)"
+                @click="setActiveCategory(index)"
+              >
+                {{ category.title }}
+              </button>
+            </div>
+            <div class="nav-overlay nav-overlay--left" v-if="!isAtStart"></div>
+            <div class="nav-overlay nav-overlay--right" v-if="!isAtEnd"></div>
           </div>
           <hr />
           <TasksCategory
@@ -79,7 +99,7 @@ const categoryTitleClass = (index: number) => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 .quests
   display: flex
   justify-content: center
@@ -96,6 +116,7 @@ h2, h3
 
   span
     font-size: 30px
+    margin-left: 8px
 .quests-list
   display: flex
   margin-top: 15px
@@ -126,11 +147,29 @@ h2, h3
   flex-direction: column
   margin-top: 20px
 
+.nav-wrapper
+  position: relative
+  width: 100%
+
+.nav-overlay
+  position: absolute
+  top: 0
+  bottom: 0
+  width: 50px
+  pointer-events: none
+  background: $c-gradient-nav-right
+
+.nav-overlay--left
+  left: 0
+  background: $c-gradient-nav-right
+
+.nav-overlay--right
+  right: 0
+  background: $c-gradient-nav-left
+
 .nav
   display: flex
-  flex-direction: row
   gap: 20px
-  width: 100%
   overflow-x: scroll
 
 hr

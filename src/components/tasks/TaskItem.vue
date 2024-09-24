@@ -29,7 +29,7 @@ const joinQuest = async (quest: any) => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 .quest-item
   display: flex
   align-items: center
@@ -38,7 +38,7 @@ const joinQuest = async (quest: any) => {
   height: fit-content
   max-height: 250px
   color: $c-main-text
-  background: $c-element-bg
+  background: $c-active-element
   padding: 15px
   border-radius: 12px
   gap: 15px

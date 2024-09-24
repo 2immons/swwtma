@@ -7,7 +7,15 @@
   "settings": "Настройки",
   "home": "Главная",
   "balance": "Баланс",
-  "profile": "Профиль",
+  "frens": "Друзья",
   "tasks": "Задания",
-  "weekly": "Еженедельные"
+  "weekly": "Еженедельные",
+  "become-referal": "Стать рефералом",
+  "delete-account": "Удалить аккаунт",
+  "change-stock": "Сменить биржу",
+  "vibration": "Вибрация",
+  "coin-animation": "Анимация монет",
+  "yes": "Да",
+  "no": "Отмена",
+  "is-sure": "Вы уверены?"
 }

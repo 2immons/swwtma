@@ -36,9 +36,7 @@ onMounted(async () => {
       username.value = user.username || "No username";
       firstName.value = user.first_name || "Unknown";
       lastName.value = user.last_name || "Unknown";
-
-      console.log(firstName.value);
-      console.log(photoUrl.value);
+      locale.value = user.language_code || "en";
 
       const queryString = window.Telegram.WebApp.initData;
       const queryData = new URLSearchParams(queryString);
@@ -148,6 +146,7 @@ header
   padding: 10px
   gap: 10px
   border-radius: 10px
+  z-index: 2
 
   .language-btn
     display: flex

@@ -21,7 +21,7 @@ const moveSlider = () => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 .slider-wrapper
   position: relative
   width: 80px

@@ -1,67 +1,58 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
-import { onBeforeUnmount, onMounted, Ref, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const isStockExchangeMenuVisible = ref(false);
 const isConfirmModalVisible = ref(false);
 
 const toggleConfirmModal = () => {
   isConfirmModalVisible.value = !isConfirmModalVisible.value;
-  accountArrow.value = isConfirmModalVisible.value
-    ? "arrow-icon--open"
-    : "arrow-icon";
+  if (isConfirmModalVisible.value) accountArrow.value = "arrow-icon--open";
+  else accountArrow.value = "arrow-icon";
 };
 
 const toggleStockExchangeMenu = () => {
   isStockExchangeMenuVisible.value = !isStockExchangeMenuVisible.value;
-  stockExchangeArrow.value = isStockExchangeMenuVisible.value
-    ? "arrow-icon--open"
-    : "arrow-icon";
+  if (isStockExchangeMenuVisible.value)
+    stockExchangeArrow.value = "arrow-icon--open";
+  else stockExchangeArrow.value = "arrow-icon";
 };
 
-const checkAndClose = (
-  isVisible: Ref<boolean>,
-  elementClass: string,
-  wrapperClass: string,
-  arrowRef: Ref<string>,
-  event: Event
-) => {
-  const element = document.querySelector(`.${elementClass}`);
-  const wrapper = document.querySelector(`.${wrapperClass}`);
+const handleClickOutside = (event: any) => {
+  const languageSettingsElement = document.querySelector(
+    ".stock-exchange-menu"
+  );
+  const languageWrapperElement = document.querySelector(
+    ".stock-exchange-wrapper"
+  );
 
-  const target = event.target as Node | null;
+  const accountDelete = document.querySelector(".confirm-modal");
+  const accountDeleteWrapper = document.querySelector(".account-wrapper");
 
   if (
-    isVisible.value &&
-    element instanceof Node &&
-    wrapper instanceof Node &&
-    target &&
-    !element.contains(target) &&
-    !wrapper.contains(target)
+    isConfirmModalVisible.value &&
+    accountDelete &&
+    accountDeleteWrapper &&
+    !accountDelete.contains(event.target) &&
+    !accountDeleteWrapper.contains(event.target)
   ) {
-    isVisible.value = false;
-    arrowRef.value = "arrow-icon";
+    isConfirmModalVisible.value = false;
+    accountArrow.value = "arrow-icon";
+  }
+
+  if (
+    isStockExchangeMenuVisible.value &&
+    languageSettingsElement &&
+    languageWrapperElement &&
+    !languageSettingsElement.contains(event.target) &&
+    !languageWrapperElement.contains(event.target)
+  ) {
+    isStockExchangeMenuVisible.value = false;
+    stockExchangeArrow.value = "arrow-icon";
   }
 };
 
-const handleClickOutside = (event: Event) => {
-  checkAndClose(
-    isConfirmModalVisible,
-    "confirm-modal",
-    "account-wrapper",
-    accountArrow,
-    event
-  );
-  checkAndClose(
-    isStockExchangeMenuVisible,
-    "stock-exchange-menu",
-    "stock-exchange-wrapper",
-    stockExchangeArrow,
-    event
-  );
-};
-
-onMounted(() => {
+onMounted(async () => {
   document.addEventListener("click", handleClickOutside);
 });
 
@@ -80,7 +71,7 @@ const stockExchangeArrow = ref("arrow-icon");
 </script>
 
 <template>
-  <section class="settings">
+  <section class="balance">
     <div class="container">
       <div class="settings-content">
         <h2>Settings</h2>
@@ -89,7 +80,7 @@ const stockExchangeArrow = ref("arrow-icon");
             class="settings-wrapper stock-exchange-wrapper"
             @click="toggleStockExchangeMenu"
           >
-            <h3>{{ t("change-stock") }}</h3>
+            <h3>Сменить биржу</h3>
             <p>{{ stockExchange }}</p>
             <img
               :class="stockExchangeArrow"
@@ -108,38 +99,38 @@ const stockExchangeArrow = ref("arrow-icon");
             </div>
           </div>
           <div class="settings-wrapper referal-wrapper">
-            <h3>{{ t("become-referal") }}</h3>
+            <h3>Стать рефералом</h3>
             <p></p>
           </div>
           <div
             class="settings-wrapper account-wrapper"
             @click="toggleConfirmModal"
           >
-            <h3>{{ t("delete-account") }}</h3>
+            <h3>Удалить аккаунт</h3>
             <img
               :class="accountArrow"
               src="../assets/svg/nav/arrow-right.svg"
               alt=""
             />
             <div class="confirm-modal" v-if="isConfirmModalVisible">
-              <h3>{{ t("is-sure") }}</h3>
+              <h3>Вы уверены?</h3>
               <div class="confirm-modal__buttons">
                 <button class="confirm-btn" @click="deleteAccount">
-                  {{ t("yes") }}
+                  Да, удалить
                 </button>
                 <button class="deny-btn" @click="toggleConfirmModal">
-                  {{ t("no") }}
+                  Нет, отменить
                 </button>
               </div>
             </div>
           </div>
           <div class="sliders">
             <div class="slider-setting">
-              <h3>{{ t("vibration") }}</h3>
+              <h3>Вибрация</h3>
               <SliderButton />
             </div>
             <div class="slider-setting">
-              <h3>{{ t("coin-animation") }}</h3>
+              <h3>Анимация монет</h3>
               <SliderButton />
             </div>
           </div>
@@ -152,7 +143,7 @@ const stockExchangeArrow = ref("arrow-icon");
 
 <style scoped lang="sass">
 @import "src/styles/variables"
-.settings
+.balance
   display: flex
   justify-content: center
   margin: 20px 0

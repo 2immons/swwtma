@@ -72,7 +72,7 @@ export const questsStore = defineStore("quests", {
         ],
       },
     ],
-    quests: [
+    promoTasks: [
       {
         title: "Quest Name 1",
         description:
@@ -98,7 +98,7 @@ export const questsStore = defineStore("quests", {
 
   actions: {
     fetchQuests() {
-      return this.quests;
+      return this.promoTasks;
     },
 
     async joinQuest(quest: any) {

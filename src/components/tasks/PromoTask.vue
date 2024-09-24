@@ -29,7 +29,7 @@ const joinQuest = async (quest: any) => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 .quest-item
   display: flex
   flex-direction: column

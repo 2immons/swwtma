@@ -7,7 +7,15 @@
   "settings": "Settings",
   "home": "Home",
   "balance": "Balance",
-  "profile": "Profile",
+  "frens": "Frens",
   "tasks": "Tasks",
-  "weekly": "Weekly"
+  "weekly": "Weekly",
+  "become-referal": "Become referal",
+  "delete-account": "Delete account",
+  "change-stock": "Change stock exchange",
+  "vibration": "Vibration",
+  "coin-animation": "Coin animation",
+  "yes": "Yes",
+  "no": "Cancel",
+  "is-sure": "Are you sure?"
 }

@@ -26,37 +26,26 @@
             <p>{{ t("balance") }}</p>
           </div>
         </router-link>
-        <router-link to="/quests" class="nav-item">
+        <router-link to="/tasks" class="nav-item">
           <img
-            v-if="$route.path !== '/quests'"
+            v-if="$route.path !== '/tasks'"
             src="../assets/svg/footer/tasks.svg"
             alt=""
           />
-          <div v-if="$route.path === '/quests'" class="active-nav-item">
+          <div v-if="$route.path === '/tasks'" class="active-nav-item">
             <img src="../assets/svg/footer/tasks.svg" alt="" />
             <p>{{ t("tasks") }}</p>
           </div>
         </router-link>
-        <router-link to="/profile" class="nav-item">
+        <router-link to="/friends" class="nav-item">
           <img
-            v-if="$route.path !== '/test'"
-            src="../assets/svg/footer/profile.svg"
+            v-if="$route.path !== '/friends'"
+            src="../assets/svg/footer/frens.svg"
             alt=""
           />
-          <div v-if="$route.path === '/test'" class="active-nav-item">
-            <img src="../assets/svg/footer/profile.svg" alt="" />
-            <p>{{ t("profile") }}</p>
-          </div>
-        </router-link>
-        <router-link to="/settings" class="nav-item">
-          <img
-            v-if="$route.path !== '/settings'"
-            src="../assets/svg/footer/test.svg"
-            alt=""
-          />
-          <div v-if="$route.path === '/settings'" class="active-nav-item">
-            <img src="../assets/svg/footer/test.svg" alt="" />
-            <p>{{ t("settings") }}</p>
+          <div v-if="$route.path === '/friends'" class="active-nav-item">
+            <img src="../assets/svg/footer/frens.svg" alt="" />
+            <p>{{ t("frens") }}</p>
           </div>
         </router-link>
       </nav>
@@ -89,7 +78,7 @@ hr
   width: 100%
   height: 74px
   align-items: center
-  background: $c-footer-bg
+  background: $c-element-bg
   box-shadow: $c-element-shadow
   border-radius: 75px
   padding: 12px

@@ -7,14 +7,24 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/HomeView.vue"),
   },
   {
-    path: "/quests",
-    name: "quests",
-    component: () => import("../views/QuestsView.vue"),
+    path: "/tasks",
+    name: "tasks",
+    component: () => import("../views/TasksView.vue"),
   },
   {
     path: "/settings",
     name: "settings",
     component: () => import("../views/SettingsView.vue"),
+  },
+  {
+    path: "/balance",
+    name: "balance",
+    component: () => import("../views/BalanceView.vue"),
+  },
+  {
+    path: "/friends",
+    name: "friends",
+    component: () => import("../views/FriendsView.vue"),
   },
 ];
 

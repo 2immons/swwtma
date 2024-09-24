@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, computed } from "vue";
-import TaskItem from "@/components/TaskItem.vue";
+import TaskItem from "@/components/tasks/TaskItem.vue";
 
 // Определение интерфейсов
 interface Task {
