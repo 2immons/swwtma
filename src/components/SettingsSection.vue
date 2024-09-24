@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// TODO: сделать поворот стрелки при открытии меню
-
 import SliderButton from "@/components/SliderButton.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
@@ -9,10 +7,15 @@ const isConfirmModalVisible = ref(false);
 
 const toggleConfirmModal = () => {
   isConfirmModalVisible.value = !isConfirmModalVisible.value;
+  if (isConfirmModalVisible.value) accountArrow.value = "arrow-icon--open";
+  else accountArrow.value = "arrow-icon";
 };
 
 const toggleStockExchangeMenu = () => {
   isStockExchangeMenuVisible.value = !isStockExchangeMenuVisible.value;
+  if (isStockExchangeMenuVisible.value)
+    stockExchangeArrow.value = "arrow-icon--open";
+  else stockExchangeArrow.value = "arrow-icon";
 };
 
 const handleClickOutside = (event: any) => {
@@ -34,6 +37,7 @@ const handleClickOutside = (event: any) => {
     !accountDeleteWrapper.contains(event.target)
   ) {
     isConfirmModalVisible.value = false;
+    accountArrow.value = "arrow-icon";
   }
 
   if (
@@ -44,6 +48,7 @@ const handleClickOutside = (event: any) => {
     !languageWrapperElement.contains(event.target)
   ) {
     isStockExchangeMenuVisible.value = false;
+    stockExchangeArrow.value = "arrow-icon";
   }
 };
 
@@ -55,9 +60,14 @@ onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
 });
 
+const stockExchange = ref("Bybit");
+
 const setStock = (stock: string) => {
-  console.log(stock);
+  stockExchange.value = stock;
 };
+
+const accountArrow = ref("arrow-icon");
+const stockExchangeArrow = ref("arrow-icon");
 </script>
 
 <template>
@@ -71,14 +81,18 @@ const setStock = (stock: string) => {
             @click="toggleStockExchangeMenu"
           >
             <h3>Сменить биржу</h3>
-            <p>Bybit</p>
-            <img src="../assets/svg/nav/arrow-right.svg" alt="" />
+            <p>{{ stockExchange }}</p>
+            <img
+              :class="stockExchangeArrow"
+              src="../assets/svg/nav/arrow-right.svg"
+              alt=""
+            />
             <div class="stock-exchange-menu" v-if="isStockExchangeMenuVisible">
               <button @click="setStock('Bybit')" class="language-btn">
                 <img src="../assets/svg/flags/eng.svg" alt="English language" />
                 Bybit
               </button>
-              <button @click="setStock('ru')" class="language-btn">
+              <button @click="setStock('Test')" class="language-btn">
                 <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
                 Test
               </button>
@@ -93,7 +107,11 @@ const setStock = (stock: string) => {
             @click="toggleConfirmModal"
           >
             <h3>Удалить аккаунт</h3>
-            <img src="../assets/svg/nav/arrow-right.svg" alt="" />
+            <img
+              :class="accountArrow"
+              src="../assets/svg/nav/arrow-right.svg"
+              alt=""
+            />
             <div class="confirm-modal" v-if="isConfirmModalVisible">
               <h3>Вы уверены?</h3>
               <div class="confirm-modal__buttons">
@@ -234,4 +252,12 @@ h2
 .politic
   margin-top: 30px
   color: $c-light-text
+
+.arrow-icon
+  transform: rotateZ(0deg)
+  transition: 0.3s ease
+
+.arrow-icon--open
+  transform: rotateZ(90deg)
+  transition: 0.3s ease
 </style>

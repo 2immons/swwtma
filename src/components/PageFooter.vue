@@ -69,6 +69,7 @@
 footer
   font-family: "Poppins", sans-serif
   bottom: 0
+  position: sticky
   height: 135px
   width: 100%
   text-align: center
@@ -88,7 +89,7 @@ hr
   width: 100%
   height: 74px
   align-items: center
-  background: $c-element-bg
+  background: $c-footer-bg
   box-shadow: $c-element-shadow
   border-radius: 75px
   padding: 12px

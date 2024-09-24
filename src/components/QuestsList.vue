@@ -55,14 +55,14 @@ const categoryTitleClass = (index: number) => {
         </h3>
         <div class="regular-tasks">
           <div class="nav no-scrollbar">
-            <h3
+            <button
               v-for="(category, index) in categories"
               :key="index"
               :class="categoryTitleClass(index)"
               @click="setActiveCategory(index)"
             >
               {{ category.title }}
-            </h3>
+            </button>
           </div>
           <hr />
           <TasksCategory
