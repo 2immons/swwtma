@@ -4,6 +4,74 @@ import { config } from "./config";
 
 export const questsStore = defineStore("quests", {
   state: () => ({
+    categories: [
+      {
+        id: 0,
+        title: "Social",
+        tasks: [
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+        ],
+      },
+      {
+        id: 1,
+        title: "Network",
+        tasks: [
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "Test 1",
+        tasks: [
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: "Test 2",
+        tasks: [
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: "Test 33",
+        tasks: [
+          {
+            title: "Task 23",
+          },
+          {
+            title: "Tasks 21",
+          },
+          {
+            title: "Tasks 33",
+          },
+        ],
+      },
+    ],
     quests: [
       {
         title: "Quest Name 1",

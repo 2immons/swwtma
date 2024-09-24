@@ -41,9 +41,16 @@ html::before
   opacity: 0.8
   z-index: -1
 
+.no-scrollbar
+  -ms-overflow-style: none
+  scrollbar-width: none
+
+.no-scrollbar::-webkit-scrollbar
+  display: none
 
 #app
-  font-family: "Roboto Light", sans-serif
+  font-family: "Poppins", sans-serif
+  line-height: 1.1
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
