@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
 import { onBeforeUnmount, onMounted, Ref, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const isStockExchangeMenuVisible = ref(false);
 const isConfirmModalVisible = ref(false);
+
+const { t, locale } = useI18n();
 
 const toggleConfirmModal = () => {
   isConfirmModalVisible.value = !isConfirmModalVisible.value;
@@ -77,6 +80,39 @@ const setStock = (stock: string) => {
 
 const accountArrow = ref("arrow-icon");
 const stockExchangeArrow = ref("arrow-icon");
+
+onMounted(async () => {
+  document.addEventListener("click", handleClickOutsideLanguageSettings);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutsideLanguageSettings);
+});
+
+const languageSettingsIsVisible = ref(false);
+
+const toggleLanguageSettings = () => {
+  languageSettingsIsVisible.value = !languageSettingsIsVisible.value;
+};
+
+const setLanguage = (language) => {
+  locale.value = language;
+  languageSettingsIsVisible.value = false;
+};
+
+const handleClickOutsideLanguageSettings = (event) => {
+  const languageSettingsElement = document.querySelector(".language-settings");
+  const languageWrapperElement = document.querySelector(".language-wrapper");
+
+  if (
+    languageSettingsIsVisible.value &&
+    languageSettingsElement &&
+    !languageSettingsElement.contains(event.target) &&
+    !languageWrapperElement.contains(event.target)
+  ) {
+    languageSettingsIsVisible.value = false;
+  }
+};
 </script>
 
 <template>
@@ -85,6 +121,19 @@ const stockExchangeArrow = ref("arrow-icon");
       <div class="settings-content">
         <h2>Settings</h2>
         <div class="settings-list">
+          <button class="language-wrapper" @click="toggleLanguageSettings">
+            <img src="../assets/svg/header/lang.svg" alt="Language" />
+          </button>
+          <div class="language-settings" v-if="languageSettingsIsVisible">
+            <button @click="setLanguage('en')" class="language-btn">
+              <img src="../assets/svg/flags/eng.svg" alt="English language" />
+              {{ t("english") }}
+            </button>
+            <button @click="setLanguage('ru')" class="language-btn">
+              <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
+              {{ t("russian") }}
+            </button>
+          </div>
           <div
             class="settings-wrapper stock-exchange-wrapper"
             @click="toggleStockExchangeMenu"
@@ -172,7 +221,7 @@ h2
   gap: 8px
 
 .settings-wrapper
-  background: $c-element-bg
+  background: $c-dark-element
   box-shadow: $c-element-shadow
   border-radius: 12px
   display: flex
@@ -192,7 +241,7 @@ h2
 
 .confirm-modal
   width: 100%
-  background: $c-active-element
+  background: $c-light-element
   position: absolute
   z-index: 2
   top: 63px
@@ -213,7 +262,7 @@ h2
     justify-content: space-around
 
     button
-      background: $c-active-element
+      background: $c-light-element
       color: $c-main-text
       font-size: 18px
       border-radius: 12px
@@ -224,7 +273,7 @@ h2
 .stock-exchange-menu
   height: 100px
   width: 100%
-  background: $c-active-element
+  background: $c-light-element
   position: absolute
   z-index: 2
   top: 63px
@@ -269,4 +318,35 @@ h2
 .arrow-icon--open
   transform: rotateZ(90deg)
   transition: 0.3s ease
+
+.language-wrapper
+  display: flex
+  justify-content: center
+  align-items: center
+  border-radius: 10px
+  width: 40px
+  height: 40px
+  background: $c-dark-element
+  box-shadow: $c-element-shadow
+
+.language-settings
+  position: absolute
+  background: $c-light-text
+  height: fit-content
+  width: 200px
+  top: 47px
+  display: flex
+  flex-direction: column
+  align-items: start
+  padding: 10px
+  gap: 10px
+  border-radius: 10px
+  z-index: 2
+
+  .language-btn
+    display: flex
+    align-items: center
+    gap: 10px
+    font-size: 20px
+    color: $c-main-text
 </style>

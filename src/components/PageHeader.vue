@@ -8,13 +8,17 @@ const { t, locale } = useI18n();
 const username = ref("Loading...");
 const firstName = ref("Loading...");
 const lastName = ref("Loading...");
-const photoUrl = ref("");
 
-const validateData = async (queryData) => {
+const validateData = async (queryResult) => {
   try {
     const response = await axios.post(
       "http://localhost:8000/validate",
-      queryData
+      queryResult,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
     console.log("Запрос валидации:", response.data);
   } catch (error) {
@@ -39,64 +43,30 @@ onMounted(async () => {
       locale.value = user.language_code || "en";
 
       const queryString = window.Telegram.WebApp.initData;
-      const queryData = new URLSearchParams(queryString);
+      const queryDataObj = Object.fromEntries(new URLSearchParams(queryString));
 
-      await validateData(queryData);
+      if (queryDataObj.user) {
+        queryDataObj.user = JSON.parse(queryDataObj.user);
+      }
+
+      const queryResult = {
+        web_app_data: queryDataObj,
+      };
+
+      await validateData(queryResult);
     }
   } else {
     console.error("Telegram WebApp API не доступен.");
   }
-  document.addEventListener("click", handleClickOutsideLanguageSettings);
 });
-
-onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutsideLanguageSettings);
-});
-
-const languageSettingsIsVisible = ref(false);
-
-const toggleLanguageSettings = () => {
-  languageSettingsIsVisible.value = !languageSettingsIsVisible.value;
-};
-
-const setLanguage = (language) => {
-  locale.value = language;
-  languageSettingsIsVisible.value = false;
-};
-
-const handleClickOutsideLanguageSettings = (event) => {
-  const languageSettingsElement = document.querySelector(".language-settings");
-  const languageWrapperElement = document.querySelector(".language-wrapper");
-
-  if (
-    languageSettingsIsVisible.value &&
-    languageSettingsElement &&
-    !languageSettingsElement.contains(event.target) &&
-    !languageWrapperElement.contains(event.target)
-  ) {
-    languageSettingsIsVisible.value = false;
-  }
-};
 </script>
 
 <template>
   <header>
     <div class="container">
       <div class="header-content">
-        <button class="language-wrapper" @click="toggleLanguageSettings">
-          <img src="../assets/svg/header/lang.svg" alt="Language" />
-        </button>
-        <div class="language-settings" v-if="languageSettingsIsVisible">
-          <button @click="setLanguage('en')" class="language-btn">
-            <img src="../assets/svg/flags/eng.svg" alt="English language" />
-            {{ t("english") }}
-          </button>
-          <button @click="setLanguage('ru')" class="language-btn">
-            <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
-            {{ t("russian") }}
-          </button>
-        </div>
         <div class="user-wrapper">
+          <img src="#" alt="" />
           <p>{{ firstName }}</p>
         </div>
         <router-link to="/settings" class="settings-wrapper">
@@ -110,12 +80,11 @@ const handleClickOutsideLanguageSettings = (event) => {
 <style scoped lang="sass">
 @import "src/styles/variables"
 header
-  top: 0
+  margin-top: 29px
   display: flex
   flex-direction: column
   align-items: center
-  height: 98px
-  color: $c-light-text
+  color: $c-light-element
 
 .header-content
   position: relative
@@ -123,47 +92,25 @@ header
   display: flex
   align-items: center
   align-self: end
-
-.language-wrapper
-  display: flex
-  justify-content: center
-  align-items: center
-  border-radius: 10px
-  width: 40px
-  height: 40px
-  background: $c-stats-section
-  box-shadow: $c-element-shadow
-
-.language-settings
-  position: absolute
-  background: $c-light-text
-  height: fit-content
-  width: 200px
-  top: 47px
-  display: flex
-  flex-direction: column
-  align-items: start
-  padding: 10px
-  gap: 10px
-  border-radius: 10px
-  z-index: 2
-
-  .language-btn
-    display: flex
-    align-items: center
-    gap: 10px
-    font-size: 20px
-    color: $c-main-text
+  justify-content: space-between
 
 .user-wrapper
   display: flex
   align-items: center
-  margin-left: 10px
-  flex: 1
+  height: 36px
+  background: $c-dark-element
+  border-radius: 50px
+  gap: 7px
+  padding: 4px 16px 4px 4px
+  border: 0.4px solid $c-dark-element
+  border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(74.2deg, rgba(255, 255, 255, 0) 83.38%, rgba(255, 255, 255, 0.5) 116.14%)
+  backdrop-filter: blur(2px)
 
   img
-    height: 40px
-    width: 40px
+    height: 28px
+    width: 28px
+    border-radius: 50px
+    background: $c-light-element
   p
     font-size: 18px
 
@@ -171,9 +118,11 @@ header
   display: flex
   justify-content: center
   align-items: center
-  border-radius: 10px
-  width: 40px
-  height: 40px
-  background: $c-stats-section
-  box-shadow: $c-element-shadow
+  width: 36px
+  height: 36px
+  background: $c-dark-element
+  border: 0.4px solid $c-dark-element
+  border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(74.2deg, rgba(255, 255, 255, 0) 83.38%, rgba(255, 255, 255, 0.5) 116.14%)
+  backdrop-filter: blur(2px)
+  border-radius: 50px
 </style>

@@ -84,7 +84,6 @@ const categoryTitleClass = (index: number) => {
             <div class="nav-overlay nav-overlay--left" v-if="!isAtStart"></div>
             <div class="nav-overlay nav-overlay--right" v-if="!isAtEnd"></div>
           </div>
-          <hr />
           <TasksCategory
             class="tasks-nav"
             v-for="(category, index) in categories"
@@ -112,7 +111,7 @@ const categoryTitleClass = (index: number) => {
 h2, h3
   display: flex
   align-self: start
-  color: $c-light-text
+  color: $c-light-element
 
   span
     font-size: 30px
@@ -136,11 +135,8 @@ h2, h3
   gap: 10px
 
 .regular-tasks
-  padding: 10px 10px 20px 10px
   height: fit-content
-  background: $c-element-bg
   border-radius: 12px
-  box-shadow: $c-element-shadow
   width: 100%
   position: relative
   display: flex
@@ -150,12 +146,15 @@ h2, h3
 .nav-wrapper
   position: relative
   width: 100%
+  height: 58px
+  display: flex
 
 .nav-overlay
   position: absolute
   top: 0
   bottom: 0
-  width: 50px
+  width: 128px
+  height: 100%
   pointer-events: none
   background: $c-gradient-nav-right
 
@@ -173,7 +172,7 @@ h2, h3
   overflow-x: scroll
 
 hr
-  border: 1px solid $c-element-bg
+  border: 1px solid $c-dark-element
   margin: 10px 0
 
 .tasks-nav
@@ -181,12 +180,16 @@ hr
   position: relative
 
 .category-title, .category-title--active
-  font-size: 20px
-  font-weight: 400
+  font-size: 18px
+  font-weight: 500
   white-space: nowrap
-  color: $c-main-text
+  color: $c-light-element
+  opacity: 50%
+  line-height: 24.6px
+
   padding: 0 5px 0 0
 
 .category-title--active
   font-weight: 700
+  opacity: 100%
 </style>

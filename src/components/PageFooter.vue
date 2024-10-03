@@ -57,9 +57,9 @@
 @import "src/styles/variables"
 footer
   font-family: "Poppins", sans-serif
-  bottom: 0
+  bottom: 43.5px
   position: sticky
-  height: 135px
+  height: 76px
   width: 100%
   text-align: center
   display: flex
@@ -76,12 +76,14 @@ hr
   display: flex
   justify-content: space-between
   width: 100%
-  height: 74px
+  height: 76px
   align-items: center
-  background: $c-element-bg
-  box-shadow: $c-element-shadow
-  border-radius: 75px
-  padding: 12px
+  background: $c-dark-element
+  border: 0.4px solid $c-dark-element
+  border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(86.36deg, rgba(255, 255, 255, 0) 49.24%, rgba(255, 255, 255, 0.2) 99.34%), linear-gradient(266.98deg, rgba(255, 255, 255, 0) 39.05%, rgba(255, 255, 255, 0.3) 119.18%)
+  border-radius: 83px
+  padding: 6px
+  backdrop-filter: blur(7px)
 .nav-item
   display: flex
   flex-direction: column
@@ -93,19 +95,19 @@ hr
     height: 24px
     color: $c-light-text
 .active-nav-item
-  border-radius: 44px
+  border-radius: 70px
   display: flex
   justify-content: center
   align-items: center
   gap: 6px
   overflow: hidden
-  padding: 15px
-  height: 54px
-  background: $c-active-element
+  padding: 20px 30px
+  height: 64px
+  background: $c-light-element
   p
     color: $c-main-text
-    font-size: 13px
+    font-size: 14px
     white-space: nowrap
-    line-height: 12px
-    font-weight: 600
+    line-height: 19px
+    font-weight: 700
 </style>

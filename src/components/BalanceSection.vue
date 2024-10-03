@@ -163,7 +163,7 @@ h2
   gap: 8px
 
 .settings-wrapper
-  background: $c-element-bg
+  background: $c-dark-element
   box-shadow: $c-element-shadow
   border-radius: 12px
   display: flex
@@ -183,7 +183,7 @@ h2
 
 .confirm-modal
   width: 100%
-  background: $c-active-element
+  background: $c-light-element
   position: absolute
   z-index: 2
   top: 63px
@@ -204,7 +204,7 @@ h2
     justify-content: space-around
 
     button
-      background: $c-active-element
+      background: $c-light-element
       color: $c-main-text
       font-size: 18px
       border-radius: 12px
@@ -215,7 +215,7 @@ h2
 .stock-exchange-menu
   height: 100px
   width: 100%
-  background: $c-active-element
+  background: $c-light-element
   position: absolute
   z-index: 2
   top: 63px

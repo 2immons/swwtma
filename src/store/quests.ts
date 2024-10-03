@@ -15,6 +15,15 @@ export const questsStore = defineStore("quests", {
           {
             title: "Tasks 2",
           },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
         ],
       },
       {
@@ -26,6 +35,24 @@ export const questsStore = defineStore("quests", {
           },
           {
             title: "Tasks 2",
+          },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
           },
         ],
       },
@@ -39,12 +66,39 @@ export const questsStore = defineStore("quests", {
           {
             title: "Tasks 2",
           },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
         ],
       },
       {
         id: 3,
         title: "Test 2",
         tasks: [
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
           {
             title: "Task 1",
           },
@@ -68,6 +122,15 @@ export const questsStore = defineStore("quests", {
           },
           {
             title: "Tasks 33",
+          },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
           },
         ],
       },

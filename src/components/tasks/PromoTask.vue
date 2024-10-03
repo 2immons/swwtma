@@ -38,7 +38,7 @@ const joinQuest = async (quest: any) => {
   height: fit-content
   max-height: 250px
   color: $c-main-text
-  background: $c-element-bg
+  background: $c-dark-element
   padding: 15px
   border-radius: 31px
   gap: 15px
@@ -59,7 +59,7 @@ const joinQuest = async (quest: any) => {
   button
     padding: 7px 25px
     width: fit-content
-    background: $c-active-element
+    background: $c-light-element
     box-shadow: $c-element-shadow
     align-self: end
     border-radius: 25px

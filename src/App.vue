@@ -11,8 +11,8 @@ const { t } = useI18n({ useScope: "global" });
 <style lang="sass">
 @import "src/styles/variables"
 @font-face
-  font-family: 'Poppins'
-  src: url('./assets/fonts/Poppins-Regular.ttf') format('truetype')
+  font-family: 'Manrope'
+  src: url('./assets/fonts/Manrope-Regular.ttf') format('truetype')
   font-weight: normal
   font-style: normal
 
@@ -49,7 +49,7 @@ html::before
   display: none
 
 #app
-  font-family: "Poppins", sans-serif
+  font-family: "Manrope", sans-serif
   line-height: 1.1
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
@@ -63,7 +63,7 @@ h2
   font-size: 45px
 
 .container
-  width: 85%
+  width: 92%
   height: inherit
   max-width: 414px
   display: inherit

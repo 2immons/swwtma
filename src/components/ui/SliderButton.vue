@@ -27,7 +27,7 @@ const moveSlider = () => {
   width: 80px
   height: 35px
   border-radius: 21px
-  background: $c-element-bg
+  background: $c-dark-element
   box-shadow: $c-element-shadow
 
   .left, .right
