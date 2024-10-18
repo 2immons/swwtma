@@ -9,11 +9,11 @@ const username = ref("Loading...");
 const firstName = ref("Loading...");
 const lastName = ref("Loading...");
 
-const validateData = async (queryResult) => {
+const validateData = async (webData) => {
   try {
     const response = await axios.post(
       "http://localhost:8000/validate",
-      queryResult,
+      webData,
       {
         headers: {
           "Content-Type": "application/json",
@@ -40,24 +40,34 @@ onMounted(async () => {
       username.value = user.username || "No username";
       firstName.value = user.first_name || "Unknown";
       lastName.value = user.last_name || "Unknown";
-      locale.value = user.language_code || "en";
 
-      const queryString = window.Telegram.WebApp.initData;
-      const queryDataObj = Object.fromEntries(new URLSearchParams(queryString));
+      const tgInitData = window.Telegram.WebApp.initData;
 
-      if (queryDataObj.user) {
-        queryDataObj.user = JSON.parse(queryDataObj.user);
-      }
+      const params = new URLSearchParams(tgInitData);
 
-      const queryResult = {
-        web_app_data: queryDataObj,
+      const authDate = params.get("auth_date");
+      const hash = params.get("hash");
+
+      params.delete("hash");
+
+      const dataCheckString = Array.from(params.entries())
+        .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+        .map(([key, value]) => `${key}=${value}`)
+        .join("\n");
+
+      const validationData = {
+        web_app_data: {
+          data_check_string: dataCheckString,
+          auth_date: authDate,
+          hash: hash,
+        },
       };
-
-      await validateData(queryResult);
+      await validateData(validationData);
     }
   } else {
     console.error("Telegram WebApp API не доступен.");
   }
+  document.addEventListener("click", handleClickOutsideLanguageSettings);
 });
 </script>
 
