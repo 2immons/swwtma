@@ -10,6 +10,8 @@ export const profileStore = defineStore("profile", {
     balance: 40000,
     speed: 0.36,
     remainingMinutes: 60,
+    chatId: "",
+    name: ""
   }),
 
   actions: {
@@ -31,6 +33,9 @@ export const profileStore = defineStore("profile", {
         }
 
         this.balance = response.data.balance;
+        this.speed = response.data.summPower;
+        this.chatId = response.data.chatId;
+        this.name = response.data.name;
         locale.value = response.data.language || "en";
       } catch (error) {
         console.error("Ошибка при запросе профиля пользователя:", error);

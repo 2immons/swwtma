@@ -46,9 +46,11 @@ export const telegramMixin = {
             .join("\n");
 
           return {
-            data_check_string: dataCheckString,
-            hash: receivedHash,
-            auth_date: authDate,
+            web_app_data: {
+              data_check_string: dataCheckString,
+              hash: receivedHash,
+              auth_date: authDate,
+            }
           };
         }
       } else {
