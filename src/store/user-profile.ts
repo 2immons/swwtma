@@ -3,8 +3,6 @@ import axios from "axios";
 import { config } from "./config";
 import { useI18n } from "vue-i18n";
 
-const { t, locale } = useI18n();
-
 export const profileStore = defineStore("profile", {
   state: () => ({
     balance: 40000,
@@ -17,6 +15,8 @@ export const profileStore = defineStore("profile", {
   actions: {
     // getUserProfile получает информацию о профиле пользователя
     async getUserProfile(queryForValidation: any) {
+      const { locale } = useI18n(); // Вызов внутри метода
+
       try {
         const response = await axios.get(
           `${config.backendURL}/api/profile/myProfile`,
@@ -28,7 +28,7 @@ export const profileStore = defineStore("profile", {
         if (response.status !== 200) {
           throw new Error(
             "Не удалось создать обращение. Статус ответа от сервера не 200: " +
-              response.status
+            response.status
           );
         }
 
@@ -36,7 +36,7 @@ export const profileStore = defineStore("profile", {
         this.speed = response.data.summPower;
         this.chatId = response.data.chatId;
         this.name = response.data.name;
-        locale.value = response.data.language || "en";
+        locale.value = response.data.language || "en"; // Установка локали
       } catch (error) {
         console.error("Ошибка при запросе профиля пользователя:", error);
         throw error;

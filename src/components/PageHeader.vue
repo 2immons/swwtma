@@ -13,8 +13,8 @@ const lastName = ref("Loading...");
 const profileStoreInstance = profileStore();
 
 onMounted(async () => {
-  const queryForValidation = telegramMixin.methods.generateQueryForValidation();
   if (window.Telegram && window.Telegram.WebApp) {
+    const queryForValidation = telegramMixin.methods.generateQueryForValidation();
     window.Telegram.WebApp.ready();
 
     const user = window.Telegram.WebApp.initDataUnsafe?.user;
