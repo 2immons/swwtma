@@ -7,12 +7,12 @@
             <p>Your Balance</p>
             <div class="amount">
               <img src="../assets/svg/stats/green-coin.svg" alt="" />
-              400 000
+              {{ balance }}
             </div>
           </div>
           <div class="stats__item stats__item--mining-speed">
             <p>Mining Speed</p>
-            <div class="amount">+ 0.34/h</div>
+            <div class="amount">+ {{ speed }}/h</div>
           </div>
         </div>
         <div class="mining-progress-wrapper">
@@ -22,7 +22,7 @@
                 <button>Claim</button>
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>2h 30m</p>
+                  <p>{{ remainingTime[0] }}h {{ remainingTime[1] }}m</p>
                 </div>
               </div>
             </div>
@@ -34,7 +34,14 @@
 </template>
 
 <script setup lang="ts">
-// TODO: запросы к серверу для получения статистики (ранг + прогресс, коины, профит)
+import { computed } from "vue";
+import { profileStore } from "@/store/user-profile";
+
+const profileStoreInstance = profileStore();
+
+const speed = computed(() => profileStoreInstance.getSpeed);
+const balance = computed(() => profileStoreInstance.getBalance);
+const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
 </script>
 
 <style scoped lang="sass">

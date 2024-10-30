@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import axios from "axios";
+import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
+import { telegramMixin } from "@/mixins/telegramMixin";
+import { profileStore } from "@/store/user-profile";
 
 const { t, locale } = useI18n();
 
@@ -9,52 +10,24 @@ const username = ref("Loading...");
 const firstName = ref("Loading...");
 const lastName = ref("Loading...");
 
-const validateData = async (queryResult) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:8000/validate",
-      queryResult,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log("Запрос валидации:", response.data);
-  } catch (error) {
-    if (error.response) {
-      console.error("Валидация не пройдена:", error.response.data);
-    } else {
-      console.error("Ошибка запроса:", error.message);
-    }
-  }
-};
+const profileStoreInstance = profileStore();
 
 onMounted(async () => {
+  const queryForValidation = telegramMixin.methods.generateQueryForValidation();
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
 
     const user = window.Telegram.WebApp.initDataUnsafe?.user;
 
     if (user) {
+      // Получаем данные пользователя
       username.value = user.username || "No username";
       firstName.value = user.first_name || "Unknown";
       lastName.value = user.last_name || "Unknown";
       locale.value = user.language_code || "en";
-
-      const queryString = window.Telegram.WebApp.initData;
-      const queryDataObj = Object.fromEntries(new URLSearchParams(queryString));
-
-      if (queryDataObj.user) {
-        queryDataObj.user = JSON.parse(queryDataObj.user);
-      }
-
-      const queryResult = {
-        web_app_data: queryDataObj,
-      };
-
-      await validateData(queryResult);
     }
+
+    await profileStoreInstance.getUserProfile(queryForValidation);
   } else {
     console.error("Telegram WebApp API не доступен.");
   }
