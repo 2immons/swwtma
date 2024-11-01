@@ -6,7 +6,7 @@
   "test": "Test",
   "settings": "Settings",
   "home": "Home",
-  "balance": "Balance",
+  "karma": "Karma",
   "frens": "Frens",
   "tasks": "Tasks",
   "weekly": "Weekly",
@@ -18,5 +18,6 @@
   "yes": "Yes",
   "no": "Cancel",
   "is-sure": "Are you sure?",
-  "mining": "Mining"
+  "mining": "Mining",
+  "invite-friends": "Invite friends"
 }

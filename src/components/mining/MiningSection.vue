@@ -78,7 +78,7 @@ const categoryTitleClass = (index: number) => {
 .quests
   display: flex
   justify-content: center
-  margin: 20px 0
+  margin: 46px 0 20px 0
 .quests-content
   width: 100%
   align-items: center

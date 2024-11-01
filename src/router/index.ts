@@ -17,9 +17,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/SettingsView.vue"),
   },
   {
-    path: "/balance",
-    name: "balance",
-    component: () => import("../views/BalanceView.vue"),
+    path: "/karma",
+    name: "karma",
+    component: () => import("../views/KarmaView.vue"),
   },
   {
     path: "/mining",

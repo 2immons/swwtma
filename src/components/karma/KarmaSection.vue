@@ -5,6 +5,11 @@ import { computed, onMounted, ref } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
 import PromoTask from "@/components/tasks/PromoTask.vue";
 import TasksCategory from "@/components/tasks/TasksCategory.vue";
+import MiningSelect from "@/components/mining/MiningSelect.vue";
+import CardsList from "@/components/mining/CardsList.vue";
+import KarmaList from "@/components/karma/KarmaList.vue";
+
+const miningType = ref()
 
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
@@ -33,11 +38,11 @@ const promoTasks = computed(() => {
   return questsStoreInstance.promoTasks;
 });
 
+const activeCategory = ref(0);
+
 const categories = computed(() => {
   return questsStoreInstance.categories;
 });
-
-const activeCategory = ref(0);
 
 const setActiveCategory = (index: number) => {
   activeCategory.value = index;
@@ -45,8 +50,8 @@ const setActiveCategory = (index: number) => {
 
 const categoryTitleClass = (index: number) => {
   return index === activeCategory.value
-    ? "category-title--active"
-    : "category-title";
+      ? "category-title--active"
+      : "category-title";
 };
 </script>
 
@@ -55,43 +60,9 @@ const categoryTitleClass = (index: number) => {
     <div class="container">
       <div class="quests-content">
         <h2>
-          {{ t("tasks") }} <span>{{ availableTasks }}</span>
+          {{ t("karma") }}
         </h2>
-        <div class="promo-tasks-wrapper no-scrollbar" v-if="isPromoQuests">
-          <div class="promo-tasks">
-            <TaskItem
-              v-for="(item, index) in promoTasks"
-              :key="index"
-              :quest="item"
-            />
-          </div>
-        </div>
-        <h3 v-if="isWeeklyQuests">
-          {{ t("weekly") }}
-        </h3>
-        <div class="regular-tasks">
-          <div class="nav-wrapper">
-            <div class="nav no-scrollbar">
-              <button
-                v-for="(category, index) in categories"
-                :key="index"
-                :class="categoryTitleClass(index)"
-                @click="setActiveCategory(index)"
-              >
-                {{ category.title }}
-              </button>
-            </div>
-            <div class="nav-overlay nav-overlay--left" v-if="!isAtStart"></div>
-            <div class="nav-overlay nav-overlay--right" v-if="!isAtEnd"></div>
-          </div>
-          <TasksCategory
-            class="tasks-nav"
-            v-for="(category, index) in categories"
-            :key="index"
-            :category="category"
-            :activeCategory="activeCategory"
-          />
-        </div>
+        <KarmaList />
       </div>
     </div>
   </section>

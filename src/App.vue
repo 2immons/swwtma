@@ -60,7 +60,7 @@ html::before
   min-height: 100vh
 
 h2
-  font-size: 45px
+  font-size: 27px
 
 .container
   width: 92%

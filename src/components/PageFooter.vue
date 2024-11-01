@@ -16,15 +16,15 @@
             <p>{{ t("home") }}</p>
           </div>
         </router-link>
-        <router-link to="/balance" class="nav-item">
+        <router-link to="/karma" class="nav-item">
           <img
-            v-if="$route.path !== '/balance'"
+            v-if="$route.path !== '/karma'"
             src="../assets/svg/footer/balance.svg"
             alt=""
           />
-          <div v-if="$route.path === '/balance'" class="active-nav-item">
+          <div v-if="$route.path === '/karma'" class="active-nav-item">
             <img src="../assets/svg/footer/balance.svg" alt="" />
-            <p>{{ t("balance") }}</p>
+            <p>{{ t("karma") }}</p>
           </div>
         </router-link>
         <router-link to="/tasks" class="nav-item">
