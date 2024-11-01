@@ -205,6 +205,7 @@ const handleClickOutsideLanguageSettings = (event) => {
   display: flex
   justify-content: center
   margin: 20px 0
+  color: white
 .settings-content
   width: 100%
   align-items: center

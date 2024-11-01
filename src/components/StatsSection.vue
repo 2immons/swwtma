@@ -66,18 +66,24 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
 
   .stats__item
     border-radius: 20px
+    background: $c-dark-element
     display: flex
     flex-direction: column
     justify-content: center
     align-items: start
     gap: 20px
+    color: white
     padding: 22px 20px
     height: 100px
+    backdrop-filter: blur(2.5px)
+    border: 0.4px solid
+    border-image: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))
 
     p
       line-height: 16.4px
       font-size: 12px
       font-weight: 600
+      opacity: 50%
 
     .amount
       display: flex
@@ -88,21 +94,11 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
       font-weight: 600
       line-height: 36px
 
-  .stats__item--balance
-    background: $c-light-element
-
-  .stats__item--mining-speed
-    color: $c-light-element
-    background: $c-dark-element
-    border: 0.4px solid $c-dark-element
-    border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(74.98deg, rgba(255, 255, 255, 0) 49.14%, rgba(255, 255, 255, 0.1) 114.42%), linear-gradient(264.49deg, rgba(255, 255, 255, 0) 59.15%, rgba(255, 255, 255, 0.4) 116.29%)
-    backdrop-filter: blur(2.5px)
-
 .mining-progress-wrapper
   background: $c-dark-element
   border-radius: 20px
-  border: 0.4px solid $c-dark-element
-  border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(74.98deg, rgba(255, 255, 255, 0) 49.14%, rgba(255, 255, 255, 0.1) 114.42%), linear-gradient(264.49deg, rgba(255, 255, 255, 0) 59.15%, rgba(255, 255, 255, 0.4) 116.29%)
+  border: 0.4px solid
+  border-image: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))
   height: 71px
   display: flex
   align-items: center
@@ -123,7 +119,7 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
   left: 0
   border-radius: 50px
   width: 80%
-  background: linear-gradient(0deg, #22F07D, #22F07D), linear-gradient(85.46deg, rgba(34, 240, 125, 0) 58.93%, rgba(255, 255, 255, 0.5) 110.51%), linear-gradient(269.7deg, rgba(26, 48, 36, 0) 49.71%, rgba(26, 47, 36, 0.7) 115.77%)
+  background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(90deg, rgba(78, 78, 78, 0.3) 0%, rgba(78, 78, 78, 0) 100%)
   height: 100%
   display: flex
   justify-content: start
@@ -144,9 +140,9 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
 
   button
     width: 75px
-    background: $c-bg
+    background: $c-btn
     border-radius: 31.64px
-    color: white
+    color: $c-main-text
     font-weight: 700
     font-size: 10px
 

@@ -57,7 +57,7 @@ header
   display: flex
   flex-direction: column
   align-items: center
-  color: $c-light-element
+  color: $c-light-text
 
 .header-content
   position: relative

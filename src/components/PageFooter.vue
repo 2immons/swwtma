@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <footer>
@@ -37,11 +38,22 @@
             <p>{{ t("tasks") }}</p>
           </div>
         </router-link>
-        <router-link to="/friends" class="nav-item">
+        <router-link to="/mining" class="nav-item">
           <img
-            v-if="$route.path !== '/friends'"
+            v-if="$route.path !== '/mining'"
             src="../assets/svg/footer/frens.svg"
             alt=""
+          />
+          <div v-if="$route.path === '/mining'" class="active-nav-item">
+            <img src="../assets/svg/footer/frens.svg" alt="" />
+            <p>{{ t("mining") }}</p>
+          </div>
+        </router-link>
+        <router-link to="/friends" class="nav-item">
+          <img
+              v-if="$route.path !== '/friends'"
+              src="../assets/svg/footer/frens.svg"
+              alt=""
           />
           <div v-if="$route.path === '/friends'" class="active-nav-item">
             <img src="../assets/svg/footer/frens.svg" alt="" />
@@ -103,9 +115,9 @@ hr
   overflow: hidden
   padding: 20px 30px
   height: 64px
-  background: $c-light-element
+  background: $c-footer-active-element
   p
-    color: $c-main-text
+    color: $c-light-text
     font-size: 14px
     white-space: nowrap
     line-height: 19px
