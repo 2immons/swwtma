@@ -10,7 +10,7 @@ import CardsList from "@/components/mining/CardsList.vue";
 import FriendsStats from "@/components/friends/FriendsStats.vue";
 import FriendsList from "@/components/friends/FriendsList.vue";
 
-const miningType = ref()
+const miningType = ref();
 
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
@@ -51,8 +51,8 @@ const setActiveCategory = (index: number) => {
 
 const categoryTitleClass = (index: number) => {
   return index === activeCategory.value
-      ? "category-title--active"
-      : "category-title";
+    ? "category-title--active"
+    : "category-title";
 };
 </script>
 

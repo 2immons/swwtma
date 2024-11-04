@@ -67,6 +67,7 @@ h2
   height: inherit
   max-width: 414px
   display: inherit
+  flex-direction: inherit
   justify-content: inherit
   align-items: inherit
 

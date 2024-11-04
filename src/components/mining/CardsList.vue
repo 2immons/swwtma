@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps, defineEmits, computed, ref} from "vue";
+import { defineProps, defineEmits, computed, ref } from "vue";
 import CardItem from "@/components/mining/CardItem.vue";
 import { cardsStore } from "@/store/cards";
 
@@ -19,16 +19,11 @@ interface Category {
   title: string;
   tasks: Task[];
 }
-
 </script>
 
 <template>
   <div class="task-list">
-    <CardItem
-        v-for="(card, index) in cards"
-        :key="index"
-        :card="card"
-    />
+    <CardItem v-for="(card, index) in cards" :key="index" :card="card" />
   </div>
 </template>
 

@@ -14,8 +14,12 @@ const profileStoreInstance = profileStore();
 
 onMounted(async () => {
   if (window.Telegram && window.Telegram.WebApp) {
-    const queryForValidation = telegramMixin.methods.generateQueryForValidation();
     window.Telegram.WebApp.ready();
+
+    const queryForValidation =
+      telegramMixin.methods.generateQueryForValidation();
+
+    window.Telegram.WebApp.expand();
 
     const user = window.Telegram.WebApp.initDataUnsafe?.user;
 
@@ -27,7 +31,7 @@ onMounted(async () => {
       locale.value = user.language_code || "en";
     }
 
-    await profileStoreInstance.getUserProfile(queryForValidation);
+    // await profileStoreInstance.getUserProfile(queryForValidation);
   } else {
     console.error("Telegram WebApp API не доступен.");
   }

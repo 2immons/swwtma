@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {defineProps, defineEmits, computed, ref} from "vue";
+import { defineProps, defineEmits, computed, ref } from "vue";
 import CardItem from "@/components/mining/CardItem.vue";
-import {friendsStore} from "@/store/friends";
+import { friendsStore } from "@/store/friends";
 import FriendItem from "@/components/friends/FriendItem.vue";
 
 const friendsStoreInstance = friendsStore();
@@ -20,7 +20,6 @@ interface Category {
   title: string;
   tasks: Task[];
 }
-
 </script>
 
 <template>
@@ -57,7 +56,7 @@ interface Category {
 
   button
     background: $c-light-element
-    border: 0.4px solid #22F07D33
+    border: 1px solid $c-border-color
     padding: 10px 15px
     height: 30px
     display: flex

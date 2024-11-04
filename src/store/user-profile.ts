@@ -9,7 +9,7 @@ export const profileStore = defineStore("profile", {
     speed: 0.36,
     remainingMinutes: 60,
     chatId: "",
-    name: ""
+    name: "",
   }),
 
   actions: {
@@ -28,7 +28,7 @@ export const profileStore = defineStore("profile", {
         if (response.status !== 200) {
           throw new Error(
             "Не удалось создать обращение. Статус ответа от сервера не 200: " +
-            response.status
+              response.status
           );
         }
 

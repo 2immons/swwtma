@@ -5,10 +5,11 @@
   "profit-per-day": "Доходность:",
   "test": "Тест",
   "settings": "Настройки",
-  "home": "Главная",
-  "karma": "Карма",
-  "frens": "Друзья",
-  "tasks": "Задания",
+  "home": "Home",
+  "karma": "Karma",
+  "frens": "Frens",
+  "tasks": "Tasks",
+  "mining": "Mining",
   "weekly": "Еженедельные",
   "become-referal": "Стать рефералом",
   "delete-account": "Удалить аккаунт",
@@ -18,6 +19,5 @@
   "yes": "Да",
   "no": "Отмена",
   "is-sure": "Вы уверены?",
-  "mining": "Майнинг",
   "invite-friends": "Пригласить друзей"
 }

@@ -47,8 +47,7 @@ const joinQuest = async (quest: any) => {
   height: fit-content
   color: $c-light-text
   background: #FFFFFF05
-  border: 0.4px solid
-  border-image-source: linear-gradient(0deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)), linear-gradient(74.98deg, rgba(255, 255, 255, 0) 49.14%, rgba(255, 255, 255, 0.03) 114.42%), linear-gradient(264.49deg, rgba(255, 255, 255, 0) 59.15%, rgba(255, 255, 255, 0.04) 116.29%)
+  border: 1px solid $c-border-color
   border-radius: 18px
   gap: 15px
 
@@ -102,7 +101,7 @@ const joinQuest = async (quest: any) => {
     font-size: 10px
     font-weight: 800
     color: white
-    border: 0.4px solid #FFFFFF40
+    border: 1px solid $c-border-color
     backdrop-filter: blur(2px)
     gap: 3px
 </style>

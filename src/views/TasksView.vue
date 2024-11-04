@@ -15,5 +15,5 @@ import TasksSection from "@/components/tasks/TasksSection.vue";
 <style lang="sass">
 main
   flex: 1
-  margin-bottom: 43px
+  margin-bottom: 120px
 </style>

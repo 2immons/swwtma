@@ -76,8 +76,10 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
     padding: 22px 20px
     height: 100px
     backdrop-filter: blur(2.5px)
-    border: 0.4px solid
-    border-image: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))
+    border: 1px solid $c-border-color
+
+
+
 
     p
       line-height: 16.4px
@@ -97,8 +99,7 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
 .mining-progress-wrapper
   background: $c-dark-element
   border-radius: 20px
-  border: 0.4px solid
-  border-image: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2))
+  border: 1px solid $c-border-color
   height: 71px
   display: flex
   align-items: center
@@ -111,9 +112,7 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
   border-radius: 50px
   position: relative
   overflow: hidden
-  border: 0.4px solid #0000002B
-  border-image-source: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(131.53deg, rgba(0, 0, 0, 0) 41.75%, rgba(0, 0, 0, 0.3) 124.06%)
-
+  border: 1px solid $c-border-color
 .progress
   position: absolute
   left: 0
@@ -129,7 +128,7 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
   background: #1517154D
   border-radius: 50px
   height: 25px
-  border: 0.4px solid #1517154D
+  border: 1px solid $c-border-color
   gap: 8px
   display: flex
   margin-left: 3px

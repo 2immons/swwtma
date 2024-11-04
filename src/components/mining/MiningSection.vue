@@ -8,7 +8,7 @@ import TasksCategory from "@/components/tasks/TasksCategory.vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
 import CardsList from "@/components/mining/CardsList.vue";
 
-const miningType = ref()
+const miningType = ref();
 
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
@@ -49,8 +49,8 @@ const setActiveCategory = (index: number) => {
 
 const categoryTitleClass = (index: number) => {
   return index === activeCategory.value
-      ? "category-title--active"
-      : "category-title";
+    ? "category-title--active"
+    : "category-title";
 };
 </script>
 
@@ -62,8 +62,8 @@ const categoryTitleClass = (index: number) => {
           {{ t("mining") }}
         </h2>
         <MiningSelect
-            :modelValue="miningType"
-            @update:modelValue="miningType = $event"
+          :modelValue="miningType"
+          @update:modelValue="miningType = $event"
         />
         <div class="regular-tasks">
           <CardsList />

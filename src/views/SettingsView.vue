@@ -15,4 +15,5 @@ import SettingsSection from "@/components/SettingsSection.vue";
 <style lang="sass">
 main
   flex: 1
+  margin-bottom: 120px
 </style>

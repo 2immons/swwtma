@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
-import {cardsStore} from "@/store/cards";
+import { defineProps, ref } from "vue";
+import { cardsStore } from "@/store/cards";
+import CardPopup from "@/components/mining/CardPopup.vue";
+import MiningSelect from "@/components/mining/MiningSelect.vue";
+
 const cardsStoreInstance = cardsStore();
 
 const props = defineProps<{
@@ -10,33 +13,43 @@ const props = defineProps<{
     level: number;
   };
 }>();
+
+const isCardPopupVisible = ref(false)
+
+const openCardPopup = () => {
+  isCardPopupVisible.value = true
+}
 </script>
 
 <template>
   <div class="card-item">
+    <CardPopup
+      :card="card"
+      :modelValue="isCardPopupVisible"
+      @update:modelValue="isCardPopupVisible = $event"
+    />
     <div class="photo">
-      <img src="../../assets/images/card.png" alt="">
+      <img src="../../assets/images/card.png" alt="" />
     </div>
     <div class="content">
       <div class="info">
         <p class="card__title">{{ card.title }}</p>
         <p class="card__boost">
           Boost: + 0.5
-          <img src="../../assets/svg/stats/green-coin.svg" alt="">
-          h</p>
-        <button>
-          +
-        </button>
+          <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+          h
+        </p>
+        <button @click="openCardPopup">+</button>
       </div>
-      <hr>
+      <hr />
       <div class="footer">
         <div class="footer__item footer__item--level">
-          <img src="../../assets/svg/stats/green-coin.svg" alt="">
+          <img src="../../assets/svg/stats/green-coin.svg" alt="" />
           <p>Lvl {{ card.level }}</p>
         </div>
         <div class="footer__item footer__item--price">
           <p>Price: {{ card.price }}</p>
-          <img src="../../assets/svg/stats/green-coin.svg" alt="">
+          <img src="../../assets/svg/stats/green-coin.svg" alt="" />
         </div>
       </div>
     </div>
@@ -45,6 +58,7 @@ const props = defineProps<{
 
 <style scoped lang="sass">
 @import "../../styles/variables"
+
 .card-item
   overflow: hidden
   display: flex
@@ -55,8 +69,7 @@ const props = defineProps<{
   height: fit-content
   color: $c-light-text
   background: #FFFFFF05
-  border: 0.4px solid
-  border-image-source: linear-gradient(0deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)), linear-gradient(74.98deg, rgba(255, 255, 255, 0) 49.14%, rgba(255, 255, 255, 0.03) 114.42%), linear-gradient(264.49deg, rgba(255, 255, 255, 0) 59.15%, rgba(255, 255, 255, 0.04) 116.29%)
+  border: 1px solid $c-border-color
   border-radius: 18px
 
 .photo
@@ -66,7 +79,7 @@ const props = defineProps<{
   width: 100%
   height: 161px
   overflow: hidden
-  border: 0.4px solid #FFFFFF40
+  border: 1px solid $c-border-color
   border-radius: 18px
 
 .content
@@ -111,7 +124,7 @@ const props = defineProps<{
       background: #FFFFFF1A
 
   hr
-    border: 0.4px solid #F7F7F71A
+    border: 1px solid $c-border-color
     width: 100%
 
   .footer
@@ -127,7 +140,7 @@ const props = defineProps<{
       display: flex
       align-items: center
       gap: 3px
-      border: 0.4px solid #FFFFFF40
+      border: 1px solid $c-border-color
 
       p
         font-size: 9px

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, computed, ref, watchEffect, onMounted } from "vue";
+import {
+  defineProps,
+  defineEmits,
+  computed,
+  ref,
+  watchEffect,
+  onMounted,
+} from "vue";
 import CardItem from "@/components/mining/CardItem.vue";
 import { karmaStore } from "@/store/karma";
 import KarmaItem from "@/components/karma/KarmaItem.vue";
@@ -29,7 +36,7 @@ interface Category {
 
 const setActiveCategory = (index: number) => {
   activeCategory.value = index;
-  karmaCards.value = categories.value[activeCategory.value].tasks
+  karmaCards.value = categories.value[activeCategory.value].tasks;
 };
 
 const categoryTitleClass = (index: number) => {
@@ -130,7 +137,7 @@ onMounted(() => {
   opacity: 100%
 
   padding: 9.5px 16px
-  border: 0.4px solid #FFFFFF99
+  border: 1px solid $c-border-color
   border-radius: 100px
 
 .list

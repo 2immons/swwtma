@@ -50,7 +50,7 @@ export const telegramMixin = {
               data_check_string: dataCheckString,
               hash: receivedHash,
               auth_date: authDate,
-            }
+            },
           };
         }
       } else {

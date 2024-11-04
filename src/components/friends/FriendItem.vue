@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
-import {friendsStore} from "@/store/friends";
+import { friendsStore } from "@/store/friends";
 const friendsStoreInstance = friendsStore();
 
 const props = defineProps<{
@@ -18,18 +18,18 @@ const props = defineProps<{
     <div class="info">
       <p class="name">{{ friend.name }}</p>
       <p class="boost">
-        <img src="../../assets/svg/stats/green-coin.svg" alt="">
+        <img src="../../assets/svg/stats/green-coin.svg" alt="" />
         + {{ friend.boost }}
       </p>
     </div>
     <div class="total">
       <p>
         + {{ friend.total }}
-        <img src="../../assets/svg/stats/green-coin.svg" alt="">
+        <img src="../../assets/svg/stats/green-coin.svg" alt="" />
       </p>
     </div>
   </div>
-  <hr>
+  <hr />
 </template>
 
 <style scoped lang="sass">

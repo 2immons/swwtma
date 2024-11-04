@@ -114,7 +114,7 @@ h2, h3
   color: $c-light-text
 
   span
-    font-size: 30px
+    font-size: 14px
     margin-left: 8px
 .quests-list
   display: flex

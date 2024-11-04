@@ -1,11 +1,16 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <footer>
     <div class="container">
       <nav class="footer-content">
-        <router-link to="/" class="nav-item">
+        <router-link
+          to="/"
+          :class="{
+            'ac-nav-item': $route.path === '/',
+            'nav-item': $route.path !== '/',
+          }"
+        >
           <img
             v-if="$route.path !== '/'"
             src="../assets/svg/footer/home.svg"
@@ -16,7 +21,13 @@
             <p>{{ t("home") }}</p>
           </div>
         </router-link>
-        <router-link to="/karma" class="nav-item">
+        <router-link
+          to="/karma"
+          :class="{
+            'ac-nav-item': $route.path === '/karma',
+            'nav-item': $route.path !== '/karma',
+          }"
+        >
           <img
             v-if="$route.path !== '/karma'"
             src="../assets/svg/footer/balance.svg"
@@ -27,7 +38,13 @@
             <p>{{ t("karma") }}</p>
           </div>
         </router-link>
-        <router-link to="/tasks" class="nav-item">
+        <router-link
+          to="/tasks"
+          :class="{
+            'ac-nav-item': $route.path === '/tasks',
+            'nav-item': $route.path !== '/tasks',
+          }"
+        >
           <img
             v-if="$route.path !== '/tasks'"
             src="../assets/svg/footer/tasks.svg"
@@ -38,7 +55,13 @@
             <p>{{ t("tasks") }}</p>
           </div>
         </router-link>
-        <router-link to="/mining" class="nav-item">
+        <router-link
+          to="/mining"
+          :class="{
+            'ac-nav-item': $route.path === '/mining',
+            'nav-item': $route.path !== '/mining',
+          }"
+        >
           <img
             v-if="$route.path !== '/mining'"
             src="../assets/svg/footer/frens.svg"
@@ -49,11 +72,17 @@
             <p>{{ t("mining") }}</p>
           </div>
         </router-link>
-        <router-link to="/friends" class="nav-item">
+        <router-link
+          to="/friends"
+          :class="{
+            'ac-nav-item': $route.path === '/friends',
+            'nav-item': $route.path !== '/friends',
+          }"
+        >
           <img
-              v-if="$route.path !== '/friends'"
-              src="../assets/svg/footer/frens.svg"
-              alt=""
+            v-if="$route.path !== '/friends'"
+            src="../assets/svg/footer/frens.svg"
+            alt=""
           />
           <div v-if="$route.path === '/friends'" class="active-nav-item">
             <img src="../assets/svg/footer/frens.svg" alt="" />
@@ -69,8 +98,8 @@
 @import "src/styles/variables"
 footer
   font-family: "Poppins", sans-serif
-  bottom: 43.5px
-  position: sticky
+  bottom: 40px
+  position: fixed
   height: 76px
   width: 100%
   text-align: center
@@ -90,8 +119,8 @@ hr
   width: 100%
   height: 76px
   align-items: center
-  background: $c-dark-element
-  border: 0.4px solid $c-dark-element
+  background: $c-footer
+  border: 1px solid $c-border-color
   border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(86.36deg, rgba(255, 255, 255, 0) 49.24%, rgba(255, 255, 255, 0.2) 99.34%), linear-gradient(266.98deg, rgba(255, 255, 255, 0) 39.05%, rgba(255, 255, 255, 0.3) 119.18%)
   border-radius: 83px
   padding: 6px
@@ -102,12 +131,27 @@ hr
   align-items: center
   justify-content: center
   gap: 3px
+
   img
     width: 24px
     height: 24px
     color: $c-light-text
+
+.nav-item:first-child
+  margin-left: 20px
+
+.nav-item:last-child
+  margin-right: 20px
+
+.ac-nav-item
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  gap: 3px
 .active-nav-item
   border-radius: 70px
+  border: 0.4px solid #00000066
   display: flex
   justify-content: center
   align-items: center
@@ -122,4 +166,8 @@ hr
     white-space: nowrap
     line-height: 19px
     font-weight: 700
+  img
+    width: 24px
+    height: 24px
+    color: $c-light-text
 </style>

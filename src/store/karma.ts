@@ -18,7 +18,7 @@ export const karmaStore = defineStore("karma", {
             title: "Title",
             price: 10,
             level: 20,
-          }
+          },
         ],
       },
       {

@@ -7,15 +7,20 @@ const questsStoreInstance = questsStore();
 <template>
   <div class="stats-wrapper">
     <div class="earned-coins-box">
+      <img src="../../assets/svg/bg-vectors.svg" alt="" class="bg-image">
+      <div class="bg-ellepsis"></div>
       <p>You Earned:</p>
       <div class="coins">
-        <p>+ 6399 <img src="../../assets/svg/stats/green-coin.svg" alt=""></p>
+        <p>+ 6399 <img src="../../assets/svg/stats/green-coin.svg" alt="" /></p>
         <button>Claim</button>
       </div>
     </div>
     <div class="help">
       <p class="info">?</p>
-      <p>Lorem ipsum dolor sit amet consectetur. Aliquam laoreet non pulvinar arcu pharetra cursus gravida nulla</p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur. Aliquam laoreet non pulvinar
+        arcu pharetra cursus gravida nulla
+      </p>
     </div>
   </div>
 </template>
@@ -31,6 +36,7 @@ const questsStoreInstance = questsStore();
   gap: 20px
 
 .earned-coins-box
+  position: relative
   background: #FFFFFF0D
   height: 120px
   width: 100%
@@ -39,10 +45,30 @@ const questsStoreInstance = questsStore();
   align-items: start
   justify-content: space-between
   padding: 22px
-  border: 0.4px solid
-  border-image-source: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(74.98deg, rgba(255, 255, 255, 0) 49.14%, rgba(255, 255, 255, 0.1) 114.42%), linear-gradient(264.49deg, rgba(255, 255, 255, 0) 59.15%, rgba(255, 255, 255, 0.4) 116.29%)
+  border: 1px solid $c-border-color
   opacity: 100%
   border-radius: 20px
+  overflow: hidden
+
+  .bg-image
+    position: absolute
+    right: 0
+    top: 0
+    width: 100%
+    height: 100%
+    opacity: 20%
+
+  .bg-ellepsis
+    position: absolute
+    height: 140px
+    width: 140px
+    top: -70px
+    right: -30px
+    border-radius: 50%
+    background: white
+    overflow: hidden
+    opacity: 40%
+    filter: blur(80px)
 
   p
     font-size: 10px
@@ -65,7 +91,7 @@ const questsStoreInstance = questsStore();
       border-radius: 50px
       color: $c-main-text
       background: white
-      border: 0.4px solid #22F07D33
+      border: 1px solid $c-border-color
       font-weight: 700
 
 .help
@@ -84,9 +110,8 @@ const questsStoreInstance = questsStore();
     display: flex
     justify-content: center
     align-items: center
-    border: 0.4px solid #FFFFFF
+    border: 1px solid $c-border-color
     padding: 6px
     border-radius: 50px
     font-size: 10px
-
 </style>
