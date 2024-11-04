@@ -100,6 +100,7 @@ footer
   font-family: "Poppins", sans-serif
   bottom: 40px
   position: fixed
+  z-index: 100
   height: 76px
   width: 100%
   text-align: center

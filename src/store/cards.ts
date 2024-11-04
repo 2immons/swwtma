@@ -9,31 +9,37 @@ export const cardsStore = defineStore("cards", {
         title: "Title",
         price: 10,
         level: 20,
+        isActive: false,
       },
       {
         title: "Title",
         price: 10,
         level: 20,
+        isActive: true,
       },
       {
         title: "Title",
         price: 10,
         level: 20,
+        isActive: false,
       },
       {
         title: "Title",
         price: 10,
         level: 20,
+        isActive: true,
       },
       {
         title: "Title",
         price: 10,
         level: 20,
+        isActive: true,
       },
       {
         title: "Title",
         price: 10,
         level: 20,
+        isActive: true,
       },
     ],
 

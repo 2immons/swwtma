@@ -11,6 +11,7 @@ const props = defineProps<{
     title: string;
     price: number;
     level: number;
+    isActive: boolean;
   };
 }>();
 
@@ -23,6 +24,10 @@ const openCardPopup = () => {
 
 <template>
   <div class="card-item">
+    <div class="card-item--inactive" v-if="card.isActive === false">
+      <img src="../../assets/svg/tasks/locked-card.svg" alt="">
+      <img src="../../assets/svg/bg-vectors--big.svg" alt="" class="bg-vectors">
+    </div>
     <CardPopup
       :card="card"
       :modelValue="isCardPopupVisible"
@@ -58,8 +63,8 @@ const openCardPopup = () => {
 
 <style scoped lang="sass">
 @import "../../styles/variables"
-
 .card-item
+  position: relative
   overflow: hidden
   display: flex
   flex-direction: column
@@ -68,9 +73,27 @@ const openCardPopup = () => {
   width: 100%
   height: fit-content
   color: $c-light-text
-  background: #FFFFFF05
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), linear-gradient(180deg, rgba(21, 23, 21, 0) 49.96%, rgba(34, 240, 125, 0.26) 112.51%)
   border: 1px solid $c-border-color
   border-radius: 18px
+
+.card-item--inactive
+  background: #151715AD
+  border: 1px solid #57575747
+  width: 100%
+  height: 100%
+  position: absolute
+  display: flex
+  justify-content: center
+  align-items: center
+  z-index: 10
+  backdrop-filter: blur(4px)
+
+  .bg-vectors
+    position: absolute
+    right: 0
+    top: 0
+    height: 100%
 
 .photo
   display: flex

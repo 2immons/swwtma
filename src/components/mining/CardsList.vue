@@ -12,6 +12,9 @@ const cards = computed(() => {
 // Определение интерфейсов
 interface Task {
   title: string;
+  price: number;
+  level: number;
+  isActive: boolean;
 }
 
 interface Category {
