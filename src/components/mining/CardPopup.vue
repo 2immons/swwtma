@@ -73,8 +73,8 @@ const closePopup = () => {
   position: absolute
   background: transparent
   z-index: 5
-  top: 70px
-  height: calc(100vh - 70px)
+  top: 53px
+  height: calc(100vh - 53px)
   width: 100%
   border-radius: 40px
 
@@ -87,7 +87,7 @@ const closePopup = () => {
   left: 0
   bottom: 0
   height: 100vh
-  z-index: 10
+  z-index: 200
 
 .content
   background: $c-bg
