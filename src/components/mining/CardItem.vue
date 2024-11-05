@@ -26,7 +26,7 @@ const openCardPopup = () => {
   <div class="card-item">
     <div class="card-item--inactive" v-if="card.isActive === false">
       <img src="../../assets/svg/tasks/locked-card.svg" alt="">
-      <img src="../../assets/svg/bg-vectors--big.svg" alt="" class="bg-vectors">
+      <img src="../../assets/svg/bg-vectors-card.svg" alt="" class="bg-vectors">
     </div>
     <CardPopup
       :card="card"

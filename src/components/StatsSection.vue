@@ -47,6 +47,7 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
 <style scoped lang="sass">
 @import "src/styles/variables"
 .stats-section
+  z-index: 200
   display: flex
   justify-content: center
   align-items: center
