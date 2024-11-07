@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, defineProps } from "vue";
+import { defineEmits, defineProps, onMounted, onBeforeUnmount, ref } from "vue";
 import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/PageHeader.vue";
 const cardsStoreInstance = cardsStore();
@@ -23,35 +23,33 @@ const closePopup = () => {
 <template>
   <Transition>
     <div class="card-popup" v-if="modelValue" @click="closePopup">
-      <div class="bg" @click="closePopup">
-        <div class="content" @click.stop>
-          <div class="container">
-            <div class="photo">
-              <img src="../../assets/images/card-popup.png" alt="">
-              <button @click="closePopup">
-                +
-              </button>
-            </div>
-            <div class="info">
-              <h3>{{ card.title }}</h3>
-              <p>Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et amet consequat molestie. Fames in non vitae in</p>
-            </div>
-            <hr />
-            <div class="stats">
-              <p class="level">
-                <img src="../../assets/svg/stats/green-coin--light-green.svg" alt="">
-                Lvl {{ card.level }}
-              </p>
-              <p class="income">
-                Прибыль в час: + {{ card.price }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="">
-              </p>
-            </div>
-            <button class="buy-btn">
-              Купить за {{ card.price }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="">
+      <div class="content" @click.stop>
+        <div class="container">
+          <div class="photo">
+            <img src="../../assets/images/card-popup.png" alt="">
+            <button @click="closePopup">
+              +
             </button>
           </div>
+          <div class="info">
+            <h3>{{ card.title }}</h3>
+            <p>Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et amet consequat molestie. Fames in non vitae in</p>
+          </div>
+          <hr />
+          <div class="stats">
+            <p class="level">
+              <img src="../../assets/svg/stats/green-coin--light-green.svg" alt="">
+              Lvl {{ card.level }}
+            </p>
+            <p class="income">
+              Прибыль в час: + {{ card.price }}
+              <img src="../../assets/svg/stats/green-coin.svg" alt="">
+            </p>
+          </div>
+          <button class="buy-btn">
+            Купить за {{ card.price }}
+            <img src="../../assets/svg/stats/green-coin--black.svg" alt="">
+          </button>
         </div>
       </div>
     </div>
@@ -69,34 +67,28 @@ const closePopup = () => {
 .v-leave-to
   transform: translateY(100%)
 
-.bg
-  position: absolute
-  background: transparent
-  z-index: 5
-  top: 53px
-  height: calc(100vh - 53px)
-  width: 100%
-  border-radius: 40px
-
 .card-popup
   display: flex
   width: 100%
   flex-direction: column
   align-items: center
-  position: fixed
   left: 0
-  bottom: 0
-  height: 100vh
   z-index: 200
+  height: 100vh
+  position: fixed
+  top: 0
 
 .content
+  position: absolute
+  bottom: 0
   background: $c-bg
   margin-top: 60px
+  padding-bottom: 15%
   display: flex
   width: 100%
   flex-direction: column
   align-items: center
-  height: 100%
+  height: fit-content
   box-shadow: 0px -6px 54px 0px #FFFFFFB2
   border-top-right-radius: 40px
   border-top-left-radius: 40px
@@ -180,6 +172,10 @@ hr
   padding: 22px
   border: 1px solid $c-border-color
   border-radius: 100px
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 4px
 
   img
     height: 14px

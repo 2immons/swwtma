@@ -121,19 +121,6 @@ const handleClickOutsideLanguageSettings = (event) => {
       <div class="settings-content">
         <h2>Settings</h2>
         <div class="settings-list">
-          <button class="language-wrapper" @click="toggleLanguageSettings">
-            <img src="../assets/svg/header/lang.svg" alt="Language" />
-          </button>
-          <div class="language-settings" v-if="languageSettingsIsVisible">
-            <button @click="setLanguage('en')" class="language-btn">
-              <img src="../assets/svg/flags/eng.svg" alt="English language" />
-              {{ t("english") }}
-            </button>
-            <button @click="setLanguage('ru')" class="language-btn">
-              <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
-              {{ t("russian") }}
-            </button>
-          </div>
           <div
             class="settings-wrapper stock-exchange-wrapper"
             @click="toggleStockExchangeMenu"
@@ -183,14 +170,27 @@ const handleClickOutsideLanguageSettings = (event) => {
             </div>
           </div>
           <div class="sliders">
-            <div class="slider-setting">
+            <div class="settings-wrapper">
               <h3>{{ t("vibration") }}</h3>
               <SliderButton />
             </div>
-            <div class="slider-setting">
+            <div class="settings-wrapper">
               <h3>{{ t("coin-animation") }}</h3>
               <SliderButton />
             </div>
+          </div>
+          <button class="language-wrapper" @click="toggleLanguageSettings">
+            <img src="../assets/svg/header/lang.svg" alt="Language" />
+          </button>
+          <div class="language-settings" v-if="languageSettingsIsVisible">
+            <button @click="setLanguage('en')" class="language-btn">
+              <img src="../assets/svg/flags/eng.svg" alt="English language" />
+              {{ t("english") }}
+            </button>
+            <button @click="setLanguage('ru')" class="language-btn">
+              <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
+              {{ t("russian") }}
+            </button>
           </div>
         </div>
         <p class="politic">Политика конфедициальности</p>
@@ -204,34 +204,42 @@ const handleClickOutsideLanguageSettings = (event) => {
 .settings
   display: flex
   justify-content: center
-  margin: 20px 0
+  margin: 46px 0 20px 0
   color: white
 .settings-content
   width: 100%
-  align-items: center
+  align-items: start
   flex-direction: column
   display: flex
 h2
+  font-weight: 600
   color: $c-light-text
+  margin-bottom: 46px
 
 .settings-list
   margin-top: 10px
   width: 100%
   display: flex
   flex-direction: column
-  gap: 8px
+  gap: 10px
 
 .settings-wrapper
-  background: $c-dark-element
+  background: rgba(255, 255, 255, 0.02)
   box-shadow: $c-element-shadow
-  border-radius: 12px
+  border: 1px solid $c-border-color
+  border-radius: 18px
   display: flex
   flex-direction: column
-  height: 60px
+  width: 100%
   align-items: start
   justify-content: center
-  padding: 0 15px
+  padding: 17px 20px
   position: relative
+  gap: 12px
+
+  h3
+    font-size: 14px
+    font-weight: 400
 
   img
     position: absolute
@@ -239,6 +247,10 @@ h2
 
 .stock-exchange-wrapper, .account-wrapper
   position: relative
+
+  p
+    opacity: 60%
+    font-size: 12px
 
 .confirm-modal
   width: 100%
@@ -294,10 +306,10 @@ h2
     color: $c-main-text
 
 .sliders
+  justify-content: space-between
   margin-top: 10px
   width: 100%
   display: flex
-  flex-direction: column
   gap: 10px
   color: $c-light-text
 
@@ -309,6 +321,9 @@ h2
 
 
 .politic
+  opacity: 60%
+  font-size: 12px
+  align-self: start
   margin-top: 30px
   color: $c-light-text
 

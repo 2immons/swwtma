@@ -1,23 +1,34 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
-import { questsStore } from "@/store/quests";
-const questsStoreInstance = questsStore();
+import { defineProps, defineEmits, ref } from "vue";
+import { eventBus } from "@/event_bus/eventBus";
 
 const props = defineProps<{
   modelValue: boolean;
 }>();
 const emit = defineEmits(["update:modelValue"]);
 
-const selectType = () => {
-  emit("update:modelValue", false);
+const selectType = (type: string) => {
+  if (type === 'mining') {
+    gameBtnClass.value = "inactive-btn"
+    miningBtnClass.value = "active-btn"
+    eventBus.emit("toggleFooterVisibility", true)
+  }
+  else if (type === 'game') {
+    miningBtnClass.value = "inactive-btn"
+    gameBtnClass.value = "active-btn"
+    eventBus.emit("toggleFooterVisibility", false)
+  }
+  emit("update:modelValue", type);
 };
+
+const miningBtnClass = ref("active-btn")
+const gameBtnClass = ref("inactive-btn")
 </script>
 
 <template>
   <div class="select-wrapper">
-    <button class="active-btn">Mining</button>
-    <button>Games</button>
-    <div class="active-btn-bg"></div>
+    <button :class="miningBtnClass" @click="selectType('mining')">Mining</button>
+    <button :class="gameBtnClass" @click="selectType('game')">Games</button>
   </div>
 </template>
 
@@ -41,12 +52,7 @@ const selectType = () => {
   .active-btn
     color: $c-main-text
     opacity: 100%
-
-  .active-btn-bg
-    inset: 0
-    position: absolute
-    height: 100%
-    width: 50%
-    border-radius: 70px
     background: #FBFBFB
+    width: 100%
+    border-radius: 70px
 </style>

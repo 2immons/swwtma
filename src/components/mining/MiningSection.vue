@@ -7,8 +7,9 @@ import PromoTask from "@/components/tasks/PromoTask.vue";
 import TasksCategory from "@/components/tasks/TasksCategory.vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
 import CardsList from "@/components/mining/CardsList.vue";
+import GameSection from "@/components/game/GameSection.vue";
 
-const miningType = ref();
+const miningType = ref('mining');
 
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
@@ -65,8 +66,11 @@ const categoryTitleClass = (index: number) => {
           :modelValue="miningType"
           @update:modelValue="miningType = $event"
         />
-        <div class="regular-tasks">
+        <div class="regular-tasks" v-if="miningType === 'mining'">
           <CardsList />
+        </div>
+        <div class="game" v-if="miningType ==='game'">
+          <GameSection />
         </div>
       </div>
     </div>
@@ -118,6 +122,11 @@ h2, h3
   display: flex
   flex-direction: column
   margin-top: 20px
+
+.game
+  width: 100%
+  margin-top: 20px
+  height: 350px
 
 .nav-wrapper
   position: relative

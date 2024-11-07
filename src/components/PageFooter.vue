@@ -1,7 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
+import { eventBus } from "@/event_bus/eventBus";
+const isFooterVisible = ref(true);
+
+
+onMounted(() => {
+  eventBus.on("toggleFooterVisibility", (visible) => {
+    isFooterVisible.value = visible;
+  });
+});
+
+onUnmounted(() => {
+  eventBus.off("toggleFooterVisibility");
+});
+</script>
 
 <template>
-  <footer>
+  <footer v-if="isFooterVisible">
     <div class="container">
       <nav class="footer-content">
         <router-link
@@ -139,10 +154,10 @@ hr
     color: $c-light-text
 
 .nav-item:first-child
-  margin-left: 20px
+  margin-left: 4%
 
 .nav-item:last-child
-  margin-right: 20px
+  margin-right: 4%
 
 .ac-nav-item
   display: flex

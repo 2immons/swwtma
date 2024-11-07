@@ -23,12 +23,15 @@ const openCardPopup = () => {
 </script>
 
 <template>
-  <div class="card-item">
-    <div class="card-item--inactive" v-if="card.isActive === false">
-      <img src="../../assets/svg/tasks/locked-card.svg" alt="">
+  <div class="card-item" @click="openCardPopup">
+    <div class="card-item--inactive" v-if="card.isActive === false" @click.stop>
+      <button @click="openCardPopup">
+        <img src="../../assets/svg/tasks/locked-card.svg" alt="">
+      </button>
       <img src="../../assets/svg/bg-vectors-card.svg" alt="" class="bg-vectors">
     </div>
     <CardPopup
+      @click.stop
       :card="card"
       :modelValue="isCardPopupVisible"
       @update:modelValue="isCardPopupVisible = $event"
@@ -44,7 +47,7 @@ const openCardPopup = () => {
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
           h
         </p>
-        <button @click="openCardPopup">+</button>
+<!--        <button @click="openCardPopup">+</button>-->
       </div>
       <hr />
       <div class="footer">
@@ -88,6 +91,9 @@ const openCardPopup = () => {
   align-items: center
   z-index: 10
   backdrop-filter: blur(4px)
+
+  button
+    z-index: 12
 
   .bg-vectors
     position: absolute
