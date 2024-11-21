@@ -58,6 +58,7 @@ html::before
   display: flex
   flex-direction: column
   min-height: 100vh
+  position: relative
 
 h2
   font-size: 27px

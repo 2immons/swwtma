@@ -5,16 +5,20 @@ import { telegramMixin } from "@/mixins/telegramMixin";
 import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
 const isHeaderBackBtnVisible = ref(false);
-
+const isSettingsButtonDisabled = ref(false);
 
 onMounted(() => {
   eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
     isHeaderBackBtnVisible.value = visible;
   });
+  eventBus.on("disableSettingButton", (visible) => {
+    isSettingsButtonDisabled.value = visible;
+  });
 });
 
 onUnmounted(() => {
   eventBus.off("toggleHeaderBackBtnVisibility");
+  eventBus.off("toggleSettingsButton");
 });
 
 const { t, locale } = useI18n();
@@ -68,7 +72,7 @@ const turnOffStatictics = () => {
             <p>{{ firstName }}</p>
           </div>
         </div>
-        <router-link to="/settings" class="settings-wrapper">
+        <router-link to="/settings" class="settings-wrapper" v-if="!isSettingsButtonDisabled">
           <img src="../assets/svg/header/settings.svg" alt="Настройки" />
         </router-link>
       </div>
@@ -84,6 +88,7 @@ header
   flex-direction: column
   align-items: center
   color: $c-light-text
+  z-index: 10
 
 .header-content
   position: relative
