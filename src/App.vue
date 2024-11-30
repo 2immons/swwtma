@@ -48,6 +48,15 @@ html::before
 .no-scrollbar::-webkit-scrollbar
   display: none
 
+textarea,
+input.text,
+input[type="text"],
+input[type="button"],
+input[type="submit"]
+  -webkit-appearance: none
+  border-radius: 0
+
+
 #app
   font-family: "Manrope", sans-serif
   line-height: 1.1
@@ -77,6 +86,8 @@ button
   padding: 0
   border: none
   cursor: pointer
+  -webkit-appearance: none
+  color: $c-main-text !important
 
 a
   color: inherit

@@ -79,7 +79,7 @@ const closePopup = () => {
   top: 0
 
 .content
-  position: absolute
+  position: fixed
   bottom: 0
   background: $c-bg
   margin-top: 60px
@@ -114,6 +114,7 @@ const closePopup = () => {
     font-size: 60px
     line-height: 84px
     background: transparent
+    color: $c-main-text
 
 .info
   margin-top: 26px
@@ -176,6 +177,7 @@ hr
   align-items: center
   justify-content: center
   gap: 4px
+  color: $c-main-text
 
   img
     height: 14px

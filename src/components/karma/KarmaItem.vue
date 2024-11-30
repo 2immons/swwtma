@@ -161,6 +161,7 @@ const props = defineProps<{
       padding: 9px 15px
       border: 1px solid $c-border-color
       border-radius: 100px
+      color: $c-main-text
 
       img
         height: 11px

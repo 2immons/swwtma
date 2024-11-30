@@ -6,7 +6,6 @@
           <div class="stats__item stats__item--balance">
             <p>Your Balance</p>
             <div class="amount">
-              <img src="../assets/svg/stats/green-coin.svg" alt="" />
               {{ balance }}
             </div>
           </div>
