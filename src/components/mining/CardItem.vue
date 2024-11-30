@@ -44,7 +44,7 @@ const openCardPopup = () => {
         <p class="card__title">{{ card.title }}</p>
         <p class="card__boost">
           Boost: + 0.5
-          <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+          <img src="../../assets/svg/stats/green-coin--light-green.svg" alt="" />
           h
         </p>
 <!--        <button @click="openCardPopup">+</button>-->

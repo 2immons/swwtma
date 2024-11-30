@@ -45,11 +45,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/karma'"
-            src="../assets/svg/footer/balance.svg"
+            src="../assets/svg/footer/karma.svg"
             alt=""
           />
           <div v-if="$route.path === '/karma'" class="active-nav-item">
-            <img src="../assets/svg/footer/balance.svg" alt="" />
+            <img src="../assets/svg/footer/karma.svg" alt="" />
             <p>{{ t("karma") }}</p>
           </div>
         </router-link>
@@ -79,11 +79,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/mining'"
-            src="../assets/svg/footer/frens.svg"
+            src="../assets/svg/footer/mining.svg"
             alt=""
           />
           <div v-if="$route.path === '/mining'" class="active-nav-item">
-            <img src="../assets/svg/footer/frens.svg" alt="" />
+            <img src="../assets/svg/footer/mining.svg" alt="" />
             <p>{{ t("mining") }}</p>
           </div>
         </router-link>

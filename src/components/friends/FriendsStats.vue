@@ -56,7 +56,7 @@ const questsStoreInstance = questsStore();
     top: 0
     width: 100%
     height: 100%
-    opacity: 20%
+    opacity: 0.2
 
   .bg-ellepsis
     position: absolute
@@ -67,8 +67,10 @@ const questsStoreInstance = questsStore();
     border-radius: 50%
     background: white
     overflow: hidden
-    opacity: 40%
+    opacity: 0.4
     filter: blur(80px)
+    -webkit-filter: blur(80px)
+    will-change: filter
 
   p
     font-size: 10px

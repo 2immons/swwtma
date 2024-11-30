@@ -24,7 +24,7 @@ onMounted(() => {
 
 const availableTasks = ref(10);
 
-const isPromoQuests = ref(false);
+const isPromoQuests = ref(true);
 const isWeeklyQuests = ref(false);
 
 const questsStoreInstance = questsStore();
@@ -57,15 +57,7 @@ const categoryTitleClass = (index: number) => {
         <h2>
           {{ t("tasks") }} <span>{{ availableTasks }}</span>
         </h2>
-        <div class="promo-tasks-wrapper no-scrollbar" v-if="isPromoQuests">
-          <div class="promo-tasks">
-            <TaskItem
-              v-for="(item, index) in promoTasks"
-              :key="index"
-              :quest="item"
-            />
-          </div>
-        </div>
+        <PromoTask v-if="isPromoQuests" />
         <h3 v-if="isWeeklyQuests">
           {{ t("weekly") }}
         </h3>
