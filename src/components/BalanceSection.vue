@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
+import { telegramMixin } from "@/mixins/telegramMixin";
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { profileStore } from "@/store/user-profile";
 
 const isStockExchangeMenuVisible = ref(false);
 const isConfirmModalVisible = ref(false);
@@ -54,6 +56,7 @@ const handleClickOutside = (event: any) => {
 
 onMounted(async () => {
   document.addEventListener("click", handleClickOutside);
+
 });
 
 onBeforeUnmount(() => {

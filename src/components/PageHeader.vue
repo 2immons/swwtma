@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
-import { telegramMixin } from "@/mixins/telegramMixin";
 import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
 const isHeaderBackBtnVisible = ref(false);
@@ -27,14 +26,9 @@ const username = ref("Loading...");
 const firstName = ref("Loading...");
 const lastName = ref("Loading...");
 
-const profileStoreInstance = profileStore();
-
 onMounted(async () => {
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
-
-    const queryForValidation =
-      telegramMixin.methods.generateQueryForValidation();
 
     window.Telegram.WebApp.expand();
 
@@ -47,8 +41,6 @@ onMounted(async () => {
       lastName.value = user.last_name || "Unknown";
       locale.value = user.language_code || "en";
     }
-
-    // await profileStoreInstance.getUserProfile(queryForValidation);
   } else {
     console.error("Telegram WebApp API не доступен.");
   }

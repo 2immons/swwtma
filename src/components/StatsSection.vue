@@ -16,12 +16,21 @@
         </div>
         <div class="mining-progress-wrapper">
           <div class="mining-progress-bar">
-            <div class="progress">
+            <div class="progress" :style="{ width: progressWidth }" v-if="processStatus === 'active'">
               <div class="interface">
-                <button>Claim</button>
+                <button @click="claimProcessReward">Claim</button>
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>{{ remainingTime[0] }}h {{ remainingTime[1] }}m</p>
+                  <p>{{ hours }}h {{ minutes }}m</p>
+                </div>
+              </div>
+            </div>
+            <div class="progress" v-if="processStatus === 'closed'">
+              <div class="interface">
+                <button @click="claimProcessReward" :class="claimButtonClass">Claim</button>
+                <div class="time">
+                  <img src="../assets/svg/stats/time.svg" alt="" />
+                  <p>{{ hours }}h {{ minutes }}m</p>
                 </div>
               </div>
             </div>
@@ -33,14 +42,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import {computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
+import { telegramMixin } from "@/mixins/telegramMixin";
 
 const profileStoreInstance = profileStore();
 
 const speed = computed(() => profileStoreInstance.getSpeed);
 const balance = computed(() => profileStoreInstance.getBalance);
-const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
+const processStatus = computed(() => profileStoreInstance.getStatus);
+
+const claimButtonClass = computed(() => {
+  return processStatus.value === "active" ? "claim-button--active" : "claim-button"
+});
+
+const remainingMinutes = computed(() => profileStoreInstance.getRemainingTime);
+
+const progressWidth = computed(() => {
+  return String(remainingMinutes.value / (60 * 4) * 100) + '%';
+});
+
+const hours = ref(Math.floor(remainingMinutes.value / 60));
+const minutes = ref(remainingMinutes.value % 60);
+
+const claimProcessReward = () => {
+  // await profileStoreInstance.claimProcessReward();
+}
+
+onMounted(async () => {
+  const profileStoreInstance = profileStore();
+  const queryForValidation = telegramMixin.methods.generateQueryForValidation();
+  // await profileStoreInstance.getUserProfile(queryForValidation);
+})
 </script>
 
 <style scoped lang="sass">
@@ -117,12 +150,12 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
   position: absolute
   left: 0
   border-radius: 50px
-  width: 80%
   background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(90deg, rgba(78, 78, 78, 0.3) 0%, rgba(78, 78, 78, 0) 100%)
   height: 100%
   display: flex
   justify-content: start
   align-items: center
+  width: 100%
 
 .interface
   background: #1517154D
@@ -137,13 +170,16 @@ const remainingTime = computed(() => profileStoreInstance.getRemainingTime);
   text-align: center
   font-size: 10px
 
-  button
+  .claim-button, .claim-button--active
     width: 75px
     background: $c-btn
     border-radius: 31.64px
     color: $c-main-text
     font-weight: 700
     font-size: 10px
+
+  .claim-button--active
+    background: rgba(220, 220, 220, 0.7)
 
   .time
     display: flex

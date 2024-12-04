@@ -6,7 +6,7 @@
           <img src="../assets/svg/bg-earth-vectors.svg" alt="">
         </div>
         <div class="circle"></div>
-        <img class="earth" src="../assets/svg/earth.svg" alt="">
+        <img class="earth" src="../assets/images/earth.png" alt="">
       </div>
     </div>
   </section>
@@ -53,11 +53,9 @@ const openWorldPopulationStats = () => {
       object-position: center -208px
 
   .earth
-    width: 320px
+    width: 232px
     position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
+    top: 20%
     z-index: 10
 
   .circle

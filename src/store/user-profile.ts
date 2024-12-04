@@ -7,9 +7,12 @@ export const profileStore = defineStore("profile", {
   state: () => ({
     balance: 40000,
     speed: 0.36,
-    remainingMinutes: 60,
     chatId: "",
     name: "",
+    process: {
+      status: "closed", // active, closed
+      remainingMinutes: 122,
+    }
   }),
 
   actions: {
@@ -32,11 +35,19 @@ export const profileStore = defineStore("profile", {
           );
         }
 
+        const process = response.data.process;
+
+        this.process.status = process.status;
+
+        if (this.process.status === "ACTIVE") {
+          this.process.remainingMinutes = process.remainingMinutes
+        }
+
         this.balance = response.data.balance;
         this.speed = response.data.summPower;
         this.chatId = response.data.chatId;
         this.name = response.data.name;
-        locale.value = response.data.language || "en"; // Установка локали
+        locale.value = response.data.language || "en";
       } catch (error) {
         console.error("Ошибка при запросе профиля пользователя:", error);
         throw error;
@@ -52,10 +63,10 @@ export const profileStore = defineStore("profile", {
       return state.speed.toFixed(2);
     },
     getRemainingTime(state) {
-      const hours = Math.floor(state.remainingMinutes / 60);
-      const minutes = state.remainingMinutes % 60;
-
-      return [hours, minutes];
+      return state.process.remainingMinutes;
+    },
+    getStatus(state) {
+      return state.process.status;
     },
   },
 });
