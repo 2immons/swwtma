@@ -14,14 +14,21 @@ const questsStoreInstance = questsStore();
 <template>
   <div class="promo-task-wrapper">
     <div class="promo-task-box">
-      <img src="../../assets/svg/bg-vectores--promo-task.svg" alt="" class="bg-image">
+      <img
+        src="../../assets/svg/bg-vectores--promo-task.svg"
+        alt=""
+        class="bg-image"
+      />
       <div class="bg-ellepsis"></div>
       <p class="title">Recycle</p>
       <p class="name">Recycle 5 battaries.</p>
       <div class="footer">
         <button>Continue</button>
         <div class="benefits">
-          <p>+ 699 <img src="../../assets/svg/stats/green-coin--small.svg" alt=""></p>
+          <p>
+            + 699
+            <img src="../../assets/svg/stats/green-coin--small.svg" alt="" />
+          </p>
         </div>
         <div class="loader-wrapper">
           <div class="loader"></div>

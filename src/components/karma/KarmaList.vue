@@ -10,6 +10,9 @@ import {
 import CardItem from "@/components/mining/CardItem.vue";
 import { karmaStore } from "@/store/karma";
 import KarmaItem from "@/components/karma/KarmaItem.vue";
+import recyclingIcon from "@/assets/svg/karma/recycling.svg";
+import medIcon from "@/assets/svg/karma/med.svg";
+import animalsIcon from "@/assets/svg/karma/animals.svg";
 
 const karmaStoreInstance = karmaStore();
 
@@ -19,24 +22,37 @@ const categories = computed(() => {
   return karmaStoreInstance.categories;
 });
 
-const karmaCards = ref<Task[]>(categories.value[activeCategory.value].tasks);
+const karmaCards = ref<KarmaCard[]>(
+  categories.value[activeCategory.value].karmaCards
+);
 
 // Определение интерфейсов
-interface Task {
+interface KarmaCard {
   title: string;
   price: number;
   level: number;
+  isActive: boolean;
 }
 
 interface Category {
   id: number;
   title: string;
-  tasks: Task[];
+  karmaCards: KarmaCard[];
 }
+
+const srcToCategoryIcons = ref([
+  recyclingIcon,
+  medIcon,
+  animalsIcon,
+  animalsIcon,
+]);
+
+const srcToCategoryIcon = ref(srcToCategoryIcons.value[0]);
 
 const setActiveCategory = (index: number) => {
   activeCategory.value = index;
-  karmaCards.value = categories.value[activeCategory.value].tasks;
+  srcToCategoryIcon.value = srcToCategoryIcons.value[index];
+  karmaCards.value = categories.value[activeCategory.value].karmaCards;
 };
 
 const categoryTitleClass = (index: number) => {
@@ -72,6 +88,11 @@ onMounted(() => {
           :class="categoryTitleClass(index)"
           @click="setActiveCategory(index)"
         >
+          <img
+            :src="srcToCategoryIcon"
+            alt=""
+            v-if="category.id === activeCategory"
+          />
           {{ category.title }}
         </button>
       </div>
@@ -128,21 +149,27 @@ onMounted(() => {
   white-space: nowrap
   color: white
   opacity: 50%
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 10px
   line-height: 24.6px
+  z-index: 10
 
   padding: 0 5px 0 0
 
 .category-title--active
-  font-weight: 700
+  font-weight: 500
   opacity: 100%
 
-  padding: 9.5px 16px
-  border: 1px solid $c-border-color
+  padding: 9.5px 10px
+  border: 1px solid #FFFFFF99
   border-radius: 100px
 
 .list
   margin-top: 24px
   display: grid
   grid-template-columns: 1fr 1fr
-  gap: 10px
+  column-gap: 10px
+  row-gap: 19px
 </style>

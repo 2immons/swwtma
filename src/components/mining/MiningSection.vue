@@ -9,7 +9,7 @@ import MiningSelect from "@/components/mining/MiningSelect.vue";
 import CardsList from "@/components/mining/CardsList.vue";
 import GameSection from "@/components/game/GameSection.vue";
 
-const miningType = ref('mining');
+const miningType = ref("mining");
 
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
@@ -69,7 +69,7 @@ const categoryTitleClass = (index: number) => {
         <div class="regular-tasks" v-if="miningType === 'mining'">
           <CardsList />
         </div>
-        <div class="game" v-if="miningType ==='game'">
+        <div class="game" v-if="miningType === 'game'">
           <GameSection />
         </div>
       </div>

@@ -16,7 +16,11 @@
         </div>
         <div class="mining-progress-wrapper">
           <div class="mining-progress-bar">
-            <div class="progress" :style="{ width: progressWidth }" v-if="processStatus === 'active'">
+            <div
+              class="progress"
+              :style="{ width: progressWidth }"
+              v-if="processStatus === 'active'"
+            >
               <div class="interface">
                 <button @click="claimProcessReward">Claim</button>
                 <div class="time">
@@ -27,7 +31,9 @@
             </div>
             <div class="progress" v-if="processStatus === 'closed'">
               <div class="interface">
-                <button @click="claimProcessReward" :class="claimButtonClass">Claim</button>
+                <button @click="claimProcessReward" :class="claimButtonClass">
+                  Claim
+                </button>
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
                   <p>{{ hours }}h {{ minutes }}m</p>
@@ -42,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
 import { telegramMixin } from "@/mixins/telegramMixin";
 
@@ -53,13 +59,15 @@ const balance = computed(() => profileStoreInstance.getBalance);
 const processStatus = computed(() => profileStoreInstance.getStatus);
 
 const claimButtonClass = computed(() => {
-  return processStatus.value === "active" ? "claim-button--active" : "claim-button"
+  return processStatus.value === "active"
+    ? "claim-button--active"
+    : "claim-button";
 });
 
 const remainingMinutes = computed(() => profileStoreInstance.getRemainingTime);
 
 const progressWidth = computed(() => {
-  return String(remainingMinutes.value / (60 * 4) * 100) + '%';
+  return String((remainingMinutes.value / (60 * 4)) * 100) + "%";
 });
 
 const hours = ref(Math.floor(remainingMinutes.value / 60));
@@ -67,13 +75,13 @@ const minutes = ref(remainingMinutes.value % 60);
 
 const claimProcessReward = () => {
   // await profileStoreInstance.claimProcessReward();
-}
+};
 
 onMounted(async () => {
   const profileStoreInstance = profileStore();
   const queryForValidation = telegramMixin.methods.generateQueryForValidation();
   // await profileStoreInstance.getUserProfile(queryForValidation);
-})
+});
 </script>
 
 <style scoped lang="sass">

@@ -134,6 +134,30 @@ export const questsStore = defineStore("quests", {
           },
         ],
       },
+      {
+        id: 5,
+        title: "Test 35",
+        tasks: [
+          {
+            title: "Task 23",
+          },
+          {
+            title: "Tasks 21",
+          },
+          {
+            title: "Tasks 33",
+          },
+          {
+            title: "Task 1",
+          },
+          {
+            title: "Tasks 2",
+          },
+          {
+            title: "Tasks 3",
+          },
+        ],
+      },
     ],
     promoTasks: [
       {

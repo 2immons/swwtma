@@ -1,45 +1,92 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { computed, defineProps, ref } from "vue";
 import { cardsStore } from "@/store/cards";
+import CardPopup from "@/components/mining/CardPopup.vue";
+import KarmaPopup from "@/components/karma/KarmaPopup.vue";
 const cardsStoreInstance = cardsStore();
 
 const props = defineProps<{
   karmaCard: {
     title: string;
     price: number;
-    level: number;
+    boost: number;
+    goal: number;
+    raised: number;
+    userDonat: number;
+    isPurchased: boolean;
+    status: string; // "ACTIVE", "CLOSED"
   };
 }>();
+
+const progressWidth = computed(() => {
+  return String((props.karmaCard.raised / props.karmaCard.goal) * 100) + "%";
+});
+
+const isCardPopupVisible = ref(false);
+
+const openCardPopup = () => {
+  isCardPopupVisible.value = true;
+};
 </script>
 
 <template>
   <div class="card-item">
+    <KarmaPopup
+      @click.stop
+      :karmaCard="karmaCard"
+      :modelValue="isCardPopupVisible"
+      @update:modelValue="isCardPopupVisible = $event"
+    />
+    <div class="ellepsis ellepsis--upper" v-if="karmaCard.isPurchased"></div>
+    <div class="ellepsis ellepsis--bottom" v-if="karmaCard.isPurchased"></div>
     <div class="content">
       <div class="photo">
         <img src="../../assets/images/card.png" alt="" />
       </div>
       <div class="info">
         <p class="card__title">{{ karmaCard.title }}</p>
-        <p class="card__boost">
-          Boost: + 0.5
-          <img src="../../assets/svg/stats/green-coin--light-green.svg" alt="" />
-          h
+        <p class="card__boost" v-if="karmaCard.status === 'ACTIVE'">
+          Boost: + {{ karmaCard.boost }}
+          <img
+            src="../../assets/svg/stats/green-coin--light-green.svg"
+            alt=""
+          />
+          / h
+        </p>
+        <p class="card__boost" v-else-if="karmaCard.status === 'CLOSED'">
+          We raised all money!
         </p>
       </div>
       <hr />
       <div class="footer">
         <div class="donation-goal">
           <p>
-            Donation Goal 78383838
-            <img src="../../assets/svg/stats/green-coin.svg" alt="">
+            Donation Goal {{ karmaCard.goal }}
+            <img src="../../assets/svg/stats/green-coin.svg" alt="" />
           </p>
           <div class="donation-bar">
-            <div class="progress"></div>
+            <div class="progress" :style="{ width: progressWidth }"></div>
           </div>
+          <p v-if="karmaCard.isPurchased">
+            Вы вложили: {{ karmaCard.userDonat }}
+            <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+          </p>
         </div>
-        <button class="buy-btn">
-          Купить за {{ karmaCard.price }}
-          <img src="../../assets/svg/stats/green-coin--black.svg" alt="">
+        <button
+          class="buy-btn"
+          v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+          @click="openCardPopup"
+        >
+          Вложить от {{ karmaCard.price }}
+          <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+        </button>
+        <button
+          class="buy-btn"
+          v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+          @click="openCardPopup"
+        >
+          Вложить еще
+          <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
         </button>
       </div>
     </div>
@@ -55,11 +102,28 @@ const props = defineProps<{
   align-items: center
   justify-content: space-between
   width: 100%
-  height: fit-content
+  height: 338px
   color: $c-light-text
   background: #FFFFFF05
   border: 1px solid $c-border-color
   border-radius: 18px
+  position: relative
+
+  .ellepsis
+    position: absolute
+    height: 72px
+    width: 60%
+    background: $c-light-element
+    filter: blur(22px)
+    -webkit-filter: blur(22px)
+    border-radius: 100px
+    opacity: 0.7
+
+  .ellepsis--bottom
+    bottom: -45px
+
+  .ellepsis--upper
+    top: -82px
 
 .content
   display: flex
@@ -87,6 +151,7 @@ const props = defineProps<{
     gap: 12px
     width: 100%
     padding: 10px 0
+    text-align: start
 
     .card__title
       font-size: 14px
@@ -111,7 +176,6 @@ const props = defineProps<{
     flex-direction: column
     justify-content: space-between
     width: 100%
-    padding: 12px 0
 
     .donation-goal
       display: flex
@@ -119,6 +183,8 @@ const props = defineProps<{
       width: 100%
       align-items: start
       gap: 8px
+      margin: 12px 0
+      height: 38px
 
       p
         text-align: start
@@ -145,7 +211,6 @@ const props = defineProps<{
         .progress
           background: $c-light-element
           height: 5px
-          width: 50%
           border-radius: 40px
 
     .buy-btn
@@ -153,15 +218,15 @@ const props = defineProps<{
       align-items: center
       justify-content: center
       gap: 3px
-      margin-top: 20px
       width: 100%
       font-size: 10px
       font-weight: 700
       background: white
-      padding: 9px 15px
+      padding: 9px 0
       border: 1px solid $c-border-color
       border-radius: 100px
       color: $c-main-text
+      z-index: 10
 
       img
         height: 11px

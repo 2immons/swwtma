@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const sliderWrapperClass = ref("slider-wrapper-left")
+const sliderWrapperClass = ref("slider-wrapper-left");
 const sliderClass = ref("left");
 const sliderStatus = ref(false);
 const moveSlider = () => {
   if (sliderClass.value === "left") {
     sliderClass.value = "right";
-    sliderWrapperClass.value = "slider-wrapper-right"
+    sliderWrapperClass.value = "slider-wrapper-right";
     sliderStatus.value = true;
-
   } else {
     sliderClass.value = "left";
-    sliderWrapperClass.value = "slider-wrapper-left"
+    sliderWrapperClass.value = "slider-wrapper-left";
     sliderStatus.value = false;
   }
 };

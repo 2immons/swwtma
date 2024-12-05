@@ -15,20 +15,28 @@ const props = defineProps<{
   };
 }>();
 
-const isCardPopupVisible = ref(false)
+const isCardPopupVisible = ref(false);
 
 const openCardPopup = () => {
-  isCardPopupVisible.value = true
-}
+  isCardPopupVisible.value = true;
+};
 </script>
 
 <template>
   <div class="card-item" @click="openCardPopup">
-    <div class="card-item--inactive" v-if="card.isActive === false" @click.stop>
-      <button @click="openCardPopup">
-        <img src="../../assets/svg/tasks/locked-card.svg" alt="">
+    <div
+      class="card-item--inactive"
+      v-if="!card.isActive"
+      @click="openCardPopup"
+    >
+      <button>
+        <img src="../../assets/svg/tasks/locked-card.svg" alt="" />
       </button>
-      <img src="../../assets/svg/bg-vectors-card.svg" alt="" class="bg-vectors">
+      <img
+        src="../../assets/svg/bg-vectors-card.svg"
+        alt=""
+        class="bg-vectors"
+      />
     </div>
     <CardPopup
       @click.stop
@@ -44,10 +52,13 @@ const openCardPopup = () => {
         <p class="card__title">{{ card.title }}</p>
         <p class="card__boost">
           Boost: + 0.5
-          <img src="../../assets/svg/stats/green-coin--light-green.svg" alt="" />
+          <img
+            src="../../assets/svg/stats/green-coin--light-green.svg"
+            alt=""
+          />
           h
         </p>
-<!--        <button @click="openCardPopup">+</button>-->
+        <!--        <button @click="openCardPopup">+</button>-->
       </div>
       <hr />
       <div class="footer">

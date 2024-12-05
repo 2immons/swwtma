@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 const isFooterVisible = ref(true);
-
 
 onMounted(() => {
   eventBus.on("toggleFooterVisibility", (visible) => {

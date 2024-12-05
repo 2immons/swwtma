@@ -3,10 +3,10 @@
     <div class="container">
       <div class="logo-wrapper" @click="openWorldPopulationStats">
         <div class="background">
-          <img src="../assets/svg/bg-earth-vectors.svg" alt="">
+          <img src="../assets/svg/bg-earth-vectors.svg" alt="" />
         </div>
         <div class="circle"></div>
-        <img class="earth" src="../assets/images/earth.png" alt="">
+        <img class="earth" src="../assets/images/earth.png" alt="" />
       </div>
     </div>
   </section>
@@ -16,9 +16,8 @@
 import { eventBus } from "@/event_bus/eventBus";
 
 const openWorldPopulationStats = () => {
-  eventBus.emit("toggleWorldStatictics", true)
-}
-
+  eventBus.emit("toggleWorldStatictics", true);
+};
 </script>
 
 <style scoped lang="sass">
@@ -71,5 +70,4 @@ const openWorldPopulationStats = () => {
 
     transform: translate(-50%, -50%)
     z-index: 10
-
 </style>

@@ -7,207 +7,170 @@ export const karmaStore = defineStore("karma", {
     categories: [
       {
         id: 0,
-        title: "Social",
-        tasks: [
+        title: "Recycle",
+        karmaCards: [
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            userDonat: 0,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            userDonat: 12,
+            isPurchased: true,
+            status: "ACTIVE",
+          },
+          {
+            title: "Title",
+            price: 10,
+            boost: 10,
+            goal: 1000,
+            raised: 1000,
+            userDonat: 12,
+            isPurchased: true,
+            status: "CLOSED",
           },
         ],
       },
       {
         id: 1,
-        title: "Network",
-        tasks: [
+        title: "Medicine",
+        karmaCards: [
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: true,
+            status: "ACTIVE",
           },
         ],
       },
       {
         id: 2,
-        title: "Test 1",
-        tasks: [
+        title: "Animals",
+        karmaCards: [
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
         ],
       },
       {
         id: 3,
-        title: "Test 2",
-        tasks: [
+        title: "Charity",
+        karmaCards: [
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
           {
             title: "Title",
             price: 10,
-            level: 20,
-          },
-        ],
-      },
-      {
-        id: 4,
-        title: "Test 33",
-        tasks: [
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
+            boost: 10,
+            goal: 1000,
+            raised: 100,
+            isPurchased: false,
+            status: "ACTIVE",
           },
         ],
-      },
-      {
-        id: 5,
-        title: "Test 33",
-        tasks: [
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-        ],
-      },
-      {
-        id: 6,
-        title: "Test 33",
-        tasks: [
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-          {
-            title: "Title",
-            price: 10,
-            level: 20,
-          },
-        ],
-      },
-    ],
-
-    promoTasks: [
-      {
-        title: "Quest Name 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 2",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 3",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 4",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
       },
     ],
   }),
 
   actions: {
-    fetchQuests() {
-      return this.promoTasks;
-    },
-
     async joinQuest(quest: any) {
       const response = await axios.post(
         config.backendURL + "/orders/join-quest",

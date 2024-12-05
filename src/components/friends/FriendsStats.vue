@@ -7,7 +7,7 @@ const questsStoreInstance = questsStore();
 <template>
   <div class="stats-wrapper">
     <div class="earned-coins-box">
-      <img src="../../assets/svg/bg-vectors.svg" alt="" class="bg-image">
+      <img src="../../assets/svg/bg-vectors.svg" alt="" class="bg-image" />
       <div class="bg-ellepsis"></div>
       <p>You Earned:</p>
       <div class="coins">

@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="game-bg">
@@ -27,5 +25,4 @@ button
   bottom: 20px
   left: 50%
   transform: translateX(-50%)
-
 </style>

@@ -47,15 +47,19 @@ onMounted(async () => {
 });
 
 const turnOffStatictics = () => {
-  eventBus.emit("toggleWorldStatictics", false)
-}
+  eventBus.emit("toggleWorldStatictics", false);
+};
 </script>
 
 <template>
   <header>
     <div class="container">
       <div class="header-content">
-        <button class="back-btn" v-if="isHeaderBackBtnVisible" @click="turnOffStatictics">
+        <button
+          class="back-btn"
+          v-if="isHeaderBackBtnVisible"
+          @click="turnOffStatictics"
+        >
           <img src=../assets/svg/header/back-btn.svg alt="">
         </button>
         <div class="user">
@@ -64,7 +68,11 @@ const turnOffStatictics = () => {
             <p>{{ firstName }}</p>
           </div>
         </div>
-        <router-link to="/settings" class="settings-wrapper" v-if="!isSettingsButtonDisabled">
+        <router-link
+          to="/settings"
+          class="settings-wrapper"
+          v-if="!isSettingsButtonDisabled"
+        >
           <img src="../assets/svg/header/settings.svg" alt="Настройки" />
         </router-link>
       </div>

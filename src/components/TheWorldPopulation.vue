@@ -3,10 +3,10 @@ import { onBeforeUnmount, onMounted } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 
 onMounted(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", true)
+  eventBus.emit("toggleHeaderBackBtnVisibility", true);
 });
 onBeforeUnmount(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", false)
+  eventBus.emit("toggleHeaderBackBtnVisibility", false);
 });
 </script>
 
@@ -101,5 +101,4 @@ onBeforeUnmount(() => {
         opacity: 60%
         font-size: 12px
         font-weight: 400
-
 </style>

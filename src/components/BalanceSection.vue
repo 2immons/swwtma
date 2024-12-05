@@ -56,7 +56,6 @@ const handleClickOutside = (event: any) => {
 
 onMounted(async () => {
   document.addEventListener("click", handleClickOutside);
-
 });
 
 onBeforeUnmount(() => {

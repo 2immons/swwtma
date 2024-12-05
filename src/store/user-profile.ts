@@ -12,7 +12,7 @@ export const profileStore = defineStore("profile", {
     process: {
       status: "closed", // active, closed
       remainingMinutes: 122,
-    }
+    },
   }),
 
   actions: {
@@ -40,7 +40,7 @@ export const profileStore = defineStore("profile", {
         this.process.status = process.status;
 
         if (this.process.status === "ACTIVE") {
-          this.process.remainingMinutes = process.remainingMinutes
+          this.process.remainingMinutes = process.remainingMinutes;
         }
 
         this.balance = response.data.balance;

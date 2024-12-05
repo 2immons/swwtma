@@ -26,9 +26,7 @@ const toggleStockExchangeMenu = () => {
 
 const toggleLanguageSettings = () => {
   isLanguageSettingsVisible.value = !isLanguageSettingsVisible.value;
-  languageArrow.value = languageArrow.value
-      ? "arrow-icon--open"
-      : "arrow-icon";
+  languageArrow.value = languageArrow.value ? "arrow-icon--open" : "arrow-icon";
 };
 
 const checkAndClose = (
@@ -82,12 +80,12 @@ const handleClickOutside = (event: Event) => {
 
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
-  eventBus.emit("disableSettingButton", true)
+  eventBus.emit("disableSettingButton", true);
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
-  eventBus.emit("disableSettingButton", false)
+  eventBus.emit("disableSettingButton", false);
 });
 
 const stockExchange = ref("Bybit");
@@ -102,7 +100,7 @@ const setLanguage = (language) => {
 
 const accountArrow = ref("arrow-icon");
 const stockExchangeArrow = ref("arrow-icon");
-const languageArrow = ref("arrow-icon")
+const languageArrow = ref("arrow-icon");
 
 onMounted(async () => {
   document.addEventListener("click", handleClickOutsideLanguageSettings);
@@ -142,12 +140,15 @@ const handleClickOutsideLanguageSettings = (event) => {
               <h3>{{ t("change-stock") }}</h3>
               <p>{{ stockExchange }}</p>
               <img
-                  :class="stockExchangeArrow"
-                  src="../assets/svg/nav/arrow-right.svg"
-                  alt=""
+                :class="stockExchangeArrow"
+                src="../assets/svg/nav/arrow-right.svg"
+                alt=""
               />
             </div>
-            <div class="setting-dropdown setting-dropdown--stock" v-if="isStockExchangeMenuVisible">
+            <div
+              class="setting-dropdown setting-dropdown--stock"
+              v-if="isStockExchangeMenuVisible"
+            >
               <button @click="setStock('Bybit')" class="language-btn">
                 <img src="../assets/svg/flags/eng.svg" alt="English language" />
                 Bybit
@@ -159,18 +160,21 @@ const handleClickOutsideLanguageSettings = (event) => {
             </div>
           </div>
           <div
-              class="settings-wrapper language-settings-wrapper"
-              @click="toggleLanguageSettings"
+            class="settings-wrapper language-settings-wrapper"
+            @click="toggleLanguageSettings"
           >
             <div class="setting-header">
               <h3>{{ t("language-settings") }}</h3>
               <img
-                  :class="languageArrow"
-                  src="../assets/svg/nav/arrow-right.svg"
-                  alt=""
+                :class="languageArrow"
+                src="../assets/svg/nav/arrow-right.svg"
+                alt=""
               />
             </div>
-            <div class="setting-dropdown setting-dropdown--language" v-if="isLanguageSettingsVisible">
+            <div
+              class="setting-dropdown setting-dropdown--language"
+              v-if="isLanguageSettingsVisible"
+            >
               <button @click="setLanguage('en')" class="language-btn">
                 <img src="../assets/svg/flags/eng.svg" alt="English language" />
                 {{ t("english") }}
@@ -192,12 +196,15 @@ const handleClickOutsideLanguageSettings = (event) => {
             <div class="setting-header">
               <h3>{{ t("delete-account") }}</h3>
               <img
-                  :class="accountArrow"
-                  src="../assets/svg/nav/arrow-right.svg"
-                  alt=""
+                :class="accountArrow"
+                src="../assets/svg/nav/arrow-right.svg"
+                alt=""
               />
             </div>
-            <div class="setting-dropdown setting-dropdown--confirm" v-if="isConfirmModalVisible">
+            <div
+              class="setting-dropdown setting-dropdown--confirm"
+              v-if="isConfirmModalVisible"
+            >
               <h3>{{ t("is-sure") }}</h3>
               <div class="confirm-modal__buttons">
                 <button class="confirm-btn" @click="deleteAccount">

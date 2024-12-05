@@ -1,5 +1,5 @@
 // eventBus.ts
-import mitt from 'mitt';
+import mitt from "mitt";
 
 type Events = {
   toggleFooterVisibility: boolean;

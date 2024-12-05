@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, onBeforeUnmount, ref } from "vue";
+import {
+  defineEmits,
+  defineProps,
+  onMounted,
+  onBeforeUnmount,
+  ref,
+  computed,
+} from "vue";
 import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/PageHeader.vue";
-const cardsStoreInstance = cardsStore();
+import { karmaStore } from "@/store/karma";
+const karmaStoreInstance = karmaStore();
 
 const props = defineProps<{
-  card: {
+  karmaCard: {
     title: string;
     price: number;
-    level: number;
+    boost: number;
+    goal: number;
+    raised: number;
+    userDonat: number;
+    isPurchased: boolean;
+    status: string; // "ACTIVE", "CLOSED"
   };
   modelValue: boolean;
 }>();
@@ -18,6 +31,10 @@ const emit = defineEmits(["update:modelValue"]);
 const closePopup = () => {
   emit("update:modelValue", false);
 };
+
+const progressWidth = computed(() => {
+  return String((props.karmaCard.raised / props.karmaCard.goal) * 100) + "%";
+});
 </script>
 
 <template>
@@ -30,7 +47,7 @@ const closePopup = () => {
             <button @click="closePopup">+</button>
           </div>
           <div class="info">
-            <h3>{{ card.title }}</h3>
+            <h3>{{ karmaCard.title }}</h3>
             <p>
               Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam
               commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et
@@ -39,20 +56,42 @@ const closePopup = () => {
           </div>
           <hr />
           <div class="stats">
-            <p class="level">
-              <img
-                src="../../assets/svg/stats/green-coin--light-green.svg"
-                alt=""
-              />
-              Lvl {{ card.level }}
-            </p>
-            <p class="income">
-              Прибыль в час: + {{ card.price }}
+            <p>
+              Прибыль: + {{ karmaCard.boost }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+              / h
             </p>
           </div>
-          <button class="buy-btn">
-            Купить за {{ card.price }}
+          <div class="donation-goal">
+            <p>
+              Donation Goal {{ karmaCard.goal }}
+              <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+              (осталось {{ karmaCard.goal - karmaCard.raised }}
+              <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
+            </p>
+            <div class="donation-bar">
+              <div class="progress" :style="{ width: progressWidth }"></div>
+            </div>
+            <p v-if="karmaCard.isPurchased">
+              Вы вложили: {{ karmaCard.userDonat }}
+              <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+            </p>
+            <p v-else-if="!karmaCard.isPurchased">
+              Вы еще ничего не вкладывали
+            </p>
+          </div>
+          <button
+            class="buy-btn"
+            v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+          >
+            Вложить от {{ karmaCard.price }}
+            <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+          </button>
+          <button
+            class="buy-btn"
+            v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+          >
+            Вложить еще
             <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
           </button>
         </div>
@@ -88,7 +127,7 @@ const closePopup = () => {
   bottom: 0
   background: $c-bg
   margin-top: 60px
-  padding-bottom: 10%
+  padding-bottom: 8%
   display: flex
   width: 100%
   flex-direction: column
@@ -142,25 +181,13 @@ hr
 
 .stats
   display: flex
-  align-items: center
-  width: 100%
+  flex-direction: column
   justify-content: start
+  align-items: start
+  width: 100%
   gap: 12px
 
-  .level
-    display: flex
-    background: #22F07D24
-    font-size: 11px
-    padding: 8px 10px
-    color: $c-light-element
-    align-items: center
-    gap: 3px
-    border-radius: 100px
-    border: 1px solid rgba(34, 240, 125, 0.1)
-    img
-      height: 10px
-
-  .income
+  p
     display: flex
     gap: 3px
     align-items: center
@@ -169,13 +196,50 @@ hr
     img
       height: 12px
 
+
+.donation-goal
+  display: flex
+  flex-direction: column
+  width: 100%
+  align-items: start
+  gap: 8px
+  margin: 12px 0
+  height: 38px
+
+  p
+    text-align: start
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 3px
+    opacity: 70%
+    font-size: 11px
+
+    img
+      height: 7px
+
+  .donation-bar
+    display: flex
+    align-items: center
+    height: 4px
+    width: 100%
+    background: #FFFFFF0D
+    border: 1px solid #FFFFFF40
+    backdrop-filter: blur(2px)
+    border-radius: 40px
+
+    .progress
+      background: $c-light-element
+      height: 5px
+      border-radius: 40px
+
 .buy-btn
   margin-top: 20px
   width: 100%
   font-size: 16px
   font-weight: 700
   background: white
-  padding: 22px
+  padding: 15px 0
   border: 1px solid $c-border-color
   border-radius: 100px
   display: flex

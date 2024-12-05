@@ -1,8 +1,8 @@
 <template>
   <PageHeader />
   <main>
-    <StatsSection v-if="!isWorldPopulationVisible"/>
-    <EarthSection v-if="!isWorldPopulationVisible"/>
+    <StatsSection v-if="!isWorldPopulationVisible" />
+    <EarthSection v-if="!isWorldPopulationVisible" />
     <TheWorldPopulation v-if="isWorldPopulationVisible" />
   </main>
   <PageFooter />
@@ -16,8 +16,7 @@ import EarthSection from "@/components/EarthSection.vue";
 import TheWorldPopulation from "@/components/TheWorldPopulation.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
-const isWorldPopulationVisible = ref(false)
-
+const isWorldPopulationVisible = ref(false);
 
 onMounted(() => {
   eventBus.on("toggleWorldStatictics", (visible) => {

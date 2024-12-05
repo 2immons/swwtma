@@ -9,8 +9,6 @@ import MiningSelect from "@/components/mining/MiningSelect.vue";
 import CardsList from "@/components/mining/CardsList.vue";
 import KarmaList from "@/components/karma/KarmaList.vue";
 
-const miningType = ref();
-
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
 
@@ -26,33 +24,6 @@ onMounted(() => {
     navElement.addEventListener("scroll", handleScroll);
   }
 });
-
-const availableTasks = ref(10);
-
-const isPromoQuests = ref(false);
-const isWeeklyQuests = ref(false);
-
-const questsStoreInstance = questsStore();
-
-const promoTasks = computed(() => {
-  return questsStoreInstance.promoTasks;
-});
-
-const activeCategory = ref(0);
-
-const categories = computed(() => {
-  return questsStoreInstance.categories;
-});
-
-const setActiveCategory = (index: number) => {
-  activeCategory.value = index;
-};
-
-const categoryTitleClass = (index: number) => {
-  return index === activeCategory.value
-    ? "category-title--active"
-    : "category-title";
-};
 </script>
 
 <template>

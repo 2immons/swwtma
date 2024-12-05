@@ -8,26 +8,27 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 
 const selectType = (type: string) => {
-  if (type === 'mining') {
-    gameBtnClass.value = "inactive-btn"
-    miningBtnClass.value = "active-btn"
-    eventBus.emit("toggleFooterVisibility", true)
-  }
-  else if (type === 'game') {
-    miningBtnClass.value = "inactive-btn"
-    gameBtnClass.value = "active-btn"
-    eventBus.emit("toggleFooterVisibility", false)
+  if (type === "mining") {
+    gameBtnClass.value = "inactive-btn";
+    miningBtnClass.value = "active-btn";
+    eventBus.emit("toggleFooterVisibility", true);
+  } else if (type === "game") {
+    miningBtnClass.value = "inactive-btn";
+    gameBtnClass.value = "active-btn";
+    eventBus.emit("toggleFooterVisibility", false);
   }
   emit("update:modelValue", type);
 };
 
-const miningBtnClass = ref("active-btn")
-const gameBtnClass = ref("inactive-btn")
+const miningBtnClass = ref("active-btn");
+const gameBtnClass = ref("inactive-btn");
 </script>
 
 <template>
   <div class="select-wrapper">
-    <button :class="miningBtnClass" @click="selectType('mining')">Mining</button>
+    <button :class="miningBtnClass" @click="selectType('mining')">
+      Mining
+    </button>
     <button :class="gameBtnClass" @click="selectType('game')">Games</button>
   </div>
 </template>
