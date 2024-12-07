@@ -2,190 +2,218 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { config } from "./config";
 
+interface Task {
+  id: number;
+  title: string;
+  url: string;
+  status: string;
+}
+
+interface Category {
+  cat_id: number;
+  title: string;
+  tasks: Task[];
+}
+
+interface PromoTask {
+  promo_task_id: number;
+  description: string;
+  title: string,
+  promo_task_status: string,
+  tasks: Task[];
+}
+
 export const questsStore = defineStore("quests", {
-  state: () => ({
+  state: ()  => ({
     categories: [
       {
-        id: 0,
+        cat_id: 0,
         title: "Social",
         tasks: [
           {
+            id: 0,
             title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "VERIFYING"
           },
           {
+            id: 1,
             title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "CLAIMED"
           },
           {
+            id: 2,
             title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "COMPLETED"
           },
           {
+            id: 3,
             title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
           },
           {
+            id: 4,
             title: "Tasks 3",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
           },
         ],
       },
       {
-        id: 1,
-        title: "Network",
+        cat_id: 1,
+        title: "Social 2",
         tasks: [
           {
+            id: 5,
             title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "VERIFYING"
           },
           {
+            id: 6,
             title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "CLAIMED"
           },
           {
+            id: 7,
             title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "COMPLETED"
           },
           {
+            id: 8,
             title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
           },
           {
+            id: 9,
             title: "Tasks 3",
-          },
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
           },
         ],
       },
-      {
-        id: 2,
-        title: "Test 1",
-        tasks: [
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
-          },
-        ],
-      },
-      {
-        id: 3,
-        title: "Test 2",
-        tasks: [
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
-          },
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
-          },
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
-          },
-        ],
-      },
-      {
-        id: 4,
-        title: "Test 33",
-        tasks: [
-          {
-            title: "Task 23",
-          },
-          {
-            title: "Tasks 21",
-          },
-          {
-            title: "Tasks 33",
-          },
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
-          },
-        ],
-      },
-      {
-        id: 5,
-        title: "Test 35",
-        tasks: [
-          {
-            title: "Task 23",
-          },
-          {
-            title: "Tasks 21",
-          },
-          {
-            title: "Tasks 33",
-          },
-          {
-            title: "Task 1",
-          },
-          {
-            title: "Tasks 2",
-          },
-          {
-            title: "Tasks 3",
-          },
-        ],
-      },
-    ],
+    ] as Category[],
+
     promoTasks: [
       {
-        title: "Quest Name 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
+        promo_task_id: 0,
+        title: "Recycle",
+        description: "Recycle 5 batteries.",
+        promo_task_status: "NOT_STARTED",
+        tasks: [
+          {
+            id: 0,
+            title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "VERIFYING"
+          },
+          {
+            id: 1,
+            title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "CLAIMED"
+          },
+          {
+            id: 2,
+            title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "COMPLETED"
+          },
+          {
+            id: 3,
+            title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
+          },
+          {
+            id: 4,
+            title: "Tasks 3",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
+          },
+        ],
       },
-      {
-        title: "Quest Name 2",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 3",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 4",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-    ],
+    ] as PromoTask[],
   }),
 
   actions: {
     fetchQuests() {
       return this.promoTasks;
+    },
+
+    acceptTask(task: any) {
+      const category = this.categories.find((cat) =>
+          cat.tasks.some((t) => t.id === task.id)
+      );
+      if (category) {
+        const taskToUpdate = category.tasks.find((t) => t.id === task.id);
+        if (taskToUpdate) {
+          taskToUpdate.status = "VERIFYING";
+
+          // TODO: заменить ниже на получение ответа от сервера
+          setTimeout(() => {
+            taskToUpdate.status = "COMPLETED";
+          }, 5000);
+        }
+      }
+    },
+
+    acceptPromoTask(task: any) {
+      const promoTask = this.promoTasks.find((pt) =>
+          pt.tasks.some((t) => t.id === task.id)
+      );
+      if (promoTask) {
+        const taskToUpdate = promoTask.tasks.find((t) => t.id === task.id);
+        if (taskToUpdate) {
+          taskToUpdate.status = "VERIFYING";
+          promoTask.promo_task_status = "IN_PROGRESS"
+
+          // TODO: заменить ниже на получение ответа от сервера
+          setTimeout(() => {
+            taskToUpdate.status = "COMPLETED";
+          }, 5000);
+
+          let isAllTasksCompleted = true;
+          promoTask.tasks.forEach((task) => {
+            if (task.status !== "COMPLETED") {
+              isAllTasksCompleted = false
+              return
+            }
+          })
+
+          if (isAllTasksCompleted) {
+            promoTask.promo_task_status = "COMPLETED"
+          }
+        }
+      }
+    },
+
+    claimPromoTaskReward(promoTask: PromoTask) {
+      const foundPromoTask = this.promoTasks.find((pt: PromoTask) => pt.promo_task_id === promoTask.promo_task_id);
+
+      // TODO: вставить здесь запрос на сервер
+
+      if (foundPromoTask) {
+        promoTask.promo_task_status = "CLAIMED"
+      }
+    },
+
+    claimReward(task: any) {
+      const category = this.categories.find((cat) =>
+          cat.tasks.some((t) => t.id === task.id)
+      );
+      if (category) {
+        const taskToUpdate = category.tasks.find((t) => t.id === task.id);
+        if (taskToUpdate) {
+          taskToUpdate.status = "CLAIMED";
+        }
+      }
     },
 
     async joinQuest(quest: any) {

@@ -20,5 +20,8 @@
   "is-sure": "Are you sure?",
   "mining": "Mining",
   "invite-friends": "Invite friends",
-  "language-settings": "Language"
+  "language-settings": "Language",
+  "claim-task": "Claim",
+  "continue-promo-task": "Continue",
+  "promo-tasks": "Promo tasks"
 }

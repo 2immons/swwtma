@@ -31,6 +31,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "friends",
     component: () => import("../views/FriendsView.vue"),
   },
+  {
+    path: '/tasks/promo-task/:promo_task_id',
+    name: 'promo-task',
+    component: () => import("../views/PromoTaskView.vue"),
+    props: true,
+  },
 ];
 
 const router = createRouter({

@@ -1,14 +1,52 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import {computed, defineProps} from "vue";
 import { questsStore } from "@/store/quests";
-const questsStoreInstance = questsStore();
+import {storeToRefs} from "pinia";
+const tasksStoreInstance = questsStore();
 
-// const props = defineProps<{
-//   quest: {
-//     title: "string";
-//     description: "string";
-//   };
-// }>();
+interface Task {
+  id: number;
+  title: string;
+  url: string;
+  status: string, // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
+}
+
+interface PromoTask {
+  promo_task_id: number;
+  description: string;
+  title: string,
+  promo_task_status: string,
+  tasks: Task[];
+}
+
+const props = defineProps<{
+  promoTask: PromoTask
+}>();
+
+const { promoTasks } = storeToRefs(tasksStoreInstance);
+
+const promoTask = computed((): PromoTask => {
+  const foundPromoTask = promoTasks.value.find((currentPromoTask) => currentPromoTask.promo_task_id === props.promoTask.promo_task_id);
+  return foundPromoTask ? foundPromoTask : props.promoTask;
+});
+
+const openPromoTask = async () => {
+  try {
+    //
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+const claimReward = async () => {
+  try {
+    tasksStoreInstance.claimPromoTaskReward(promoTask.value);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
 </script>
 
 <template>
@@ -20,18 +58,25 @@ const questsStoreInstance = questsStore();
         class="bg-image"
       />
       <div class="bg-ellepsis"></div>
-      <p class="title">Recycle</p>
-      <p class="name">Recycle 5 battaries.</p>
+      <p class="title">{{ promoTask.title }}</p>
+      <p class="name">{{ promoTask.description }}</p>
       <div class="footer">
-        <button>Continue</button>
+        <router-link
+            :to="{ name: 'promo-task', params: { promo_task_id: promoTask.promo_task_id } }"
+            v-if="promoTask.promo_task_status !=='CLAIMED' && promoTask.promo_task_status !=='COMPLETED'">
+          <button @click="openPromoTask">
+            {{ promoTask.promo_task_status === 'IN_PROGRESS' ? t("continue-promo-task") : t("accept-task") }}
+          </button>
+        </router-link>
+        <button @click="claimReward" v-else-if="promoTask.promo_task_status ==='COMPLETED'">{{ t("claim-task") }}</button>
+        <div class="claimed-wrapper" v-else-if="promoTask.promo_task_status === 'CLAIMED'">
+          <p>Completed</p>
+        </div>
         <div class="benefits">
           <p>
             + 699
             <img src="../../assets/svg/stats/green-coin--small.svg" alt="" />
           </p>
-        </div>
-        <div class="loader-wrapper">
-          <div class="loader"></div>
         </div>
       </div>
     </div>
@@ -96,7 +141,11 @@ const questsStoreInstance = questsStore();
   display: flex
   gap: 6px
   height: 30px
+  z-index: 20
   align-items: center
+
+  a
+    height: 30px
 
   button
     background: white
@@ -120,24 +169,20 @@ const questsStoreInstance = questsStore();
     justify-content: center
     font-size: 12px
     font-weight: 500
-  .loader-wrapper
-    height: 100%
-    padding: 6px
-    background: $c-dark-element
-    border: 1px solid $c-border-color
-    border-radius: 50px
-    margin-left: 50px
-    .loader
-      height: 100%
-      border: 3px solid #FFFFFF52
-      border-top: 3px solid #FFFFFFDE
-      border-radius: 50%
-      aspect-ratio: 1
-      animation: spin 1s linear infinite
 
-      @keyframes spin
-        from
-          transform: rotate(0deg)
-        to
-          transform: rotate(360deg)
+  .claimed-wrapper
+    height: 30px
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0 14px
+    border-radius: 50px
+    border: 1px solid $c-border-color
+    backdrop-filter: blur(2px)
+    background: $c-dark-element
+
+    p
+      font-size: 10px
+      font-weight: 600
+      color: white
 </style>

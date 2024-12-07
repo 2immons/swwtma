@@ -30,7 +30,7 @@ const isWeeklyQuests = ref(false);
 const questsStoreInstance = questsStore();
 
 const promoTasks = computed(() => {
-  return questsStoreInstance.promoTasks;
+  return questsStoreInstance.promoTasks[0];
 });
 
 const categories = computed(() => {
@@ -57,7 +57,10 @@ const categoryTitleClass = (index: number) => {
         <h2>
           {{ t("tasks") }} <span>{{ availableTasks }}</span>
         </h2>
-        <PromoTask v-if="isPromoQuests" />
+        <PromoTask
+            v-if="isPromoQuests"
+            :promoTask="promoTasks"
+        />
         <h3 v-if="isWeeklyQuests">
           {{ t("weekly") }}
         </h3>

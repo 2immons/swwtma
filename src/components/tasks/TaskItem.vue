@@ -1,18 +1,55 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
-import { questsStore } from "@/store/quests";
-const questsStoreInstance = questsStore();
+import {computed, defineProps} from "vue";
+import {questsStore} from "@/store/quests";
+import { storeToRefs } from "pinia";
+
+const tasksStoreInstance = questsStore();
 
 const props = defineProps<{
-  quest: {
-    title: "string";
-    description: "string";
-  };
+  task: Task;
+  isPromoTask: boolean
 }>();
 
-const joinQuest = async (quest: any) => {
+interface Task {
+  id: number;
+  title: string;
+  url: string;
+  status: string, // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
+}
+
+const { categories } = storeToRefs(tasksStoreInstance);
+
+const task = computed((): Task => {
+  const category = categories.value.find((currentCategory) =>
+      currentCategory.tasks.some((currentTask) => currentTask.id === props.task.id)
+  );
+  const foundTask = category?.tasks.find((currentTask) => currentTask.id === props.task.id);
+  return foundTask || props.task;
+});
+
+const acceptPromoTask = async () => {
   try {
-    await questsStoreInstance.joinQuest(quest);
+    window.open(task.value.url, '_blank')
+    tasksStoreInstance.acceptPromoTask(task.value);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+const acceptTask = async () => {
+  try {
+    window.open(task.value.url, '_blank')
+    tasksStoreInstance.acceptTask(task.value);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+const claimReward = async () => {
+  try {
+    tasksStoreInstance.claimReward(task.value);
   } catch (error) {
     console.error(error);
     return;
@@ -21,24 +58,31 @@ const joinQuest = async (quest: any) => {
 </script>
 
 <template>
-  <div class="quest-item">
+  <div class="task-item">
     <div class="left-side">
       <img src="../../assets/svg/tasks/battery.svg" alt="" />
       <div class="info">
-        <h3>{{ quest.title }}</h3>
+        <h3>{{ task.title }}</h3>
         <div class="income">
           <p>+ 699</p>
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
         </div>
       </div>
     </div>
-    <button @click="joinQuest(quest)">{{ t("accept-task") }}</button>
+    <div class="loader-wrapper" v-if="task.status === 'VERIFYING'">
+      <div class="loader"></div>
+    </div>
+    <div class="claimed-wrapper" v-if="task.status === 'CLAIMED'">
+      <p>Completed</p>
+    </div>
+    <button @click="acceptTask" v-else-if="task.status ==='NOT_STARTED'">{{ t("accept-task") }}</button>
+    <button @click="claimReward" v-else-if="task.status ==='COMPLETED'">{{ t("claim-task") }}</button>
   </div>
 </template>
 
 <style scoped lang="sass">
 @import "../../styles/variables"
-.quest-item
+.task-item
   padding: 20px 17px
   display: flex
   align-items: center
@@ -104,4 +148,40 @@ const joinQuest = async (quest: any) => {
     border: 1px solid $c-border-color
     backdrop-filter: blur(2px)
     gap: 3px
+
+.claimed-wrapper
+  height: 25px
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 0 14px
+  border-radius: 50px
+  border: 1px solid $c-border-color
+  backdrop-filter: blur(2px)
+  background: #FFFFFF1A
+
+  p
+    font-size: 10px
+    font-weight: 600
+    color: white
+
+.loader-wrapper
+  height: 25px
+  padding: 4px
+  background: #FFFFFF1A
+  border: 1px solid $c-border-color
+  border-radius: 50px
+  .loader
+    height: 100%
+    border: 3px solid #FFFFFF52
+    border-top: 3px solid #FFFFFFDE
+    border-radius: 50%
+    aspect-ratio: 1
+    animation: spin 1s linear infinite
+
+    @keyframes spin
+      from
+        transform: rotate(0deg)
+      to
+        transform: rotate(360deg)
 </style>

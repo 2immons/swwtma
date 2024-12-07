@@ -4,21 +4,22 @@ import TaskItem from "@/components/tasks/TaskItem.vue";
 
 // Определение интерфейсов
 interface Task {
+  id: number;
   title: string;
+  url: string;
+  status: string, // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
 }
 
 interface Category {
-  id: number;
+  cat_id: number;
   title: string;
   tasks: Task[];
 }
 
-interface Props {
+const props = defineProps<{
   activeCategory: number;
   category: Category;
-}
-
-const props = defineProps<Props>();
+}>();
 
 const emit = defineEmits(["clicked"]);
 </script>
@@ -26,13 +27,14 @@ const emit = defineEmits(["clicked"]);
 <template>
   <div
     class="task-category__tasks"
-    v-if="props.activeCategory === props.category.id"
+    v-if="props.activeCategory === props.category.cat_id"
   >
     <TaskItem
       class="task-category__task"
       v-for="(task, index) in props.category.tasks"
       :key="index"
-      :quest="task"
+      :task="task"
+      :isPromoTask="false"
     />
   </div>
 </template>

@@ -20,5 +20,8 @@
   "no": "Отмена",
   "is-sure": "Вы уверены?",
   "invite-friends": "Пригласить друзей",
-  "language-settings": "Язык"
+  "language-settings": "Язык",
+  "claim-task": "Собрать",
+  "continue-promo-task": "Продолжить",
+  "promo-tasks": "Promo tasks"
 }
