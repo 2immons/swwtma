@@ -21,11 +21,8 @@ export const profileStore = defineStore("profile", {
       const { locale } = useI18n(); // Вызов внутри метода
 
       try {
-        const response = await axios.get(
-          `${config.backendURL}/api/profile/myProfile`,
-          {
-            params: queryForValidation,
-          }
+        const response = await axios.post(
+          `${config.backendURL}/api/profile/myProfile`, queryForValidation
         );
 
         if (response.status !== 200) {

@@ -1,9 +1,17 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import { eventBus } from "@/event_bus/eventBus";
+import axios from "axios";
+import {worldPopulationStore} from "@/store/world-population";
 
-onMounted(() => {
+const population = ref("")
+const populationStore = worldPopulationStore()
+
+onMounted(async () => {
   eventBus.emit("toggleHeaderBackBtnVisibility", true);
+  population.value = await populationStore.getWorldPopulation()
+  console.log(population.value)
+
 });
 onBeforeUnmount(() => {
   eventBus.emit("toggleHeaderBackBtnVisibility", false);
@@ -17,38 +25,38 @@ onBeforeUnmount(() => {
         <h2>World Population</h2>
         <div class="stats-list">
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.population }}</p>
+            <p class="hint">Current World Population</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.birthsYear }}</p>
+            <p class="hint">Births this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.birthsToday }}</p>
+            <p class="hint">Births today</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.deathsYear }}</p>
+            <p class="hint">Deaths this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.deathsToday }}</p>
+            <p class="hint">Deaths today</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.netPopulationGrowthYear }}</p>
+            <p class="hint">Net population growth this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">65666444</p>
-            <p class="hint">Total World Population</p>
+            <p class="title">{{ population.netPopulationGrowthToday }}</p>
+            <p class="hint">Net population growth today</p>
           </div>
         </div>
       </div>

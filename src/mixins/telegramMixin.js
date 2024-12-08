@@ -19,37 +19,23 @@ export const telegramMixin = {
 
         if (user) {
           const queryString = window.Telegram.WebApp.initData;
-          const queryDataObj = Object.fromEntries(
-            new URLSearchParams(queryString)
-          );
+          const params = new URLSearchParams(queryString);
 
-          const receivedHash = queryDataObj.hash;
-          const authDate = queryDataObj.auth_date;
+          const authDate = params.get("auth_date");
+          const hash = params.get("hash");
 
-          delete queryDataObj.hash;
-          delete queryDataObj.user;
+          params.delete("hash");
 
-          const flattenedQueryDataObj = {
-            ...queryDataObj,
-            user_id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name || "",
-            username: user.username || "",
-            language_code: user.language_code,
-            is_premium: user.is_premium,
-            allows_write_to_pm: user.allows_write_to_pm,
-          };
-
-          const sortedKeys = Object.keys(flattenedQueryDataObj).sort();
-          const dataCheckString = sortedKeys
-            .map((key) => `${key}=${flattenedQueryDataObj[key]}`)
-            .join("\n");
+          const dataCheckString = Array.from(params.entries())
+              .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+              .map(([key, value]) => `${key}=${value}`)
+              .join("\n");
 
           return {
             web_app_data: {
               data_check_string: dataCheckString,
-              hash: receivedHash,
               auth_date: authDate,
+              hash: hash,
             },
           };
         }

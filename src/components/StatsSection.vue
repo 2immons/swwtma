@@ -80,7 +80,7 @@ const claimProcessReward = () => {
 onMounted(async () => {
   const profileStoreInstance = profileStore();
   const queryForValidation = telegramMixin.methods.generateQueryForValidation();
-  // await profileStoreInstance.getUserProfile(queryForValidation);
+  await profileStoreInstance.getUserProfile(queryForValidation);
 });
 </script>
 
