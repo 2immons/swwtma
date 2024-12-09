@@ -114,6 +114,9 @@ header
 
 .user
   flex-grow: 1
+  position: relative
+  width: calc(100% - 36px)
+  padding-right: 10px
 
   .user-wrapper
     display: flex
@@ -126,6 +129,7 @@ header
     border: 1px solid $c-border-color
     backdrop-filter: blur(2px)
     width: fit-content
+    max-width: 100%
 
     img
       height: 28px
@@ -133,7 +137,11 @@ header
       border-radius: 50px
       background: $c-light-element
     p
-    font-size: 18px
+      font-size: 18px
+      text-overflow: ellipsis
+      text-wrap: nowrap
+      overflow: hidden
+      text-align: left
 
 .settings-wrapper
   display: flex
