@@ -26,7 +26,7 @@ const closePopup = () => {
       <div class="content" @click.stop>
         <div class="container">
           <div class="photo">
-            <img src="../../assets/images/card-popup.png" alt="" />
+            <img src="../../assets/images/card.png" alt="" />
             <button @click="closePopup">+</button>
           </div>
           <div class="info">
@@ -107,8 +107,12 @@ const closePopup = () => {
   border-radius: 20px
   justify-content: center
   align-items: center
-  height: 280px
+  max-height: 280px
   overflow: hidden
+
+  img
+    width: 100%
+    aspect-ratio: 1
 
   button
     position: absolute

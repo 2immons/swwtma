@@ -115,6 +115,8 @@ const claimReward = async () => {
       font-size: 12px
       font-weight: 600
       line-height: 16.39px
+      text-align: left
+      white-space: nowrap
 
     img
       height: 12px
@@ -123,6 +125,7 @@ const claimReward = async () => {
     font-size: 14px
     font-weight: 600
     line-height: 19.12px
+    text-align: left
 
   p
     font-size: 18px

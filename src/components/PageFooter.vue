@@ -35,40 +35,25 @@ onUnmounted(() => {
             <p>{{ t("home") }}</p>
           </div>
         </router-link>
+
         <router-link
-          to="/karma"
-          :class="{
-            'ac-nav-item': $route.path === '/karma',
-            'nav-item': $route.path !== '/karma',
-          }"
-        >
-          <img
-            v-if="$route.path !== '/karma'"
-            src="../assets/svg/footer/karma.svg"
-            alt=""
-          />
-          <div v-if="$route.path === '/karma'" class="active-nav-item">
-            <img src="../assets/svg/footer/karma.svg" alt="" />
-            <p>{{ t("karma") }}</p>
-          </div>
-        </router-link>
-        <router-link
-          to="/tasks"
-          :class="{
+            to="/tasks"
+            :class="{
             'ac-nav-item': $route.path === '/tasks',
             'nav-item': $route.path !== '/tasks',
           }"
         >
           <img
-            v-if="$route.path !== '/tasks'"
-            src="../assets/svg/footer/tasks.svg"
-            alt=""
+              v-if="$route.path !== '/tasks'"
+              src="../assets/svg/footer/tasks.svg"
+              alt=""
           />
           <div v-if="$route.path === '/tasks'" class="active-nav-item">
             <img src="../assets/svg/footer/tasks.svg" alt="" />
             <p>{{ t("tasks") }}</p>
           </div>
         </router-link>
+
         <router-link
           to="/mining"
           :class="{
@@ -86,6 +71,25 @@ onUnmounted(() => {
             <p>{{ t("mining") }}</p>
           </div>
         </router-link>
+
+        <router-link
+            to="/karma"
+            :class="{
+            'ac-nav-item': $route.path === '/karma',
+            'nav-item': $route.path !== '/karma',
+          }"
+        >
+          <img
+              v-if="$route.path !== '/karma'"
+              src="../assets/svg/footer/karma.svg"
+              alt=""
+          />
+          <div v-if="$route.path === '/karma'" class="active-nav-item">
+            <img src="../assets/svg/footer/karma.svg" alt="" />
+            <p>{{ t("karma") }}</p>
+          </div>
+        </router-link>
+
         <router-link
           to="/friends"
           :class="{

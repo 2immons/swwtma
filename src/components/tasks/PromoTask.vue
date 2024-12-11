@@ -133,9 +133,11 @@ const claimReward = async () => {
   .title
     font-size: 10px
     opacity: 50%
+    text-align: left
   .name
     font-size: 27px
     font-weight: 600
+    text-align: left
 
 .footer
   display: flex

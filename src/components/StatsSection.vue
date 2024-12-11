@@ -7,11 +7,15 @@
             <p>Your Balance</p>
             <div class="amount">
               {{ balance }}
+              <img src="../assets/svg/stats/green-coin.svg" alt="">
             </div>
           </div>
           <div class="stats__item stats__item--mining-speed">
             <p>Mining Speed</p>
-            <div class="amount">+ {{ speed }}/h</div>
+            <div class="amount">
+              + {{ speed }}/h
+              <img src="../assets/svg/stats/green-coin.svg" alt="">
+            </div>
           </div>
         </div>
         <div class="mining-progress-wrapper">
@@ -136,6 +140,9 @@ onMounted(async () => {
       font-size: 27px
       font-weight: 600
       line-height: 36px
+
+      @media (max-width: 384px)
+        font-size: 19px
 
 .mining-progress-wrapper
   background: $c-dark-element

@@ -122,6 +122,13 @@ const openCardPopup = () => {
   border: 1px solid $c-border-color
   border-radius: 18px
 
+  img
+    width: 100%
+    height: auto
+    margin-bottom: 40px
+    object-fit: cover
+    object-position: center
+
 .content
   display: flex
   flex-direction: column
@@ -172,13 +179,14 @@ const openCardPopup = () => {
     justify-content: space-between
     width: 100%
     padding: 12px 0
+    text-align: left
+    white-space: nowrap
 
     .footer__item
       border-radius: 50px
-      height: 20px
-      padding: 8px 9px
+      padding: 5px 9px
       display: flex
-      align-items: center
+      justify-content: center
       gap: 3px
       border: 1px solid $c-border-color
 

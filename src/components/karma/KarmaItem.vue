@@ -51,7 +51,7 @@ const openCardPopup = () => {
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""
           />
-          / h
+          h
         </p>
         <p class="card__boost" v-else-if="karmaCard.status === 'CLOSED'">
           We raised all money!
@@ -165,7 +165,7 @@ const openCardPopup = () => {
       gap: 4px
 
       img
-        height: 12px
+        height: 10px
 
   hr
     border: 1px solid rgba(247, 247, 247, 0.1)
