@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { config } from "./config";
 import { useI18n } from "vue-i18n";
+import {validationStore} from "@/store/validation";
 
 export const profileStore = defineStore("profile", {
   state: () => ({
@@ -17,12 +18,14 @@ export const profileStore = defineStore("profile", {
 
   actions: {
     // getUserProfile получает информацию о профиле пользователя
-    async getUserProfile(queryForValidation: any) {
+    async getUserProfile() {
       const { locale } = useI18n(); // Вызов внутри метода
 
       try {
+        const validationQuery = await validationStore().ensureValidationQuery();
+
         const response = await axios.post(
-          `${config.backendURL}/api/profile/myProfile`, queryForValidation
+          `${config.backendURL}/api/profile/myProfile`, validationQuery
         );
 
         if (response.status !== 200) {

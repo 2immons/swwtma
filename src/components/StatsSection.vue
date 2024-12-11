@@ -54,7 +54,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
-import { telegramMixin } from "@/mixins/telegramMixin";
 
 const profileStoreInstance = profileStore();
 
@@ -82,9 +81,7 @@ const claimProcessReward = () => {
 };
 
 onMounted(async () => {
-  const profileStoreInstance = profileStore();
-  const queryForValidation = telegramMixin.methods.generateQueryForValidation();
-  await profileStoreInstance.getUserProfile(queryForValidation);
+  await profileStoreInstance.getUserProfile();
 });
 </script>
 
