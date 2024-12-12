@@ -5,6 +5,7 @@ import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "@/i18n";
 import Tres from "@tresjs/core";
+import PopupWindow from "@/components/PopupWindow.vue";
 
 const pinia = createPinia();
 
@@ -31,5 +32,7 @@ app.use(router);
 app.use(pinia);
 app.use(i18n);
 app.use(Tres);
+
+app.component("PopupWindow", PopupWindow);
 
 app.mount("#app");

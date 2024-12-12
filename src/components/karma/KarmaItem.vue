@@ -4,6 +4,8 @@ import { cardsStore } from "@/store/cards";
 import CardPopup from "@/components/mining/CardPopup.vue";
 import KarmaPopup from "@/components/karma/KarmaPopup.vue";
 const cardsStoreInstance = cardsStore();
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   karmaCard: {
@@ -46,29 +48,29 @@ const openCardPopup = () => {
       <div class="info">
         <p class="card__title">{{ karmaCard.title }}</p>
         <p class="card__boost" v-if="karmaCard.status === 'ACTIVE'">
-          Boost: + {{ karmaCard.boost }}
+          {{ t("boost") }}: + {{ karmaCard.boost }}
           <img
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""
           />
-          h
+          {{ t("h") }}
         </p>
         <p class="card__boost" v-else-if="karmaCard.status === 'CLOSED'">
-          We raised all money!
+          {{ t("raised-all-money") }}
         </p>
       </div>
       <hr />
       <div class="footer">
         <div class="donation-goal">
           <p>
-            Donation Goal {{ karmaCard.goal }}
+            {{ t("donation-goal") }}: {{ karmaCard.goal }}
             <img src="../../assets/svg/stats/green-coin.svg" alt="" />
           </p>
           <div class="donation-bar">
             <div class="progress" :style="{ width: progressWidth }"></div>
           </div>
           <p v-if="karmaCard.isPurchased">
-            Вы вложили: {{ karmaCard.userDonat }}
+            {{ t("you-donated") }}: {{ karmaCard.userDonat }}
             <img src="../../assets/svg/stats/green-coin.svg" alt="" />
           </p>
         </div>
@@ -77,7 +79,7 @@ const openCardPopup = () => {
           v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
           @click="openCardPopup"
         >
-          Вложить от {{ karmaCard.price }}
+          {{ t("donate-from") }} {{ karmaCard.price }}
           <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
         </button>
         <button
@@ -85,7 +87,7 @@ const openCardPopup = () => {
           v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
           @click="openCardPopup"
         >
-          Вложить еще
+          {{ t("donate-more") }}
           <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
         </button>
       </div>

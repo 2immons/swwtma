@@ -22,6 +22,22 @@
   "invite-friends": "Invite friends",
   "language-settings": "Language",
   "claim-task": "Claim",
+  "claim": "Claim",
+  "completed": "Completed",
+  "mining-speed": "Mining Speed",
+  "your-balance": "Your Balance",
+  "h": "h",
+  "m": "m",
   "continue-promo-task": "Continue",
-  "promo-tasks": "Promo tasks"
+  "promo-tasks": "Promo tasks",
+  "price": "Price",
+  "boost": "Boost",
+  "raised-all-money": "We raised all money!",
+  "donation-goal": "Donation Goal",
+  "you-donated": "You donated",
+  "last-donated": "last",
+  "donate-from": "Donate from",
+  "donate-more": "Donate more",
+  "not-donated": "You didn't donate yet",
+  "buy": "Buy"
 }

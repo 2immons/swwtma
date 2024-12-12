@@ -3,6 +3,8 @@ import { defineEmits, defineProps, onMounted, onBeforeUnmount, ref } from "vue";
 import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/PageHeader.vue";
 const cardsStoreInstance = cardsStore();
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   card: {
@@ -26,7 +28,7 @@ const closePopup = () => {
       <div class="content" @click.stop>
         <div class="container">
           <div class="photo">
-            <img src="../../assets/images/card.png" alt="" />
+            <img src="../../assets/images/card-test.png" alt="" />
             <button @click="closePopup">+</button>
           </div>
           <div class="info">
@@ -47,12 +49,12 @@ const closePopup = () => {
               Lvl {{ card.level }}
             </p>
             <p class="income">
-              Прибыль в час: + {{ card.price }}
+              {{ t("boost")}}: + {{ card.price }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
             </p>
           </div>
           <button class="buy-btn">
-            Купить за {{ card.price }}
+            {{ t("buy") }} {{ card.price }}
             <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
           </button>
         </div>

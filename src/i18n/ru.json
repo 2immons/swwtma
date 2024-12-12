@@ -22,6 +22,22 @@
   "invite-friends": "Пригласить друзей",
   "language-settings": "Язык",
   "claim-task": "Собрать",
+  "claim": "Собрать",
+  "completed": "Завершено",
+  "mining-speed": "Скорость",
+  "your-balance": "Баланс",
+  "h": "ч",
+  "m": "м",
   "continue-promo-task": "Продолжить",
-  "promo-tasks": "Promo tasks"
+  "promo-tasks": "Promo tasks",
+  "price": "Цена",
+  "boost": "Буст",
+  "raised-all-money": "Мы собрали все деньги!",
+  "donation-goal": "Цель",
+  "you-donated": "Вы вложили",
+  "last-donated": "осталось",
+  "donate-from": "Вложить от",
+  "donate-more": "Вложить еще",
+  "not-donated": "Вы еще ничего не вкладывали",
+  "buy": "Купить за"
 }

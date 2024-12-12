@@ -2,6 +2,8 @@
 import {computed, defineProps} from "vue";
 import {questsStore} from "@/store/quests";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const tasksStoreInstance = questsStore();
 
@@ -73,7 +75,7 @@ const claimReward = async () => {
       <div class="loader"></div>
     </div>
     <div class="claimed-wrapper" v-if="task.status === 'CLAIMED'">
-      <p>Completed</p>
+      <p>{{ t("completed") }}</p>
     </div>
     <button @click="acceptTask" v-else-if="task.status ==='NOT_STARTED'">{{ t("accept-task") }}</button>
     <button @click="claimReward" v-else-if="task.status ==='COMPLETED'">{{ t("claim-task") }}</button>

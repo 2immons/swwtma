@@ -3,6 +3,8 @@ import { defineProps, ref } from "vue";
 import { cardsStore } from "@/store/cards";
 import CardPopup from "@/components/mining/CardPopup.vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const cardsStoreInstance = cardsStore();
 
@@ -45,18 +47,18 @@ const openCardPopup = () => {
       @update:modelValue="isCardPopupVisible = $event"
     />
     <div class="photo">
-      <img src="../../assets/images/card.png" alt="" />
+      <img src="../../assets/images/card-test.png" alt="" />
     </div>
     <div class="content">
       <div class="info">
         <p class="card__title">{{ card.title }}</p>
         <p class="card__boost">
-          Boost: + 0.5
+          {{ t("boost") }}: + 0.5
           <img
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""
           />
-          h
+          {{ t("h") }}
         </p>
         <!--        <button @click="openCardPopup">+</button>-->
       </div>
@@ -67,7 +69,7 @@ const openCardPopup = () => {
           <p>Lvl {{ card.level }}</p>
         </div>
         <div class="footer__item footer__item--price">
-          <p>Price: {{ card.price }}</p>
+          <p>{{ t("price") }}: {{ card.price }}</p>
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
         </div>
       </div>
@@ -123,9 +125,8 @@ const openCardPopup = () => {
   border-radius: 18px
 
   img
-    width: 100%
-    height: auto
-    margin-bottom: 40px
+    height: 100%
+    width: 120%
     object-fit: cover
     object-position: center
 

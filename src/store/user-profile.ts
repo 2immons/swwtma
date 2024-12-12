@@ -67,7 +67,7 @@ export const profileStore = defineStore("profile", {
         this.setProfileVariables(response.data)
       } catch (error) {
         console.error("Ошибка при получении профиля пользователя:", error);
-        throw error;
+        throw new Error("Server error when getting the user profile");
       }
     },
 
@@ -83,7 +83,7 @@ export const profileStore = defineStore("profile", {
         checkResponseSuccess(response)
       } catch (error) {
         console.error("Ошибка при получении награды за процесс:", error);
-        throw error;
+        throw new Error("Server error when claiming reward");
       }
     }
   },

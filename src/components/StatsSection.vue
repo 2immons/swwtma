@@ -4,16 +4,16 @@
       <div class="stats-content">
         <div class="stats-wrapper">
           <div class="stats__item stats__item--balance">
-            <p>Your Balance</p>
+            <p>{{ t("your-balance")}}</p>
             <div class="amount">
               {{ balance }}
               <img src="../assets/svg/stats/green-coin.svg" alt="">
             </div>
           </div>
           <div class="stats__item stats__item--mining-speed">
-            <p>Mining Speed</p>
+            <p>{{ t("mining-speed")}}</p>
             <div class="amount">
-              + {{ speed }}/h
+              + {{ speed }}/{{ t("h") }}
               <img src="../assets/svg/stats/green-coin.svg" alt="">
             </div>
           </div>
@@ -29,18 +29,18 @@
                 <button @click="claimProcessReward">Claim</button>
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>{{ hours }}h {{ minutes }}m</p>
+                  <p>{{ hours }} {{ t("h") }} {{ minutes }} {{ t("m") }}</p>
                 </div>
               </div>
             </div>
             <div class="progress" v-if="processState === 'closed'">
               <div class="interface">
                 <button @click="claimProcessReward" :class="claimButtonClass">
-                  Claim
+                  {{ t("claim")}}
                 </button>
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>{{ hours }}h {{ minutes }}m</p>
+                  <p>{{ hours }} {{ t("h") }} {{ minutes }} {{ t("m") }}</p>
                 </div>
               </div>
             </div>
@@ -54,6 +54,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
+import PopupWindow from "@/components/PopupWindow.vue";
+import {eventBus} from "@/event_bus/eventBus";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const profileStoreInstance = profileStore();
 
@@ -78,11 +82,15 @@ const hours = ref(Math.floor(remainingSeconds.value / 60));
 const minutes = ref(remainingSeconds.value % 60);
 
 const claimProcessReward = () => {
-  await profileStoreInstance.claimProcessReward();
+  profileStoreInstance.claimProcessReward();
 };
 
 onMounted(async () => {
-  await profileStoreInstance.getUserProfile();
+  try {
+    await profileStoreInstance.getUserProfile();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
 });
 </script>
 
@@ -139,7 +147,7 @@ onMounted(async () => {
       font-weight: 600
       line-height: 36px
 
-      @media (max-width: 384px)
+      @media (max-width: 400px)
         font-size: 19px
 
 .mining-progress-wrapper

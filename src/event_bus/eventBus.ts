@@ -6,6 +6,7 @@ type Events = {
   toggleWorldStatictics: boolean;
   toggleHeaderBackBtnVisibility: boolean;
   disableSettingButton: boolean;
+  showErrorPopup: string;
 };
 
 export const eventBus = mitt<Events>();

@@ -11,6 +11,8 @@ import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/PageHeader.vue";
 import { karmaStore } from "@/store/karma";
 const karmaStoreInstance = karmaStore();
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   karmaCard: {
@@ -57,41 +59,41 @@ const progressWidth = computed(() => {
           <hr />
           <div class="stats">
             <p>
-              Прибыль: + {{ karmaCard.boost }}
+              {{ t("boost") }}: + {{ karmaCard.boost }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-              / h
+              /{{ t("h") }}
             </p>
           </div>
           <div class="donation-goal">
             <p>
-              Donation Goal {{ karmaCard.goal }}
+              {{ t("donation-goal") }}: {{ karmaCard.goal }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-              (осталось {{ karmaCard.goal - karmaCard.raised }}
+              ({{ t("last-donated") }}: {{ karmaCard.goal - karmaCard.raised }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
             </p>
             <div class="donation-bar">
               <div class="progress" :style="{ width: progressWidth }"></div>
             </div>
             <p v-if="karmaCard.isPurchased">
-              Вы вложили: {{ karmaCard.userDonat }}
+              {{ t("you-donated") }}: {{ karmaCard.userDonat }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
             </p>
             <p v-else-if="!karmaCard.isPurchased">
-              Вы еще ничего не вкладывали
+              {{ t("not-donated")}}
             </p>
           </div>
           <button
             class="buy-btn"
             v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
           >
-            Вложить от {{ karmaCard.price }}
+            {{ t("donate-from") }}: {{ karmaCard.price }}
             <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
           </button>
           <button
             class="buy-btn"
             v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
           >
-            Вложить еще
+            {{ t("donate-more") }}
             <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
           </button>
         </div>

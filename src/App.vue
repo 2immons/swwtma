@@ -1,4 +1,5 @@
 <template>
+  <PopupWindow />
   <router-view />
 </template>
 
