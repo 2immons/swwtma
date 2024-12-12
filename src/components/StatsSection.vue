@@ -23,7 +23,7 @@
             <div
               class="progress"
               :style="{ width: progressWidth }"
-              v-if="processStatus === 'active'"
+              v-if="processState === 'active'"
             >
               <div class="interface">
                 <button @click="claimProcessReward">Claim</button>
@@ -33,7 +33,7 @@
                 </div>
               </div>
             </div>
-            <div class="progress" v-if="processStatus === 'closed'">
+            <div class="progress" v-if="processState === 'closed'">
               <div class="interface">
                 <button @click="claimProcessReward" :class="claimButtonClass">
                   Claim
@@ -57,27 +57,28 @@ import { profileStore } from "@/store/user-profile";
 
 const profileStoreInstance = profileStore();
 
-const speed = computed(() => profileStoreInstance.getSpeed);
+const speed = computed(() => profileStoreInstance.getNewSpeed);
 const balance = computed(() => profileStoreInstance.getBalance);
-const processStatus = computed(() => profileStoreInstance.getStatus);
+const processState = computed(() => profileStoreInstance.getProcessState);
 
 const claimButtonClass = computed(() => {
-  return processStatus.value === "active"
+  return processState.value === "active"
     ? "claim-button--active"
     : "claim-button";
 });
 
-const remainingMinutes = computed(() => profileStoreInstance.getRemainingTime);
+const remainingSeconds = computed(() => profileStoreInstance.getRemainingSeconds);
+const totalProcessSeconds = computed(() => profileStoreInstance.getTotalProcessSeconds);
 
 const progressWidth = computed(() => {
-  return String((remainingMinutes.value / (60 * 4)) * 100) + "%";
+  return String((remainingSeconds.value / totalProcessSeconds.value) * 100) + "%";
 });
 
-const hours = ref(Math.floor(remainingMinutes.value / 60));
-const minutes = ref(remainingMinutes.value % 60);
+const hours = ref(Math.floor(remainingSeconds.value / 60));
+const minutes = ref(remainingSeconds.value % 60);
 
 const claimProcessReward = () => {
-  // await profileStoreInstance.claimProcessReward();
+  await profileStoreInstance.claimProcessReward();
 };
 
 onMounted(async () => {

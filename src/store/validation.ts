@@ -28,7 +28,7 @@ export const validationStore = defineStore("cards", {
             if (typeof window !== "undefined" && telegram && telegram.WebApp) {
                 telegram.WebApp.ready();
 
-                const user = telegram.WebApp.initData.user;
+                const user = telegram.WebApp.initDataUnsafe?.user;
 
                 if (user) {
                     const queryString = telegram.WebApp.initData;
