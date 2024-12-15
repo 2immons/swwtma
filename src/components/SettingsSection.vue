@@ -3,6 +3,7 @@ import SliderButton from "@/components/ui/SliderButton.vue";
 import { onBeforeUnmount, onMounted, Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { eventBus } from "@/event_bus/eventBus";
+import router from "@/router";
 
 const isStockExchangeMenuVisible = ref(false);
 const isConfirmModalVisible = ref(false);
@@ -79,13 +80,19 @@ const handleClickOutside = (event: Event) => {
 };
 
 onMounted(() => {
+  eventBus.emit("toggleHeaderBackBtnVisibility", true)
   document.addEventListener("click", handleClickOutside);
   eventBus.emit("disableSettingButton", true);
+  eventBus.on("headerBackBtnPressed", (visible) => {
+    router.back();
+  });
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
   eventBus.emit("disableSettingButton", false);
+  eventBus.emit("toggleHeaderBackBtnVisibility", false)
+  eventBus.off("headerBackBtnPressed")
 });
 
 const stockExchange = ref("Bybit");

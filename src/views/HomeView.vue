@@ -16,16 +16,21 @@ import EarthSection from "@/components/EarthSection.vue";
 import TheWorldPopulation from "@/components/TheWorldPopulation.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
+import router from "@/router";
 const isWorldPopulationVisible = ref(false);
 
 onMounted(() => {
   eventBus.on("toggleWorldStatictics", (visible) => {
     isWorldPopulationVisible.value = visible;
   });
+  eventBus.on("headerBackBtnPressed", (visible) => {
+    isWorldPopulationVisible.value = false;
+  });
 });
 
 onUnmounted(() => {
   eventBus.off("toggleWorldStatictics");
+  eventBus.off("headerBackBtnPressed")
 });
 </script>
 

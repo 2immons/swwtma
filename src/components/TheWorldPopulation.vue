@@ -3,19 +3,19 @@ import {onBeforeUnmount, onMounted, ref} from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import axios from "axios";
 import {worldPopulationStore} from "@/store/world-population";
+import router from "@/router";
 
 const population = ref("")
 const populationStore = worldPopulationStore()
 
 onMounted(async () => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", true);
+  eventBus.emit("toggleHeaderBackBtnVisibility", true)
   population.value = await populationStore.getWorldPopulation()
-  console.log(population.value)
+})
 
-});
 onBeforeUnmount(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", false);
-});
+  eventBus.emit("toggleHeaderBackBtnVisibility", false)
+})
 </script>
 
 <template>

@@ -30,7 +30,7 @@ const isWeeklyQuests = ref(false);
 const questsStoreInstance = questsStore();
 
 const promoTasks = computed(() => {
-  return questsStoreInstance.promoTasks[0];
+  return questsStoreInstance.promoTasks;
 });
 
 const categories = computed(() => {
@@ -57,10 +57,13 @@ const categoryTitleClass = (index: number) => {
         <h2>
           {{ t("tasks") }} <span>{{ availableTasks }}</span>
         </h2>
-        <PromoTask
-            v-if="isPromoQuests"
-            :promoTask="promoTasks"
-        />
+        <div class="promo-tasks no-scrollbar">
+          <PromoTask
+              v-for="(promoTask, index) in promoTasks"
+              :key="index"
+              :promoTask="promoTask"
+          />
+        </div>
         <h3 v-if="isWeeklyQuests">
           {{ t("weekly") }}
         </h3>
@@ -111,6 +114,21 @@ h2, h3
   span
     font-size: 14px
     margin-left: 8px
+
+.promo-tasks
+  display: flex
+  flex-wrap: nowrap
+  overflow-x: auto
+  scroll-snap-type: x mandatory
+  width: 100%
+  position: relative
+  gap: 10px // Разделение между элементами
+  padding-right: 20px // Чтобы последний элемент не уезжал за границу
+
+  // Чтобы следующие элементы выглядывали
+  & > *:not(:last-child)
+    margin-right: -20px
+
 .quests-list
   display: flex
   margin-top: 15px

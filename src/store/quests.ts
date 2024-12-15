@@ -139,6 +139,44 @@ export const questsStore = defineStore("quests", {
           },
         ],
       },
+      {
+        promo_task_id: 1,
+        title: "Animals",
+        description: "Recycle 5 batteries.",
+        promo_task_status: "NOT_STARTED",
+        tasks: [
+          {
+            id: 5,
+            title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "VERIFYING"
+          },
+          {
+            id: 6,
+            title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "CLAIMED"
+          },
+          {
+            id: 7,
+            title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "COMPLETED"
+          },
+          {
+            id: 8,
+            title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
+          },
+          {
+            id: 9,
+            title: "Tasks 3",
+            url: "https://vk.com/al_feed.php",
+            status: "NOT_STARTED"
+          },
+        ],
+      },
     ] as PromoTask[],
   }),
 

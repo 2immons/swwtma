@@ -3,17 +3,9 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
+import router from "@/router";
 const isHeaderBackBtnVisible = ref(false);
 const isSettingsButtonDisabled = ref(false);
-
-onMounted(() => {
-  eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
-    isHeaderBackBtnVisible.value = visible;
-  });
-  eventBus.on("disableSettingButton", (visible) => {
-    isSettingsButtonDisabled.value = visible;
-  });
-});
 
 onUnmounted(() => {
   eventBus.off("toggleHeaderBackBtnVisibility");
@@ -27,6 +19,13 @@ const firstName = ref("Loading...");
 const lastName = ref("Loading...");
 
 onMounted(async () => {
+  eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
+    isHeaderBackBtnVisible.value = visible;
+  });
+  eventBus.on("disableSettingButton", (visible) => {
+    isSettingsButtonDisabled.value = visible;
+  });
+
   if (window.Telegram && window.Telegram.WebApp) {
     window.Telegram.WebApp.ready();
 
@@ -46,8 +45,8 @@ onMounted(async () => {
   }
 });
 
-const turnOffStatictics = () => {
-  eventBus.emit("toggleWorldStatictics", false);
+const pressBackBtn = () => {
+  eventBus.emit("headerBackBtnPressed", true);
 };
 </script>
 
@@ -58,7 +57,7 @@ const turnOffStatictics = () => {
         <button
           class="back-btn"
           v-if="isHeaderBackBtnVisible"
-          @click="turnOffStatictics"
+          @click="pressBackBtn"
         >
           <img src=../assets/svg/header/back-btn.svg alt="">
         </button>

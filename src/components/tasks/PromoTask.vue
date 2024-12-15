@@ -87,11 +87,12 @@ const claimReward = async () => {
 @import "../../styles/variables"
 .promo-task-wrapper
   width: 100%
-  display: flex
   flex-direction: column
   margin-top: 26px
   color: white
   gap: 20px
+  flex: 0 0 100%
+  scroll-snap-align: start
 
 .promo-task-box
   position: relative
