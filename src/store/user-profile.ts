@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./config";
+import { config } from "./utils/config";
 import { useI18n } from "vue-i18n";
 import { telegramStore } from "@/store/telegram";
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
@@ -56,7 +56,7 @@ export const profileStore = defineStore("profile", {
     // getUserProfile получает информацию о профиле пользователя
     async getUserProfile() {
       try {
-        const validationQuery = await telegramStore().ensureValidationQuery();
+        const validationQuery = telegramStore().ensureValidationQuery();
 
         const response = await axios.post(
           `${config.backendURL}/api/profile/myProfile`,
@@ -75,7 +75,7 @@ export const profileStore = defineStore("profile", {
     // claimProcessReward отправляет запрос на получение награды за процесс
     async claimProcessReward() {
       try {
-        const validationQuery = await telegramStore().ensureValidationQuery();
+        const validationQuery = telegramStore().ensureValidationQuery();
 
         const response = await axios.post(
           `${config.backendURL}/api/profile/myProfile`,

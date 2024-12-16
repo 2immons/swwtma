@@ -1,136 +1,91 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
-import { onBeforeUnmount, onMounted, Ref, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
 
+// Reactive state variables
 const isStockExchangeMenuVisible = ref(false);
 const isConfirmModalVisible = ref(false);
 const isLanguageSettingsVisible = ref(false);
 
+const accountArrow = ref("arrow-icon");
+const stockExchangeArrow = ref("arrow-icon");
+const languageArrow = ref("arrow-icon");
+
 const { t, locale } = useI18n();
 
-const toggleConfirmModal = () => {
-  isConfirmModalVisible.value = !isConfirmModalVisible.value;
-  accountArrow.value = isConfirmModalVisible.value
-    ? "arrow-icon--open"
-    : "arrow-icon";
+// Toggle functions
+const toggleDropdown = (isVisible, arrowRef) => {
+  isVisible.value = !isVisible.value;
+  arrowRef.value = isVisible.value ? "arrow-icon--open" : "arrow-icon";
 };
 
-const toggleStockExchangeMenu = () => {
-  isStockExchangeMenuVisible.value = !isStockExchangeMenuVisible.value;
-  stockExchangeArrow.value = isStockExchangeMenuVisible.value
-    ? "arrow-icon--open"
-    : "arrow-icon";
-};
+const toggleConfirmModal = () => toggleDropdown(isConfirmModalVisible, accountArrow);
+const toggleStockExchangeMenu = () => toggleDropdown(isStockExchangeMenuVisible, stockExchangeArrow);
+const toggleLanguageSettings = () => toggleDropdown(isLanguageSettingsVisible, languageArrow);
 
-const toggleLanguageSettings = () => {
-  isLanguageSettingsVisible.value = !isLanguageSettingsVisible.value;
-  languageArrow.value = languageArrow.value ? "arrow-icon--open" : "arrow-icon";
-};
-
-const checkAndClose = (
-  isVisible: Ref<boolean>,
-  elementClass: string,
-  wrapperClass: string,
-  arrowRef: Ref<string>,
-  event: Event
-) => {
-  const element = document.querySelector(`.${elementClass}`);
-  const wrapper = document.querySelector(`.${wrapperClass}`);
-
-  const target = event.target as Node | null;
-
-  if (
-    isVisible.value &&
-    element instanceof Node &&
-    wrapper instanceof Node &&
-    target &&
-    !element.contains(target) &&
-    !wrapper.contains(target)
-  ) {
-    isVisible.value = false;
-    arrowRef.value = "arrow-icon";
-  }
-};
-
+// Dropdown close handler
 const handleClickOutside = (event: Event) => {
-  checkAndClose(
-    isConfirmModalVisible,
-    "setting-dropdown--confirm",
-    "account-wrapper",
-    accountArrow,
-    event
-  );
-  checkAndClose(
-    isStockExchangeMenuVisible,
-    "setting-dropdown--stock",
-    "stock-exchange-wrapper",
-    stockExchangeArrow,
-    event
-  );
-  checkAndClose(
-    isLanguageSettingsVisible,
-    "setting-dropdown--language",
-    "language-settings-wrapper",
-    languageArrow,
-    event
-  );
+  const dropdowns = [
+    { isVisible: isConfirmModalVisible, wrapper: ".account-wrapper", dropdown: ".setting-dropdown--confirm", arrow: accountArrow },
+    { isVisible: isStockExchangeMenuVisible, wrapper: ".stock-exchange-wrapper", dropdown: ".setting-dropdown--stock", arrow: stockExchangeArrow },
+    { isVisible: isLanguageSettingsVisible, wrapper: ".language-settings-wrapper", dropdown: ".setting-dropdown--language", arrow: languageArrow },
+  ];
+
+  dropdowns.forEach(({ isVisible, wrapper, dropdown, arrow }) => {
+    const target = event.target as Node | null;
+    const wrapperElement = document.querySelector(wrapper);
+    const dropdownElement = document.querySelector(dropdown);
+
+    if (
+        isVisible.value &&
+        wrapperElement instanceof Node &&
+        dropdownElement instanceof Node &&
+        target &&
+        !wrapperElement.contains(target) &&
+        !dropdownElement.contains(target)
+    ) {
+      isVisible.value = false;
+      arrow.value = "arrow-icon";
+    }
+  });
 };
 
+// Event setup
 onMounted(() => {
   eventBus.emit("toggleHeaderBackBtnVisibility", true);
   document.addEventListener("click", handleClickOutside);
+
   eventBus.emit("disableSettingButton", true);
-  eventBus.on("headerBackBtnPressed", (visible) => {
+  eventBus.on("headerBackBtnPressed", () => {
     router.back();
   });
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
+
   eventBus.emit("disableSettingButton", false);
   eventBus.emit("toggleHeaderBackBtnVisibility", false);
   eventBus.off("headerBackBtnPressed");
 });
 
+// Stock and language settings
 const stockExchange = ref("Bybit");
+const setStock = (stock: string) => (stockExchange.value = stock);
 
-const setStock = (stock: string) => {
-  stockExchange.value = stock;
-};
-
-const setLanguage = (language) => {
+const setLanguage = (language: string) => {
   locale.value = language;
 };
 
-const accountArrow = ref("arrow-icon");
-const stockExchangeArrow = ref("arrow-icon");
-const languageArrow = ref("arrow-icon");
-
-onMounted(async () => {
-  document.addEventListener("click", handleClickOutsideLanguageSettings);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutsideLanguageSettings);
-});
-
-const handleClickOutsideLanguageSettings = (event) => {
-  const languageSettingsElement = document.querySelector(".language-settings");
-  const languageWrapperElement = document.querySelector(".language-wrapper");
-
-  if (
-    isLanguageSettingsVisible.value &&
-    languageSettingsElement &&
-    !languageSettingsElement.contains(event.target) &&
-    !languageWrapperElement.contains(event.target)
-  ) {
-    isLanguageSettingsVisible.value = false;
-  }
+// Placeholder for account deletion
+const deleteAccount = () => {
+  console.log("Account deletion confirmed.");
 };
 </script>
+
 
 <template>
   <section class="settings">

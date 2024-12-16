@@ -1,10 +1,11 @@
 <script setup>
-import {ref, onMounted, onUnmounted, reactive} from "vue";
-import { useI18n } from "vue-i18n";
-import { profileStore } from "@/store/user-profile";
+import { ref, onMounted, onUnmounted, reactive } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
-import router from "@/router";
-import {telegramStore} from "@/store/telegram";
+import { telegramStore } from "@/store/telegram";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n();
+
 const isHeaderBackBtnVisible = ref(false);
 const isSettingsButtonDisabled = ref(false);
 
@@ -13,11 +14,11 @@ onUnmounted(() => {
   eventBus.off("toggleSettingsButton");
 });
 
-let userData = ref({})
+let userData = reactive({});
 
-const telegramStoreInstance = telegramStore()
+const telegramStoreInstance = telegramStore();
 
-onMounted(async () => {
+onMounted(() => {
   eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
     isHeaderBackBtnVisible.value = visible;
   });
@@ -25,11 +26,16 @@ onMounted(async () => {
     isSettingsButtonDisabled.value = visible;
   });
 
-  userData = await telegramStoreInstance.ensureUserData()
+  const data = telegramStoreInstance.ensureUserData();
+  userData.username = data.username;
+  userData.firstName = data.firstName;
+  userData.lastName = data.lastName;
+  userData.language = data.language;
+  locale.value = userData.language;
 });
 
 const pressBackBtn = () => {
-  eventBus.emit("headerBackBtnPressed", true);
+  eventBus.emit("headerBackBtnPressed");
 };
 </script>
 
@@ -42,12 +48,12 @@ const pressBackBtn = () => {
           v-if="isHeaderBackBtnVisible"
           @click="pressBackBtn"
         >
-          <img src=../assets/svg/header/back-btn.svg alt="">
+          <img src=../../assets/svg/header/back-btn.svg alt="">
         </button>
         <div class="user">
           <div class="user-wrapper">
             <img src="#" alt="" />
-            <p>{{ userData.value.firstName }}</p>
+            <p>{{ userData.firstName }}</p>
           </div>
         </div>
         <router-link
@@ -55,7 +61,7 @@ const pressBackBtn = () => {
           class="settings-wrapper"
           v-if="!isSettingsButtonDisabled"
         >
-          <img src="../assets/svg/header/settings.svg" alt="Настройки" />
+          <img src="../../assets/svg/header/settings.svg" alt="Настройки" />
         </router-link>
       </div>
     </div>
@@ -63,7 +69,7 @@ const pressBackBtn = () => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 header
   margin-top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top))
   display: flex

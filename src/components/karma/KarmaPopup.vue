@@ -8,7 +8,7 @@ import {
   computed,
 } from "vue";
 import { cardsStore } from "@/store/cards";
-import PageHeader from "@/components/PageHeader.vue";
+import PageHeader from "@/components/layout/TheHeader.vue";
 import { karmaStore } from "@/store/karma";
 const karmaStoreInstance = karmaStore();
 import { useI18n } from "vue-i18n";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import QuestItem from "@/components/tasks/TaskItem.vue";
-import { questsStore } from "@/store/quests";
+import { questsStore } from "@/store/tasks";
 import { computed, onMounted, ref } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
 import PromoTask from "@/components/tasks/PromoTask.vue";

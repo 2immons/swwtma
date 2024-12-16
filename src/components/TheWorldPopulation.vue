@@ -10,7 +10,11 @@ const populationStore = worldPopulationStore();
 
 onMounted(async () => {
   eventBus.emit("toggleHeaderBackBtnVisibility", true);
-  population.value = await populationStore.getWorldPopulation();
+  try {
+    population.value = await populationStore.getWorldPopulation();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
 });
 
 onBeforeUnmount(() => {

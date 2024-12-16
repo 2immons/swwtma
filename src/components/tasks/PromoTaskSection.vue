@@ -8,7 +8,7 @@ import {
 } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
 import { storeToRefs } from "pinia";
-import { questsStore } from "@/store/quests";
+import { questsStore } from "@/store/tasks";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
 
@@ -28,7 +28,7 @@ const emit = defineEmits(["clicked"]);
 
 onMounted(() => {
   eventBus.emit("toggleHeaderBackBtnVisibility", true);
-  eventBus.on("headerBackBtnPressed", (visible) => {
+  eventBus.on("headerBackBtnPressed", () => {
     router.back();
   });
 });

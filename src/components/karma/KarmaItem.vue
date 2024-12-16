@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { computed, defineProps, ref } from "vue";
-import { cardsStore } from "@/store/cards";
-import CardPopup from "@/components/mining/CardPopup.vue";
 import KarmaPopup from "@/components/karma/KarmaPopup.vue";
-const cardsStoreInstance = cardsStore();
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 

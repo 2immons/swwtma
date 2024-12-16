@@ -27,11 +27,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/'"
-            src="../assets/svg/footer/home.svg"
+            src="../../assets/svg/footer/home.svg"
             alt=""
           />
           <div v-if="$route.path === '/'" class="active-nav-item">
-            <img src="../assets/svg/footer/home.svg" alt="" />
+            <img src="../../assets/svg/footer/home.svg" alt="" />
             <p>{{ t("home") }}</p>
           </div>
         </router-link>
@@ -45,11 +45,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/tasks'"
-            src="../assets/svg/footer/tasks.svg"
+            src="../../assets/svg/footer/tasks.svg"
             alt=""
           />
           <div v-if="$route.path === '/tasks'" class="active-nav-item">
-            <img src="../assets/svg/footer/tasks.svg" alt="" />
+            <img src="../../assets/svg/footer/tasks.svg" alt="" />
             <p>{{ t("tasks") }}</p>
           </div>
         </router-link>
@@ -63,11 +63,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/mining'"
-            src="../assets/svg/footer/mining.svg"
+            src="../../assets/svg/footer/mining.svg"
             alt=""
           />
           <div v-if="$route.path === '/mining'" class="active-nav-item">
-            <img src="../assets/svg/footer/mining.svg" alt="" />
+            <img src="../../assets/svg/footer/mining.svg" alt="" />
             <p>{{ t("mining") }}</p>
           </div>
         </router-link>
@@ -81,11 +81,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/karma'"
-            src="../assets/svg/footer/karma.svg"
+            src="../../assets/svg/footer/karma.svg"
             alt=""
           />
           <div v-if="$route.path === '/karma'" class="active-nav-item">
-            <img src="../assets/svg/footer/karma.svg" alt="" />
+            <img src="../../assets/svg/footer/karma.svg" alt="" />
             <p>{{ t("karma") }}</p>
           </div>
         </router-link>
@@ -99,11 +99,11 @@ onUnmounted(() => {
         >
           <img
             v-if="$route.path !== '/friends'"
-            src="../assets/svg/footer/frens.svg"
+            src="../../assets/svg/footer/frens.svg"
             alt=""
           />
           <div v-if="$route.path === '/friends'" class="active-nav-item">
-            <img src="../assets/svg/footer/frens.svg" alt="" />
+            <img src="../../assets/svg/footer/frens.svg" alt="" />
             <p>{{ t("frens") }}</p>
           </div>
         </router-link>
@@ -113,7 +113,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 footer
   font-family: "Poppins", sans-serif
   bottom: 40px

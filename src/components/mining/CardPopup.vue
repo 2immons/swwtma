@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineEmits, defineProps, onMounted, onBeforeUnmount, ref } from "vue";
 import { cardsStore } from "@/store/cards";
-import PageHeader from "@/components/PageHeader.vue";
+import PageHeader from "@/components/layout/TheHeader.vue";
 const cardsStoreInstance = cardsStore();
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();

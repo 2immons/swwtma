@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineProps } from "vue";
-import { questsStore } from "@/store/quests";
+import { questsStore } from "@/store/tasks";
 import { storeToRefs } from "pinia";
 const tasksStoreInstance = questsStore();
 

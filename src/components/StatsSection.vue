@@ -54,7 +54,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
-import PopupWindow from "@/components/PopupWindow.vue";
 import { eventBus } from "@/event_bus/eventBus";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
@@ -91,12 +90,16 @@ const claimProcessReward = () => {
   profileStoreInstance.claimProcessReward();
 };
 
-onMounted(async () => {
+const fetchUserProfile = async () => {
   try {
     await profileStoreInstance.getUserProfile();
   } catch (error) {
     eventBus.emit("showErrorPopup", error.message);
   }
+};
+
+onMounted(async () => {
+  await fetchUserProfile();
 });
 </script>
 

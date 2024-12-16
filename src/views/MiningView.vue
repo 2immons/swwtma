@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import PageHeader from "@/components/PageHeader.vue";
-import PageFooter from "@/components/PageFooter.vue";
+import PageHeader from "@/components/layout/TheHeader.vue";
+import PageFooter from "@/components/layout/TheFooter.vue";
 import MiningSection from "@/components/mining/MiningSection.vue";
 </script>
 

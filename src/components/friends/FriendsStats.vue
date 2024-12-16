@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
-import { questsStore } from "@/store/quests";
+import { questsStore } from "@/store/tasks";
 const questsStoreInstance = questsStore();
 </script>
 

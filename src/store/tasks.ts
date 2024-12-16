@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./config";
+import { config } from "./utils/config";
+import { telegramStore } from "@/store/telegram";
+import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
 interface Task {
   id: number;
@@ -23,7 +25,7 @@ interface PromoTask {
   tasks: Task[];
 }
 
-export const questsStore = defineStore("quests", {
+export const questsStore = defineStore("tasks", {
   state: () => ({
     categories: [
       {
@@ -96,6 +98,30 @@ export const questsStore = defineStore("quests", {
             url: "https://vk.com/al_feed.php",
             status: "NOT_STARTED",
           },
+        ],
+      },
+      {
+        cat_id: 2,
+        title: "Social 3",
+        tasks: [
+          {
+            id: 10,
+            title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "VERIFYING",
+          },
+          {
+            id: 11,
+            title: "Tasks 2",
+            url: "https://vk.com/al_feed.php",
+            status: "CLAIMED",
+          },
+          {
+            id: 12,
+            title: "Task 1",
+            url: "https://vk.com/al_feed.php",
+            status: "COMPLETED",
+          }
         ],
       },
     ] as Category[],
@@ -181,8 +207,23 @@ export const questsStore = defineStore("quests", {
   }),
 
   actions: {
-    fetchQuests() {
-      return this.promoTasks;
+    async fetchTasks() {
+      try {
+        const validationQuery = telegramStore().ensureValidationQuery();
+
+        const response = await axios.post(
+          `${config.backendURL}/api/cards/get-karma`,
+          validationQuery
+        );
+
+        checkResponseSuccess(response);
+
+        this.categories = response.data.data.tasks;
+        this.promoTasks = response.data.data.promoTasks;
+      } catch (error) {
+        console.error("Ошибка при получении заданий:", error);
+        throw new Error("Server error when getting tasks list");
+      }
     },
 
     acceptTask(task: any) {

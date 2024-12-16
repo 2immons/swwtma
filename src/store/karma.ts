@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./config";
+import { config } from "./utils/config";
+import { telegramStore } from "@/store/telegram";
+import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
 export const karmaStore = defineStore("karma", {
   state: () => ({
@@ -125,66 +127,25 @@ export const karmaStore = defineStore("karma", {
           },
         ],
       },
-      {
-        id: 3,
-        title: "Charity",
-        karmaCards: [
-          {
-            title: "Title",
-            price: 10,
-            boost: 10,
-            goal: 1000,
-            raised: 100,
-            isPurchased: false,
-            status: "ACTIVE",
-          },
-          {
-            title: "Title",
-            price: 10,
-            boost: 10,
-            goal: 1000,
-            raised: 100,
-            isPurchased: false,
-            status: "ACTIVE",
-          },
-          {
-            title: "Title",
-            price: 10,
-            boost: 10,
-            goal: 1000,
-            raised: 100,
-            isPurchased: false,
-            status: "ACTIVE",
-          },
-          {
-            title: "Title",
-            price: 10,
-            boost: 10,
-            goal: 1000,
-            raised: 100,
-            isPurchased: false,
-            status: "ACTIVE",
-          },
-        ],
-      },
     ],
   }),
 
   actions: {
-    async joinQuest(quest: any) {
-      const response = await axios.post(
-        config.backendURL + "/orders/join-quest",
-        {
-          quest,
-          withCredentials: true,
-        }
-      );
+    async fetchKarma() {
+      try {
+        const validationQuery = telegramStore().ensureValidationQuery();
 
-      if (response.status !== 201) {
-        throw new Error(
-          "Не удалось создать обращение. Неправильный статус ответа от сервера: " +
-            response.status
+        const response = await axios.post(
+          `${config.backendURL}/api/cards/get-karma`,
+          validationQuery
         );
+
+        checkResponseSuccess(response);
+
+        this.categories = response.data.data.categories;
+      } catch (error) {
+        console.error("Ошибка при получении карточек кармы:", error);
+        throw new Error("Server error when getting karma-cards");
       }
     },
   },

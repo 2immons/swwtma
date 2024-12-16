@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./config";
+import { config } from "./utils/config";
+import { telegramStore } from "@/store/telegram";
+import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
 export const cardsStore = defineStore("cards", {
   state: () => ({
@@ -42,34 +44,25 @@ export const cardsStore = defineStore("cards", {
         isActive: true,
       },
     ],
-
-    promoTasks: [
-      {
-        title: "Quest Name 1",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 2",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 3",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-      {
-        title: "Quest Name 4",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis fringilla, metus sit amet volutpat convallis, neque sem ullamcorper.",
-      },
-    ],
   }),
 
   actions: {
-    fetchQuests() {
-      return this.promoTasks;
+    async fetchCards() {
+      try {
+        const validationQuery = telegramStore().ensureValidationQuery();
+
+        const response = await axios.post(
+          `${config.backendURL}/api/cards/get-cards`,
+          validationQuery
+        );
+
+        checkResponseSuccess(response);
+
+        this.cards = response.data.data.cards;
+      } catch (error) {
+        console.error("Ошибка при получении профиля пользователя:", error);
+        throw new Error("Server error when getting the user profile");
+      }
     },
 
     async joinQuest(quest: any) {

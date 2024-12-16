@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import {
-  defineProps,
-  defineEmits,
-  computed,
-  ref,
-  watchEffect,
-  onMounted,
-} from "vue";
-import CardItem from "@/components/mining/CardItem.vue";
+import { computed, ref, onMounted } from "vue";
 import { karmaStore } from "@/store/karma";
 import KarmaItem from "@/components/karma/KarmaItem.vue";
+
+// Иконки категорий:
 import recyclingIcon from "@/assets/svg/karma/recycling.svg";
 import medIcon from "@/assets/svg/karma/med.svg";
 import animalsIcon from "@/assets/svg/karma/animals.svg";
@@ -30,8 +24,6 @@ const karmaCards = ref<KarmaCard[]>(
 interface KarmaCard {
   title: string;
   price: number;
-  level: number;
-  isActive: boolean;
 }
 
 interface Category {
@@ -69,19 +61,12 @@ const handleScroll = (event: Event) => {
   isAtStart.value = target.scrollLeft === 0;
   isAtEnd.value = target.scrollLeft + target.offsetWidth >= target.scrollWidth;
 };
-
-onMounted(() => {
-  const navElement = document.querySelector(".nav");
-  if (navElement) {
-    navElement.addEventListener("scroll", handleScroll);
-  }
-});
 </script>
 
 <template>
   <div class="task-list">
     <div class="nav-wrapper">
-      <div class="nav no-scrollbar">
+      <div class="nav no-scrollbar" @scroll="handleScroll">
         <button
           v-for="(category, index) in categories"
           :key="index"

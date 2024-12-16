@@ -1,29 +1,6 @@
 <script setup lang="ts">
-import QuestItem from "@/components/tasks/TaskItem.vue";
-import { questsStore } from "@/store/quests";
-import { computed, onMounted, ref } from "vue";
-import TaskItem from "@/components/tasks/TaskItem.vue";
-import PromoTask from "@/components/tasks/PromoTask.vue";
-import TasksCategory from "@/components/tasks/TasksCategory.vue";
-import MiningSelect from "@/components/mining/MiningSelect.vue";
-import CardsList from "@/components/mining/CardsList.vue";
 import KarmaList from "@/components/karma/KarmaList.vue";
 
-const isAtStart = ref(true);
-const isAtEnd = ref(false);
-
-const handleScroll = (event: Event) => {
-  const target = event.target as HTMLElement;
-  isAtStart.value = target.scrollLeft === 0;
-  isAtEnd.value = target.scrollLeft + target.offsetWidth >= target.scrollWidth;
-};
-
-onMounted(() => {
-  const navElement = document.querySelector(".nav");
-  if (navElement) {
-    navElement.addEventListener("scroll", handleScroll);
-  }
-});
 </script>
 
 <template>

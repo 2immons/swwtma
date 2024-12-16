@@ -1,8 +1,4 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import { config } from "./config";
-import {useI18n} from "vue-i18n";
-const { t, locale } = useI18n();
 
 interface ValidationQuery {
   web_app_data: {
@@ -13,20 +9,20 @@ interface ValidationQuery {
 }
 
 interface UserData {
-  username: string,
-  firstName: string,
-  lastName: string,
-  language: string,
+  username: string;
+  firstName: string;
+  lastName: string;
+  language: string;
 }
 
-export const telegramStore = defineStore("cards", {
+export const telegramStore = defineStore("telegram", {
   state: () => ({
     validationQuery: null as null | ValidationQuery,
-    userData: null as null | UserData
+    userData: null as null | UserData,
   }),
 
   actions: {
-    async ensureUserData(): Promise<UserData> {
+    ensureUserData(): UserData {
       if (!this.userData) {
         this.userData = this.generateUserData();
       }
@@ -41,21 +37,19 @@ export const telegramStore = defineStore("cards", {
         const user = telegram.WebApp.initDataUnsafe?.user;
 
         if (user) {
-          locale.value = user.language || "en"
           return {
             username: user.username || "No username",
             firstName: user.first_name || "Unknown",
             lastName: user.last_name || "Unknown",
-            language: user.language_code || "en"
+            language: user.language_code || "en",
           };
         } else {
           console.error("User в Telegram WebAppData не доступен.");
-          locale.value = user.language || "en"
           return {
             username: "No username",
             firstName: "Unknown",
             lastName: "Unknown",
-            language: "en"
+            language: "en",
           };
         }
       } else {
@@ -64,12 +58,12 @@ export const telegramStore = defineStore("cards", {
           username: "No username",
           firstName: "Unknown",
           lastName: "Unknown",
-          language: "en"
+          language: "en",
         };
       }
     },
 
-    async ensureValidationQuery(): Promise<ValidationQuery> {
+    ensureValidationQuery(): ValidationQuery {
       if (!this.validationQuery) {
         this.validationQuery = this.generateValidationQuery();
       }

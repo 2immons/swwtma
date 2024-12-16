@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, computed, ref } from "vue";
+import { computed, onMounted } from "vue";
 import CardItem from "@/components/mining/CardItem.vue";
 import { cardsStore } from "@/store/cards";
+import { eventBus } from "@/event_bus/eventBus";
 
 const cardsStoreInstance = cardsStore();
 
@@ -9,19 +10,17 @@ const cards = computed(() => {
   return cardsStoreInstance.cards;
 });
 
-// Определение интерфейсов
-interface Task {
-  title: string;
-  price: number;
-  level: number;
-  isActive: boolean;
-}
+const fetchCards = async () => {
+  try {
+    await cardsStoreInstance.fetchCards();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
+};
 
-interface Category {
-  id: number;
-  title: string;
-  tasks: Task[];
-}
+onMounted(async () => {
+  // await fetchCards();
+});
 </script>
 
 <template>

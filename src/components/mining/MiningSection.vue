@@ -1,58 +1,11 @@
 <script setup lang="ts">
-import QuestItem from "@/components/tasks/TaskItem.vue";
-import { questsStore } from "@/store/quests";
+import { questsStore } from "@/store/tasks";
 import { computed, onMounted, ref } from "vue";
-import TaskItem from "@/components/tasks/TaskItem.vue";
-import PromoTask from "@/components/tasks/PromoTask.vue";
-import TasksCategory from "@/components/tasks/TasksCategory.vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
 import CardsList from "@/components/mining/CardsList.vue";
 import GameSection from "@/components/game/GameSection.vue";
 
 const miningType = ref("mining");
-
-const isAtStart = ref(true);
-const isAtEnd = ref(false);
-
-const handleScroll = (event: Event) => {
-  const target = event.target as HTMLElement;
-  isAtStart.value = target.scrollLeft === 0;
-  isAtEnd.value = target.scrollLeft + target.offsetWidth >= target.scrollWidth;
-};
-
-onMounted(() => {
-  const navElement = document.querySelector(".nav");
-  if (navElement) {
-    navElement.addEventListener("scroll", handleScroll);
-  }
-});
-
-const availableTasks = ref(10);
-
-const isPromoQuests = ref(false);
-const isWeeklyQuests = ref(false);
-
-const questsStoreInstance = questsStore();
-
-const promoTasks = computed(() => {
-  return questsStoreInstance.promoTasks;
-});
-
-const activeCategory = ref(0);
-
-const categories = computed(() => {
-  return questsStoreInstance.categories;
-});
-
-const setActiveCategory = (index: number) => {
-  activeCategory.value = index;
-};
-
-const categoryTitleClass = (index: number) => {
-  return index === activeCategory.value
-    ? "category-title--active"
-    : "category-title";
-};
 </script>
 
 <template>
@@ -69,7 +22,7 @@ const categoryTitleClass = (index: number) => {
         <div class="regular-tasks" v-if="miningType === 'mining'">
           <CardsList />
         </div>
-        <div class="game" v-if="miningType === 'game'">
+        <div class="game" v-else-if="miningType === 'game'">
           <GameSection />
         </div>
       </div>

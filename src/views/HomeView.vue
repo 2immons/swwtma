@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts" setup>
-import PageHeader from "@/components/PageHeader.vue";
-import PageFooter from "@/components/PageFooter.vue";
+import PageHeader from "@/components/layout/TheHeader.vue";
+import PageFooter from "@/components/layout/TheFooter.vue";
 import StatsSection from "@/components/StatsSection.vue";
 import EarthSection from "@/components/EarthSection.vue";
 import TheWorldPopulation from "@/components/TheWorldPopulation.vue";
@@ -23,7 +23,7 @@ onMounted(() => {
   eventBus.on("toggleWorldStatictics", (visible) => {
     isWorldPopulationVisible.value = visible;
   });
-  eventBus.on("headerBackBtnPressed", (visible) => {
+  eventBus.on("headerBackBtnPressed", () => {
     isWorldPopulationVisible.value = false;
   });
 });

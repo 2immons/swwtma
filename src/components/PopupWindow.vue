@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import { defineExpose } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 
 const isVisible = ref(false);
 const message = ref("");
 
 // Функция для отображения попапа
+// TODO: сделать чтобы был контейнер, куда могли поместиться несколько ошибок
 const showPopup = (errorMessage: string) => {
   message.value = errorMessage;
   isVisible.value = true;

@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./config";
+import { config } from "./utils/config";
 import { useI18n } from "vue-i18n";
 
 export const worldPopulationStore = defineStore("world-population", {
-  state: () => ({}),
+  state: () => ({
+    worldPopulation: {},
+  }),
 
   actions: {
     // getWorldPopulation получает данные о населении
@@ -12,16 +14,11 @@ export const worldPopulationStore = defineStore("world-population", {
       try {
         const response = await axios.get(`${config.worldPopulationURL}`);
 
-        if (response.status !== 200) {
-          throw new Error(
-            "Не удалось получить данные о населении " + response.status
-          );
-        }
-
+        // TODO: изменять стейт
         return response.data;
       } catch (error) {
-        console.error("Ошибка при запросе профиля пользователя:", error);
-        throw error;
+        console.error("Ошибка при получении данных о населении:", error);
+        throw new Error("Server error when getting the population statistics");
       }
     },
   },

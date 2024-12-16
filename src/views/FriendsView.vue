@@ -8,8 +8,8 @@
 
 <script lang="ts" setup>
 import MainLogo from "@/components/EarthSection.vue";
-import PageHeader from "@/components/PageHeader.vue";
-import PageFooter from "@/components/PageFooter.vue";
+import PageHeader from "@/components/layout/TheHeader.vue";
+import PageFooter from "@/components/layout/TheFooter.vue";
 import StatsSection from "@/components/StatsSection.vue";
 import FriendsSection from "@/components/friends/FriendsSection.vue";
 </script>

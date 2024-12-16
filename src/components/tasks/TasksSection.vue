@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import QuestItem from "@/components/tasks/TaskItem.vue";
-import { questsStore } from "@/store/quests";
+import { questsStore } from "@/store/tasks";
 import { computed, onMounted, ref } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
 import PromoTask from "@/components/tasks/PromoTask.vue";
@@ -15,16 +15,8 @@ const handleScroll = (event: Event) => {
   isAtEnd.value = target.scrollLeft + target.offsetWidth >= target.scrollWidth;
 };
 
-onMounted(() => {
-  const navElement = document.querySelector(".nav");
-  if (navElement) {
-    navElement.addEventListener("scroll", handleScroll);
-  }
-});
-
 const availableTasks = ref(10);
 
-const isPromoQuests = ref(true);
 const isWeeklyQuests = ref(false);
 
 const questsStoreInstance = questsStore();
@@ -98,7 +90,7 @@ const handleMouseUp = () => {
         </h3>
         <div class="regular-tasks">
           <div class="nav-wrapper">
-            <div class="nav no-scrollbar">
+            <div class="nav no-scrollbar" @scroll="handleScroll">
               <button
                 v-for="(category, index) in categories"
                 :key="index"
