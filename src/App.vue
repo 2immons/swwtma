@@ -28,6 +28,16 @@ html, body
   background-color: $c-bg
   position: relative
 
+*
+  user-select: none
+  -webkit-user-select: none
+  -ms-user-select: none
+
+img
+  user-drag: none
+  -webkit-user-drag: none
+  pointer-events: none
+
 html::before
   content: ""
   position: absolute

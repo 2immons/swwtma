@@ -2,21 +2,21 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { config } from "./config";
 import { useI18n } from "vue-i18n";
-import { validationStore } from "@/store/validation";
+import { telegramStore } from "@/store/telegram";
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
 interface ProfileResponse {
-  balance: number,
-  newSpeed: number,
-  chatId: string,
-  name: string,
-  language: string,
+  balance: number;
+  newSpeed: number;
+  chatId: string;
+  name: string;
+  language: string;
   process: {
-    state: string, // active, closed
-    remainingSeconds: number,
-    totalProcessSeconds: number,
-    miningResult: number,
-  },
+    state: string; // active, closed
+    remainingSeconds: number;
+    totalProcessSeconds: number;
+    miningResult: number;
+  };
 }
 
 export const profileStore = defineStore("profile", {
@@ -56,15 +56,16 @@ export const profileStore = defineStore("profile", {
     // getUserProfile получает информацию о профиле пользователя
     async getUserProfile() {
       try {
-        const validationQuery = await validationStore().ensureValidationQuery();
+        const validationQuery = await telegramStore().ensureValidationQuery();
 
         const response = await axios.post(
-          `${config.backendURL}/api/profile/myProfile`, validationQuery
+          `${config.backendURL}/api/profile/myProfile`,
+          validationQuery
         );
 
-        checkResponseSuccess(response)
+        checkResponseSuccess(response);
 
-        this.setProfileVariables(response.data)
+        this.setProfileVariables(response.data);
       } catch (error) {
         console.error("Ошибка при получении профиля пользователя:", error);
         throw new Error("Server error when getting the user profile");
@@ -74,18 +75,19 @@ export const profileStore = defineStore("profile", {
     // claimProcessReward отправляет запрос на получение награды за процесс
     async claimProcessReward() {
       try {
-        const validationQuery = await validationStore().ensureValidationQuery();
+        const validationQuery = await telegramStore().ensureValidationQuery();
 
         const response = await axios.post(
-            `${config.backendURL}/api/profile/myProfile`, validationQuery
+          `${config.backendURL}/api/profile/myProfile`,
+          validationQuery
         );
 
-        checkResponseSuccess(response)
+        checkResponseSuccess(response);
       } catch (error) {
         console.error("Ошибка при получении награды за процесс:", error);
         throw new Error("Server error when claiming reward");
       }
-    }
+    },
   },
 
   getters: {

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue';
+import { onMounted, ref } from "vue";
 import { defineExpose } from "vue";
-import {eventBus} from "@/event_bus/eventBus";
+import { eventBus } from "@/event_bus/eventBus";
 
 const isVisible = ref(false);
-const message = ref('');
+const message = ref("");
 
 // Функция для отображения попапа
 const showPopup = (errorMessage: string) => {
@@ -15,14 +15,13 @@ const showPopup = (errorMessage: string) => {
   setTimeout(() => {
     isVisible.value = false;
   }, 3000);
-}
+};
 
 onMounted(() => {
   eventBus.on("showErrorPopup", (msg: string) => {
-    showPopup(msg)
+    showPopup(msg);
   });
-})
-
+});
 </script>
 
 <template>
@@ -31,17 +30,16 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
-.popup {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: red;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 20;
-}
+<style lang="sass">
+.popup
+  position: fixed
+  top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top))
+  left: 50%
+  transform: translateX(-50%)
+  background: red
+  color: white
+  padding: 10px 20px
+  border-radius: 5px
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+  z-index: 20
 </style>

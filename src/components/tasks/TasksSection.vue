@@ -48,6 +48,29 @@ const categoryTitleClass = (index: number) => {
     ? "category-title--active"
     : "category-title";
 };
+
+const isDragging = ref(false);
+const startX = ref(0);
+const scrollLeft = ref(0);
+
+const handleMouseDown = (event) => {
+  const container = event.currentTarget;
+  isDragging.value = true;
+  startX.value = event.pageX - container.offsetLeft;
+  scrollLeft.value = container.scrollLeft;
+};
+
+const handleMouseMove = (event) => {
+  if (!isDragging.value) return;
+  const container = event.currentTarget;
+  const x = event.pageX - container.offsetLeft;
+  const walk = (x - startX.value) * 2;
+  container.scrollLeft = scrollLeft.value - walk;
+};
+
+const handleMouseUp = () => {
+  isDragging.value = false;
+};
 </script>
 
 <template>
@@ -57,11 +80,17 @@ const categoryTitleClass = (index: number) => {
         <h2>
           {{ t("tasks") }} <span>{{ availableTasks }}</span>
         </h2>
-        <div class="promo-tasks no-scrollbar">
+        <div
+          class="promo-tasks no-scrollbar"
+          @mousedown="handleMouseDown"
+          @mousemove="handleMouseMove"
+          @mouseup="handleMouseUp"
+          @mouseleave="handleMouseUp"
+        >
           <PromoTask
-              v-for="(promoTask, index) in promoTasks"
-              :key="index"
-              :promoTask="promoTask"
+            v-for="(promoTask, index) in promoTasks"
+            :key="index"
+            :promoTask="promoTask"
           />
         </div>
         <h3 v-if="isWeeklyQuests">
@@ -119,15 +148,17 @@ h2, h3
   display: flex
   flex-wrap: nowrap
   overflow-x: auto
+  overflow-y: hidden
+  -webkit-overflow-scrolling: touch
+  scroll-behavior: smooth
+  scroll-padding: 0
   scroll-snap-type: x mandatory
   width: 100%
   position: relative
-  gap: 10px // Разделение между элементами
-  padding-right: 20px // Чтобы последний элемент не уезжал за границу
+  padding-right: 20px
 
-  // Чтобы следующие элементы выглядывали
-  & > *:not(:last-child)
-    margin-right: -20px
+  & > *:last-child
+    flex: 0 0 calc(100% + 20px)
 
 .quests-list
   display: flex

@@ -79,7 +79,7 @@ const progressWidth = computed(() => {
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
             </p>
             <p v-else-if="!karmaCard.isPurchased">
-              {{ t("not-donated")}}
+              {{ t("not-donated") }}
             </p>
           </div>
           <button

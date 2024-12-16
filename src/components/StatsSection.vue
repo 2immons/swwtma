@@ -4,17 +4,17 @@
       <div class="stats-content">
         <div class="stats-wrapper">
           <div class="stats__item stats__item--balance">
-            <p>{{ t("your-balance")}}</p>
+            <p>{{ t("your-balance") }}</p>
             <div class="amount">
               {{ balance }}
-              <img src="../assets/svg/stats/green-coin.svg" alt="">
+              <img src="../assets/svg/stats/green-coin.svg" alt="" />
             </div>
           </div>
           <div class="stats__item stats__item--mining-speed">
-            <p>{{ t("mining-speed")}}</p>
+            <p>{{ t("mining-speed") }}</p>
             <div class="amount">
               + {{ speed }}/{{ t("h") }}
-              <img src="../assets/svg/stats/green-coin.svg" alt="">
+              <img src="../assets/svg/stats/green-coin.svg" alt="" />
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
             <div class="progress" v-if="processState === 'closed'">
               <div class="interface">
                 <button @click="claimProcessReward" :class="claimButtonClass">
-                  {{ t("claim")}}
+                  {{ t("claim") }}
                 </button>
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
@@ -55,7 +55,7 @@
 import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
 import PopupWindow from "@/components/PopupWindow.vue";
-import {eventBus} from "@/event_bus/eventBus";
+import { eventBus } from "@/event_bus/eventBus";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 
@@ -71,11 +71,17 @@ const claimButtonClass = computed(() => {
     : "claim-button";
 });
 
-const remainingSeconds = computed(() => profileStoreInstance.getRemainingSeconds);
-const totalProcessSeconds = computed(() => profileStoreInstance.getTotalProcessSeconds);
+const remainingSeconds = computed(
+  () => profileStoreInstance.getRemainingSeconds
+);
+const totalProcessSeconds = computed(
+  () => profileStoreInstance.getTotalProcessSeconds
+);
 
 const progressWidth = computed(() => {
-  return String((remainingSeconds.value / totalProcessSeconds.value) * 100) + "%";
+  return (
+    String((remainingSeconds.value / totalProcessSeconds.value) * 100) + "%"
+  );
 });
 
 const hours = ref(Math.floor(remainingSeconds.value / 60));

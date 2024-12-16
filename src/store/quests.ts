@@ -18,13 +18,13 @@ interface Category {
 interface PromoTask {
   promo_task_id: number;
   description: string;
-  title: string,
-  promo_task_status: string,
+  title: string;
+  promo_task_status: string;
   tasks: Task[];
 }
 
 export const questsStore = defineStore("quests", {
-  state: ()  => ({
+  state: () => ({
     categories: [
       {
         cat_id: 0,
@@ -34,31 +34,31 @@ export const questsStore = defineStore("quests", {
             id: 0,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "VERIFYING"
+            status: "VERIFYING",
           },
           {
             id: 1,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "CLAIMED"
+            status: "CLAIMED",
           },
           {
             id: 2,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "COMPLETED"
+            status: "COMPLETED",
           },
           {
             id: 3,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
           {
             id: 4,
             title: "Tasks 3",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
         ],
       },
@@ -70,31 +70,31 @@ export const questsStore = defineStore("quests", {
             id: 5,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "VERIFYING"
+            status: "VERIFYING",
           },
           {
             id: 6,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "CLAIMED"
+            status: "CLAIMED",
           },
           {
             id: 7,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "COMPLETED"
+            status: "COMPLETED",
           },
           {
             id: 8,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
           {
             id: 9,
             title: "Tasks 3",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
         ],
       },
@@ -111,31 +111,31 @@ export const questsStore = defineStore("quests", {
             id: 0,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "VERIFYING"
+            status: "VERIFYING",
           },
           {
             id: 1,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "CLAIMED"
+            status: "CLAIMED",
           },
           {
             id: 2,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "COMPLETED"
+            status: "COMPLETED",
           },
           {
             id: 3,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
           {
             id: 4,
             title: "Tasks 3",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
         ],
       },
@@ -149,31 +149,31 @@ export const questsStore = defineStore("quests", {
             id: 5,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "VERIFYING"
+            status: "VERIFYING",
           },
           {
             id: 6,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "CLAIMED"
+            status: "CLAIMED",
           },
           {
             id: 7,
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
-            status: "COMPLETED"
+            status: "COMPLETED",
           },
           {
             id: 8,
             title: "Tasks 2",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
           {
             id: 9,
             title: "Tasks 3",
             url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED"
+            status: "NOT_STARTED",
           },
         ],
       },
@@ -187,7 +187,7 @@ export const questsStore = defineStore("quests", {
 
     acceptTask(task: any) {
       const category = this.categories.find((cat) =>
-          cat.tasks.some((t) => t.id === task.id)
+        cat.tasks.some((t) => t.id === task.id)
       );
       if (category) {
         const taskToUpdate = category.tasks.find((t) => t.id === task.id);
@@ -204,13 +204,13 @@ export const questsStore = defineStore("quests", {
 
     acceptPromoTask(task: any) {
       const promoTask = this.promoTasks.find((pt) =>
-          pt.tasks.some((t) => t.id === task.id)
+        pt.tasks.some((t) => t.id === task.id)
       );
       if (promoTask) {
         const taskToUpdate = promoTask.tasks.find((t) => t.id === task.id);
         if (taskToUpdate) {
           taskToUpdate.status = "VERIFYING";
-          promoTask.promo_task_status = "IN_PROGRESS"
+          promoTask.promo_task_status = "IN_PROGRESS";
 
           // TODO: заменить ниже на получение ответа от сервера
           setTimeout(() => {
@@ -220,31 +220,33 @@ export const questsStore = defineStore("quests", {
           let isAllTasksCompleted = true;
           promoTask.tasks.forEach((task) => {
             if (task.status !== "COMPLETED") {
-              isAllTasksCompleted = false
-              return
+              isAllTasksCompleted = false;
+              return;
             }
-          })
+          });
 
           if (isAllTasksCompleted) {
-            promoTask.promo_task_status = "COMPLETED"
+            promoTask.promo_task_status = "COMPLETED";
           }
         }
       }
     },
 
     claimPromoTaskReward(promoTask: PromoTask) {
-      const foundPromoTask = this.promoTasks.find((pt: PromoTask) => pt.promo_task_id === promoTask.promo_task_id);
+      const foundPromoTask = this.promoTasks.find(
+        (pt: PromoTask) => pt.promo_task_id === promoTask.promo_task_id
+      );
 
       // TODO: вставить здесь запрос на сервер
 
       if (foundPromoTask) {
-        promoTask.promo_task_status = "CLAIMED"
+        promoTask.promo_task_status = "CLAIMED";
       }
     },
 
     claimReward(task: any) {
       const category = this.categories.find((cat) =>
-          cat.tasks.some((t) => t.id === task.id)
+        cat.tasks.some((t) => t.id === task.id)
       );
       if (category) {
         const taskToUpdate = category.tasks.find((t) => t.id === task.id);

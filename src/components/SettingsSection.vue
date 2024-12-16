@@ -80,7 +80,7 @@ const handleClickOutside = (event: Event) => {
 };
 
 onMounted(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", true)
+  eventBus.emit("toggleHeaderBackBtnVisibility", true);
   document.addEventListener("click", handleClickOutside);
   eventBus.emit("disableSettingButton", true);
   eventBus.on("headerBackBtnPressed", (visible) => {
@@ -91,8 +91,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
   eventBus.emit("disableSettingButton", false);
-  eventBus.emit("toggleHeaderBackBtnVisibility", false)
-  eventBus.off("headerBackBtnPressed")
+  eventBus.emit("toggleHeaderBackBtnVisibility", false);
+  eventBus.off("headerBackBtnPressed");
 });
 
 const stockExchange = ref("Bybit");

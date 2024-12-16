@@ -30,7 +30,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   eventBus.off("toggleWorldStatictics");
-  eventBus.off("headerBackBtnPressed")
+  eventBus.off("headerBackBtnPressed");
 });
 </script>
 

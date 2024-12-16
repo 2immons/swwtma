@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {computed, defineProps} from "vue";
-import {questsStore} from "@/store/quests";
+import { computed, defineProps } from "vue";
+import { questsStore } from "@/store/quests";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
@@ -9,29 +9,33 @@ const tasksStoreInstance = questsStore();
 
 const props = defineProps<{
   task: Task;
-  isPromoTask: boolean
+  isPromoTask: boolean;
 }>();
 
 interface Task {
   id: number;
   title: string;
   url: string;
-  status: string, // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
+  status: string; // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
 }
 
 const { categories } = storeToRefs(tasksStoreInstance);
 
 const task = computed((): Task => {
   const category = categories.value.find((currentCategory) =>
-      currentCategory.tasks.some((currentTask) => currentTask.id === props.task.id)
+    currentCategory.tasks.some(
+      (currentTask) => currentTask.id === props.task.id
+    )
   );
-  const foundTask = category?.tasks.find((currentTask) => currentTask.id === props.task.id);
+  const foundTask = category?.tasks.find(
+    (currentTask) => currentTask.id === props.task.id
+  );
   return foundTask || props.task;
 });
 
 const acceptPromoTask = async () => {
   try {
-    window.open(task.value.url, '_blank')
+    window.open(task.value.url, "_blank");
     tasksStoreInstance.acceptPromoTask(task.value);
   } catch (error) {
     console.error(error);
@@ -41,7 +45,7 @@ const acceptPromoTask = async () => {
 
 const acceptTask = async () => {
   try {
-    window.open(task.value.url, '_blank')
+    window.open(task.value.url, "_blank");
     tasksStoreInstance.acceptTask(task.value);
   } catch (error) {
     console.error(error);
@@ -77,8 +81,12 @@ const claimReward = async () => {
     <div class="claimed-wrapper" v-if="task.status === 'CLAIMED'">
       <p>{{ t("completed") }}</p>
     </div>
-    <button @click="acceptTask" v-else-if="task.status ==='NOT_STARTED'">{{ t("accept-task") }}</button>
-    <button @click="claimReward" v-else-if="task.status ==='COMPLETED'">{{ t("claim-task") }}</button>
+    <button @click="acceptTask" v-else-if="task.status === 'NOT_STARTED'">
+      {{ t("accept-task") }}
+    </button>
+    <button @click="claimReward" v-else-if="task.status === 'COMPLETED'">
+      {{ t("claim-task") }}
+    </button>
   </div>
 </template>
 

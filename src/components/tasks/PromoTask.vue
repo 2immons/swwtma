@@ -1,32 +1,35 @@
 <script setup lang="ts">
-import {computed, defineProps} from "vue";
+import { computed, defineProps } from "vue";
 import { questsStore } from "@/store/quests";
-import {storeToRefs} from "pinia";
+import { storeToRefs } from "pinia";
 const tasksStoreInstance = questsStore();
 
 interface Task {
   id: number;
   title: string;
   url: string;
-  status: string, // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
+  status: string; // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
 }
 
 interface PromoTask {
   promo_task_id: number;
   description: string;
-  title: string,
-  promo_task_status: string,
+  title: string;
+  promo_task_status: string;
   tasks: Task[];
 }
 
 const props = defineProps<{
-  promoTask: PromoTask
+  promoTask: PromoTask;
 }>();
 
 const { promoTasks } = storeToRefs(tasksStoreInstance);
 
 const promoTask = computed((): PromoTask => {
-  const foundPromoTask = promoTasks.value.find((currentPromoTask) => currentPromoTask.promo_task_id === props.promoTask.promo_task_id);
+  const foundPromoTask = promoTasks.value.find(
+    (currentPromoTask) =>
+      currentPromoTask.promo_task_id === props.promoTask.promo_task_id
+  );
   return foundPromoTask ? foundPromoTask : props.promoTask;
 });
 
@@ -62,14 +65,33 @@ const claimReward = async () => {
       <p class="name">{{ promoTask.description }}</p>
       <div class="footer">
         <router-link
-            :to="{ name: 'promo-task', params: { promo_task_id: promoTask.promo_task_id } }"
-            v-if="promoTask.promo_task_status !=='CLAIMED' && promoTask.promo_task_status !=='COMPLETED'">
+          :to="{
+            name: 'promo-task',
+            params: { promo_task_id: promoTask.promo_task_id },
+          }"
+          v-if="
+            promoTask.promo_task_status !== 'CLAIMED' &&
+            promoTask.promo_task_status !== 'COMPLETED'
+          "
+        >
           <button @click="openPromoTask">
-            {{ promoTask.promo_task_status === 'IN_PROGRESS' ? t("continue-promo-task") : t("accept-task") }}
+            {{
+              promoTask.promo_task_status === "IN_PROGRESS"
+                ? t("continue-promo-task")
+                : t("accept-task")
+            }}
           </button>
         </router-link>
-        <button @click="claimReward" v-else-if="promoTask.promo_task_status ==='COMPLETED'">{{ t("claim-task") }}</button>
-        <div class="claimed-wrapper" v-else-if="promoTask.promo_task_status === 'CLAIMED'">
+        <button
+          @click="claimReward"
+          v-else-if="promoTask.promo_task_status === 'COMPLETED'"
+        >
+          {{ t("claim-task") }}
+        </button>
+        <div
+          class="claimed-wrapper"
+          v-else-if="promoTask.promo_task_status === 'CLAIMED'"
+        >
           <p>Completed</p>
         </div>
         <div class="benefits">
@@ -87,6 +109,8 @@ const claimReward = async () => {
 @import "../../styles/variables"
 .promo-task-wrapper
   width: 100%
+  overflow-x: visible // Видимость "выглядывающих" элементов
+  position: relative
   flex-direction: column
   margin-top: 26px
   color: white
@@ -136,7 +160,7 @@ const claimReward = async () => {
     opacity: 50%
     text-align: left
   .name
-    font-size: 27px
+    font-size: 25px
     font-weight: 600
     text-align: left
 

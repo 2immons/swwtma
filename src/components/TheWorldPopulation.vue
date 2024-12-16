@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import axios from "axios";
-import {worldPopulationStore} from "@/store/world-population";
+import { worldPopulationStore } from "@/store/world-population";
 import router from "@/router";
 
-const population = ref("")
-const populationStore = worldPopulationStore()
+const population = ref("");
+const populationStore = worldPopulationStore();
 
 onMounted(async () => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", true)
-  population.value = await populationStore.getWorldPopulation()
-})
+  eventBus.emit("toggleHeaderBackBtnVisibility", true);
+  population.value = await populationStore.getWorldPopulation();
+});
 
 onBeforeUnmount(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", false)
-})
+  eventBus.emit("toggleHeaderBackBtnVisibility", false);
+});
 </script>
 
 <template>

@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import {defineProps, defineEmits, computed, onMounted, onBeforeUnmount} from "vue";
+import {
+  defineProps,
+  defineEmits,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
-import {storeToRefs} from "pinia";
-import {questsStore} from "@/store/quests";
-import {eventBus} from "@/event_bus/eventBus";
+import { storeToRefs } from "pinia";
+import { questsStore } from "@/store/quests";
+import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
 
 const props = defineProps<{
@@ -13,21 +19,24 @@ const props = defineProps<{
 const tasksStoreInstance = questsStore();
 const { promoTasks } = storeToRefs(tasksStoreInstance);
 
-const promoTask = promoTasks.value.find((currentPromoTask) => currentPromoTask.promo_task_id === Number(props.promoTaskID));
+const promoTask = promoTasks.value.find(
+  (currentPromoTask) =>
+    currentPromoTask.promo_task_id === Number(props.promoTaskID)
+);
 
 const emit = defineEmits(["clicked"]);
 
 onMounted(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", true)
+  eventBus.emit("toggleHeaderBackBtnVisibility", true);
   eventBus.on("headerBackBtnPressed", (visible) => {
     router.back();
   });
-})
+});
 
 onBeforeUnmount(() => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", false)
-  eventBus.off("headerBackBtnPressed")
-})
+  eventBus.emit("toggleHeaderBackBtnVisibility", false);
+  eventBus.off("headerBackBtnPressed");
+});
 </script>
 
 <template>
@@ -39,11 +48,11 @@ onBeforeUnmount(() => {
         </h2>
         <div class="task-category__tasks">
           <TaskItem
-              class="task-category__task"
-              v-for="(task, index) in promoTask.tasks"
-              :key="index"
-              :task="task"
-              :isPromoTask="true"
+            class="task-category__task"
+            v-for="(task, index) in promoTask.tasks"
+            :key="index"
+            :task="task"
+            :isPromoTask="true"
           />
         </div>
       </div>

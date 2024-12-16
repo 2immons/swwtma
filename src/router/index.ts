@@ -32,8 +32,8 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/FriendsView.vue"),
   },
   {
-    path: '/tasks/promo-task/:promo_task_id',
-    name: 'promo-task',
+    path: "/tasks/promo-task/:promo_task_id",
+    name: "promo-task",
     component: () => import("../views/PromoTaskView.vue"),
     props: true,
   },

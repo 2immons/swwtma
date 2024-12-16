@@ -49,7 +49,7 @@ const closePopup = () => {
               Lvl {{ card.level }}
             </p>
             <p class="income">
-              {{ t("boost")}}: + {{ card.price }}
+              {{ t("boost") }}: + {{ card.price }}
               <img src="../../assets/svg/stats/green-coin.svg" alt="" />
             </p>
           </div>

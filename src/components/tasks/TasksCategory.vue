@@ -7,7 +7,7 @@ interface Task {
   id: number;
   title: string;
   url: string;
-  status: string, // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
+  status: string; // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
 }
 
 interface Category {

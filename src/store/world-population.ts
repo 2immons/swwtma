@@ -10,18 +10,15 @@ export const worldPopulationStore = defineStore("world-population", {
     // getWorldPopulation получает данные о населении
     async getWorldPopulation() {
       try {
-        const response = await axios.get(
-          `${config.worldPopulationURL}`
-        );
+        const response = await axios.get(`${config.worldPopulationURL}`);
 
         if (response.status !== 200) {
           throw new Error(
-            "Не удалось получить данные о населении " +
-              response.status
+            "Не удалось получить данные о населении " + response.status
           );
         }
 
-        return response.data
+        return response.data;
       } catch (error) {
         console.error("Ошибка при запросе профиля пользователя:", error);
         throw error;

@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import {ref, onMounted, onUnmounted, reactive} from "vue";
 import { useI18n } from "vue-i18n";
 import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
+import {telegramStore} from "@/store/telegram";
 const isHeaderBackBtnVisible = ref(false);
 const isSettingsButtonDisabled = ref(false);
 
@@ -12,11 +13,9 @@ onUnmounted(() => {
   eventBus.off("toggleSettingsButton");
 });
 
-const { t, locale } = useI18n();
+let userData = ref({})
 
-const username = ref("Loading...");
-const firstName = ref("Loading...");
-const lastName = ref("Loading...");
+const telegramStoreInstance = telegramStore()
 
 onMounted(async () => {
   eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
@@ -26,23 +25,7 @@ onMounted(async () => {
     isSettingsButtonDisabled.value = visible;
   });
 
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.ready();
-
-    window.Telegram.WebApp.expand();
-
-    const user = window.Telegram.WebApp.initDataUnsafe?.user;
-
-    if (user) {
-      // Получаем данные пользователя
-      username.value = user.username || "No username";
-      firstName.value = user.first_name || "Unknown";
-      lastName.value = user.last_name || "Unknown";
-      locale.value = user.language_code || "en";
-    }
-  } else {
-    console.error("Telegram WebApp API не доступен.");
-  }
+  userData = await telegramStoreInstance.ensureUserData()
 });
 
 const pressBackBtn = () => {
@@ -64,7 +47,7 @@ const pressBackBtn = () => {
         <div class="user">
           <div class="user-wrapper">
             <img src="#" alt="" />
-            <p>{{ firstName }}</p>
+            <p>{{ userData.value.firstName }}</p>
           </div>
         </div>
         <router-link
@@ -82,7 +65,7 @@ const pressBackBtn = () => {
 <style scoped lang="sass">
 @import "src/styles/variables"
 header
-  margin-top: 29px
+  margin-top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top))
   display: flex
   flex-direction: column
   align-items: center
