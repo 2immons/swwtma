@@ -49,11 +49,11 @@ export const cardsStore = defineStore("cards", {
   actions: {
     async fetchCards() {
       try {
-        const validationQuery = telegramStore().ensureValidationQuery();
+        const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
           `${config.backendURL}/api/cards/get-cards`,
-          validationQuery
+          webAppData
         );
 
         checkResponseSuccess(response);

@@ -121,7 +121,7 @@ export const questsStore = defineStore("tasks", {
             title: "Task 1",
             url: "https://vk.com/al_feed.php",
             status: "COMPLETED",
-          }
+          },
         ],
       },
     ] as Category[],
@@ -209,11 +209,11 @@ export const questsStore = defineStore("tasks", {
   actions: {
     async fetchTasks() {
       try {
-        const validationQuery = telegramStore().ensureValidationQuery();
+        const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
           `${config.backendURL}/api/cards/get-karma`,
-          validationQuery
+          webAppData
         );
 
         checkResponseSuccess(response);

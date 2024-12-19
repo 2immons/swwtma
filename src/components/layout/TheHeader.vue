@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, reactive } from "vue";
+import {ref, onMounted, onUnmounted, computed, watch} from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import { telegramStore } from "@/store/telegram";
 import { useI18n } from "vue-i18n";
@@ -9,14 +9,13 @@ const { t, locale } = useI18n();
 const isHeaderBackBtnVisible = ref(false);
 const isSettingsButtonDisabled = ref(false);
 
-onUnmounted(() => {
-  eventBus.off("toggleHeaderBackBtnVisibility");
-  eventBus.off("toggleSettingsButton");
-});
+const userData = computed(() => telegramStore().userData);
 
-let userData = reactive({});
-
-const telegramStoreInstance = telegramStore();
+const headerMarginClass = ref("");
+const isFullScreen = computed(() => telegramStore().telegramWebApp.isFullscreen)
+watch(isFullScreen, (newValue) => {
+  headerMarginClass.value = newValue ? "header-margin-calc" : "header-margin-default";
+}, { immediate: true });
 
 onMounted(() => {
   eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
@@ -26,12 +25,12 @@ onMounted(() => {
     isSettingsButtonDisabled.value = visible;
   });
 
-  const data = telegramStoreInstance.ensureUserData();
-  userData.username = data.username;
-  userData.firstName = data.firstName;
-  userData.lastName = data.lastName;
-  userData.language = data.language;
-  locale.value = userData.language;
+  locale.value = userData.value.language;
+});
+
+onUnmounted(() => {
+  eventBus.off("toggleHeaderBackBtnVisibility");
+  eventBus.off("toggleSettingsButton");
 });
 
 const pressBackBtn = () => {
@@ -40,7 +39,7 @@ const pressBackBtn = () => {
 </script>
 
 <template>
-  <header>
+  <header :class="headerMarginClass">
     <div class="container">
       <div class="header-content">
         <button
@@ -52,8 +51,8 @@ const pressBackBtn = () => {
         </button>
         <div class="user">
           <div class="user-wrapper">
-            <img src="#" alt="" />
-            <p>{{ userData.firstName }}</p>
+            <img :src="userData.avatar" alt="Avatar" />
+            <p>{{ userData.username }}</p>
           </div>
         </div>
         <router-link
@@ -71,12 +70,16 @@ const pressBackBtn = () => {
 <style scoped lang="sass">
 @import "../../styles/variables"
 header
-  margin-top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top))
   display: flex
   flex-direction: column
   align-items: center
   color: $c-light-text
   z-index: 10
+
+.header-margin-calc
+  margin-top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top))
+.header-margin-default
+  margin-top: 29px
 
 .header-content
   position: relative

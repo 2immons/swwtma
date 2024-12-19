@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, computed, ref } from "vue";
-import CardItem from "@/components/mining/CardItem.vue";
 import { friendsStore } from "@/store/friends";
 import FriendItem from "@/components/friends/FriendItem.vue";
+import ReferalPopup from "@/components/friends/ReferalPopup.vue";
 
 const friendsStoreInstance = friendsStore();
 
@@ -10,23 +10,23 @@ const friends = computed(() => {
   return friendsStoreInstance.friends;
 });
 
-// Определение интерфейсов
-interface Task {
-  title: string;
-}
+const isReferalPopupVisible = ref(false)
 
-interface Category {
-  id: number;
-  title: string;
-  tasks: Task[];
+const openReferalPopup = () => {
+  isReferalPopupVisible.value = true
 }
 </script>
 
 <template>
   <div class="friends-list">
+    <ReferalPopup
+        @click.stop
+        :modelValue="isReferalPopupVisible"
+        @update:modelValue="isReferalPopupVisible = $event"
+    />
     <div class="list-header">
       <p>6 Friends</p>
-      <button>Invite +</button>
+      <button @click="openReferalPopup">Invite +</button>
     </div>
     <div class="list">
       <FriendItem

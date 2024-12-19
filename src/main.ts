@@ -6,6 +6,7 @@ import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "@/i18n";
 import Tres from "@tresjs/core";
 import PopupWindow from "@/components/PopupWindow.vue";
+import {telegramStore} from "@/store/telegram";
 
 const pinia = createPinia();
 
@@ -32,6 +33,8 @@ app.use(router);
 app.use(pinia);
 app.use(i18n);
 app.use(Tres);
+
+telegramStore().setMiniAppSettings()
 
 app.component("PopupWindow", PopupWindow);
 

@@ -56,11 +56,11 @@ export const profileStore = defineStore("profile", {
     // getUserProfile получает информацию о профиле пользователя
     async getUserProfile() {
       try {
-        const validationQuery = telegramStore().ensureValidationQuery();
+        const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
           `${config.backendURL}/api/profile/myProfile`,
-          validationQuery
+            webAppData
         );
 
         checkResponseSuccess(response);
@@ -75,11 +75,11 @@ export const profileStore = defineStore("profile", {
     // claimProcessReward отправляет запрос на получение награды за процесс
     async claimProcessReward() {
       try {
-        const validationQuery = telegramStore().ensureValidationQuery();
+        const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
           `${config.backendURL}/api/profile/myProfile`,
-          validationQuery
+          webAppData
         );
 
         checkResponseSuccess(response);

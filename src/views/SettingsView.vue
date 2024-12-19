@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import PageHeader from "@/components/layout/TheHeader.vue";
 import PageFooter from "@/components/layout/TheFooter.vue";
-import SettingsSection from "@/components/SettingsSection.vue";
+import SettingsSection from "@/components/settings/SettingsSection.vue";
 </script>
 
 <style lang="sass">

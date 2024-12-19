@@ -138,9 +138,6 @@ onMounted(async () => {
     backdrop-filter: blur(2.5px)
     border: 1px solid $c-border-color
 
-
-
-
     p
       line-height: 16.4px
       font-size: 12px
@@ -158,6 +155,9 @@ onMounted(async () => {
 
       @media (max-width: 400px)
         font-size: 19px
+
+      @media (max-width: 325px)
+        font-size: 17px
 
 .mining-progress-wrapper
   background: $c-dark-element

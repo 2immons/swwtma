@@ -4,8 +4,10 @@ import { config } from "./utils/config";
 import { telegramStore } from "@/store/telegram";
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
+
 export const friendsStore = defineStore("friends", {
   state: () => ({
+    referalLink: null as null | string,
     friends: [
       {
         name: "Имя",
@@ -38,11 +40,11 @@ export const friendsStore = defineStore("friends", {
   actions: {
     async fetchFriends() {
       try {
-        const validationQuery = telegramStore().ensureValidationQuery();
+        const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
           `${config.backendURL}/api/cards/get-karma`,
-          validationQuery
+          webAppData
         );
 
         checkResponseSuccess(response);
@@ -54,21 +56,33 @@ export const friendsStore = defineStore("friends", {
       }
     },
 
-    async joinQuest(quest: any) {
-      const response = await axios.post(
-        config.backendURL + "/orders/join-quest",
-        {
-          quest,
-          withCredentials: true,
+    async ensureReferalLink() {
+      if (!this.referalLink) {
+        try {
+          this.referalLink = await this.requestReferalLink()
+        } catch (error) {
+          console.error("Ошибка получения реферальных данных:", error)
+          throw new Error("Error when getting referal link")
         }
+      }
+      return this.referalLink
+    },
+
+    async requestReferalLink(): Promise<string> {
+      const webAppData = telegramStore().getWebAppData;
+
+      const response = await axios.post(
+          `${config.backendURL}/api/request-invite-link`,
+          webAppData
       );
 
-      if (response.status !== 201) {
-        throw new Error(
-          "Не удалось создать обращение. Неправильный статус ответа от сервера: " +
-            response.status
-        );
+      checkResponseSuccess(response);
+
+      if (response.data.data.referalLink === null) {
+        throw new Error("Реферальная ссылка полученная с сервера пустая")
       }
+
+      return response.data.data.referalLink
     },
   },
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import KarmaList from "@/components/karma/KarmaList.vue";
-
 </script>
 
 <template>

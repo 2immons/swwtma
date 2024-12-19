@@ -133,11 +133,11 @@ export const karmaStore = defineStore("karma", {
   actions: {
     async fetchKarma() {
       try {
-        const validationQuery = telegramStore().ensureValidationQuery();
+        const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
           `${config.backendURL}/api/cards/get-karma`,
-          validationQuery
+          webAppData
         );
 
         checkResponseSuccess(response);

@@ -11,8 +11,8 @@
   "tasks": "Tasks",
   "weekly": "Weekly",
   "become-referal": "Become referal",
-  "delete-account": "Delete account",
-  "change-stock": "Change stock exchange",
+  "delete-account": "Delete my account",
+  "avatar-setting": "Change avatar",
   "vibration": "Vibration",
   "coin-animation": "Coin animation",
   "yes": "Yes",
@@ -39,5 +39,7 @@
   "donate-from": "Donate from",
   "donate-more": "Donate more",
   "not-donated": "You didn't donate yet",
-  "buy": "Buy"
+  "buy": "Buy",
+  "enter-referal": "Enter referal link",
+  "confirm-btn": "Confirm"
 }

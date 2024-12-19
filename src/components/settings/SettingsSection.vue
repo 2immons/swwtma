@@ -1,37 +1,69 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, Ref, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
+import { settingsStore } from "@/store/settings";
 
-// Reactive state variables
-const isStockExchangeMenuVisible = ref(false);
+const settingsStoreInstance = settingsStore();
+
+const isAvatarSettingsVisible = ref(false);
 const isConfirmModalVisible = ref(false);
 const isLanguageSettingsVisible = ref(false);
+const isReferalSettingsVisible = ref(false);
 
+const avatarSettingArrow = ref("arrow-icon");
 const accountArrow = ref("arrow-icon");
-const stockExchangeArrow = ref("arrow-icon");
 const languageArrow = ref("arrow-icon");
+const referalArrow = ref("arrow-icon");
 
 const { t, locale } = useI18n();
 
-// Toggle functions
-const toggleDropdown = (isVisible, arrowRef) => {
+const toggleDropdown = (
+  isVisible: Ref<boolean, boolean>,
+  arrowRef: Ref<string, string>
+) => {
   isVisible.value = !isVisible.value;
   arrowRef.value = isVisible.value ? "arrow-icon--open" : "arrow-icon";
 };
 
-const toggleConfirmModal = () => toggleDropdown(isConfirmModalVisible, accountArrow);
-const toggleStockExchangeMenu = () => toggleDropdown(isStockExchangeMenuVisible, stockExchangeArrow);
-const toggleLanguageSettings = () => toggleDropdown(isLanguageSettingsVisible, languageArrow);
+const toggleConfirmModal = () =>
+  toggleDropdown(isConfirmModalVisible, accountArrow);
+const toggleStockExchangeMenu = () =>
+  toggleDropdown(isAvatarSettingsVisible, avatarSettingArrow);
+const toggleLanguageSettings = () =>
+  toggleDropdown(isLanguageSettingsVisible, languageArrow);
 
-// Dropdown close handler
+const toggleReferalSettings = () =>
+  toggleDropdown(isReferalSettingsVisible, referalArrow);
+
 const handleClickOutside = (event: Event) => {
   const dropdowns = [
-    { isVisible: isConfirmModalVisible, wrapper: ".account-wrapper", dropdown: ".setting-dropdown--confirm", arrow: accountArrow },
-    { isVisible: isStockExchangeMenuVisible, wrapper: ".stock-exchange-wrapper", dropdown: ".setting-dropdown--stock", arrow: stockExchangeArrow },
-    { isVisible: isLanguageSettingsVisible, wrapper: ".language-settings-wrapper", dropdown: ".setting-dropdown--language", arrow: languageArrow },
+    {
+      isVisible: isConfirmModalVisible,
+      wrapper: ".account-wrapper",
+      dropdown: ".setting-dropdown--confirm",
+      arrow: accountArrow,
+    },
+    {
+      isVisible: isAvatarSettingsVisible,
+      wrapper: ".avatar-settings-wrapper",
+      dropdown: ".setting-dropdown--avatar",
+      arrow: avatarSettingArrow,
+    },
+    {
+      isVisible: isLanguageSettingsVisible,
+      wrapper: ".language-settings-wrapper",
+      dropdown: ".setting-dropdown--language",
+      arrow: languageArrow,
+    },
+    {
+      isVisible: isReferalSettingsVisible,
+      wrapper: ".referal-wrapper",
+      dropdown: ".setting-dropdown--referal",
+      arrow: referalArrow,
+    },
   ];
 
   dropdowns.forEach(({ isVisible, wrapper, dropdown, arrow }) => {
@@ -39,13 +71,15 @@ const handleClickOutside = (event: Event) => {
     const wrapperElement = document.querySelector(wrapper);
     const dropdownElement = document.querySelector(dropdown);
 
+    // Если сейчас врапер открыт и цель клика не содержит ни врапер ни дропдаун,
+    // то скрыть и повернуть стрелку
     if (
-        isVisible.value &&
-        wrapperElement instanceof Node &&
-        dropdownElement instanceof Node &&
-        target &&
-        !wrapperElement.contains(target) &&
-        !dropdownElement.contains(target)
+      wrapperElement &&
+      dropdownElement &&
+      target &&
+      isVisible.value &&
+      !wrapperElement.contains(target) &&
+      !dropdownElement.contains(target)
     ) {
       isVisible.value = false;
       arrow.value = "arrow-icon";
@@ -53,7 +87,6 @@ const handleClickOutside = (event: Event) => {
   });
 };
 
-// Event setup
 onMounted(() => {
   eventBus.emit("toggleHeaderBackBtnVisibility", true);
   document.addEventListener("click", handleClickOutside);
@@ -72,20 +105,37 @@ onBeforeUnmount(() => {
   eventBus.off("headerBackBtnPressed");
 });
 
-// Stock and language settings
-const stockExchange = ref("Bybit");
-const setStock = (stock: string) => (stockExchange.value = stock);
+const referalLink = ref();
+const becomeReferal = () => {
+  toggleReferalSettings();
+  const regex = /startapp=ref_([a-zA-Z0-9]+)/;
+  const match = referalLink.value.match(regex);
+  try {
+    settingsStoreInstance.becomeReferal(match[1]);
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
+};
 
 const setLanguage = (language: string) => {
+  toggleLanguageSettings();
   locale.value = language;
+  try {
+    settingsStoreInstance.changeLanguage(language);
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
 };
 
-// Placeholder for account deletion
 const deleteAccount = () => {
-  console.log("Account deletion confirmed.");
+  toggleConfirmModal();
+  try {
+    settingsStoreInstance.deleteAccount();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
 };
 </script>
-
 
 <template>
   <section class="settings">
@@ -95,32 +145,27 @@ const deleteAccount = () => {
         <h2>Settings</h2>
         <div class="settings-list">
           <div
-            class="settings-wrapper stock-exchange-wrapper"
+            class="settings-wrapper avatar-settings-wrapper"
             @click="toggleStockExchangeMenu"
+            v-if="false"
           >
             <div class="setting-header">
-              <h3>{{ t("change-stock") }}</h3>
-              <p>{{ stockExchange }}</p>
+              <h3>{{ t("avatar-setting") }}</h3>
               <img
-                :class="stockExchangeArrow"
-                src="../assets/svg/nav/arrow-right.svg"
+                :class="avatarSettingArrow"
+                src="../../assets/svg/nav/arrow-right.svg"
                 alt=""
               />
             </div>
             <div
-              class="setting-dropdown setting-dropdown--stock"
-              v-if="isStockExchangeMenuVisible"
+              class="setting-dropdown setting-dropdown--avatar"
+              v-if="isAvatarSettingsVisible"
+              @click.stop
             >
-              <button @click="setStock('Bybit')" class="language-btn">
-                <img src="../assets/svg/flags/eng.svg" alt="English language" />
-                Bybit
-              </button>
-              <button @click="setStock('Test')" class="language-btn">
-                <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
-                Test
-              </button>
+              <p>Выбор фото</p>
             </div>
           </div>
+
           <div
             class="settings-wrapper language-settings-wrapper"
             @click="toggleLanguageSettings"
@@ -129,28 +174,64 @@ const deleteAccount = () => {
               <h3>{{ t("language-settings") }}</h3>
               <img
                 :class="languageArrow"
-                src="../assets/svg/nav/arrow-right.svg"
+                src="../../assets/svg/nav/arrow-right.svg"
                 alt=""
               />
             </div>
             <div
               class="setting-dropdown setting-dropdown--language"
               v-if="isLanguageSettingsVisible"
+              @click.stop
             >
               <button @click="setLanguage('en')" class="language-btn">
-                <img src="../assets/svg/flags/eng.svg" alt="English language" />
+                <img
+                  src="../../assets/svg/flags/eng.svg"
+                  alt="English language"
+                />
                 {{ t("english") }}
               </button>
               <button @click="setLanguage('ru')" class="language-btn">
-                <img src="../assets/svg/flags/rus.svg" alt="Russian language" />
+                <img
+                  src="../../assets/svg/flags/rus.svg"
+                  alt="Russian language"
+                />
                 {{ t("russian") }}
               </button>
             </div>
           </div>
-          <div class="settings-wrapper referal-wrapper">
-            <h3>{{ t("become-referal") }}</h3>
-            <p></p>
+
+          <div
+            class="settings-wrapper referal-wrapper"
+            @click="toggleReferalSettings"
+          >
+            <div class="setting-header">
+              <h3>{{ t("become-referal") }}</h3>
+              <img
+                :class="referalArrow"
+                src="../../assets/svg/nav/arrow-right.svg"
+                alt=""
+              />
+            </div>
+            <div
+              class="setting-dropdown setting-dropdown--referal"
+              v-if="isReferalSettingsVisible"
+              @click.stop
+            >
+              <p>{{ t("enter-referal") }}:</p>
+              <input
+                type="text"
+                v-model="referalLink"
+                placeholder="https://t.me/sww/app?startapp=ref_Tuq6WQIoEy"
+              />
+              <button
+                @click="becomeReferal"
+                class="setting-btn setting-btn--confirm"
+              >
+                {{ t("confirm-btn") }}
+              </button>
+            </div>
           </div>
+
           <div
             class="settings-wrapper account-wrapper"
             @click="toggleConfirmModal"
@@ -159,25 +240,33 @@ const deleteAccount = () => {
               <h3>{{ t("delete-account") }}</h3>
               <img
                 :class="accountArrow"
-                src="../assets/svg/nav/arrow-right.svg"
+                src="../../assets/svg/nav/arrow-right.svg"
                 alt=""
               />
             </div>
             <div
               class="setting-dropdown setting-dropdown--confirm"
               v-if="isConfirmModalVisible"
+              @click.stop
             >
               <h3>{{ t("is-sure") }}</h3>
               <div class="confirm-modal__buttons">
-                <button class="confirm-btn" @click="deleteAccount">
+                <button
+                  class="setting-btn setting-btn--confirm"
+                  @click="deleteAccount"
+                >
                   {{ t("yes") }}
                 </button>
-                <button class="deny-btn" @click="toggleConfirmModal">
+                <button
+                  class="setting-btn setting-btn--deny"
+                  @click="toggleConfirmModal"
+                >
                   {{ t("no") }}
                 </button>
               </div>
             </div>
           </div>
+
           <div class="sliders">
             <div class="settings-wrapper">
               <h3>{{ t("vibration") }}</h3>
@@ -196,7 +285,7 @@ const deleteAccount = () => {
 </template>
 
 <style scoped lang="sass">
-@import "src/styles/variables"
+@import "../../styles/variables"
 .settings
   display: flex
   justify-content: center
@@ -208,7 +297,7 @@ const deleteAccount = () => {
   left: 0
   height: 100%
   width: 100vw
-  background-image: url("../assets/svg/settings-vectors.svg")
+  background-image: url("../../assets/svg/settings-vectors.svg")
 .settings-content
   width: 100%
   align-items: start
@@ -249,13 +338,6 @@ h2
     position: absolute
     right: 21px
 
-.stock-exchange-wrapper, .account-wrapper
-  position: relative
-
-  p
-    opacity: 60%
-    font-size: 12px
-
 .setting-header
   position: relative
   gap: 12px
@@ -279,12 +361,32 @@ h2
   gap: 20px
   border-radius: 10px
 
+  p
+    opacity: 60%
+    font-size: 12px
+
   button
     display: flex
     align-items: center
     gap: 10px
     font-size: 18px
     color: white
+
+.setting-dropdown--referal
+  input
+    height: 30px
+    padding: 3px 0
+    background: transparent
+    border: none
+    border-bottom: 1px solid $c-dark-element
+    font-size: 11px
+    outline: none
+    color: white
+    width: 100%
+    transition: 0.2s border-bottom-color ease
+
+  input:focus
+    border-bottom: 1px solid $c-light-element
 
 .setting-dropdown--confirm
   align-items: center
@@ -293,15 +395,6 @@ h2
     display: flex
     width: 100%
     justify-content: space-around
-
-  button
-    background: $c-light-element
-    color: $c-main-text
-    font-size: 18px
-    border-radius: 12px
-    border: 1px solid $c-main-text
-    padding: 5px 10px
-    box-shadow: $c-element-shadow
 
 .sliders
   justify-content: space-between
@@ -317,6 +410,19 @@ h2
   padding: 0 0 0 15px
   align-items: center
 
+.setting-btn, setting-btn--confirm, setting-btn--deny
+  font-size: 18px
+  border-radius: 12px
+  border: 1px solid $c-main-text
+  padding: 5px 10px
+  box-shadow: $c-element-shadow
+
+.setting-btn--confirm
+  background: $c-light-element
+  color: $c-main-text
+.setting-btn--deny
+  background: $c-btn-deny
+  color: $c-light-text
 
 .politic
   opacity: 60%
