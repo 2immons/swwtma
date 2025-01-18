@@ -10,19 +10,19 @@ const friends = computed(() => {
   return friendsStoreInstance.friends;
 });
 
-const isReferalPopupVisible = ref(false)
+const isReferalPopupVisible = ref(false);
 
 const openReferalPopup = () => {
-  isReferalPopupVisible.value = true
-}
+  isReferalPopupVisible.value = true;
+};
 </script>
 
 <template>
   <div class="friends-list">
     <ReferalPopup
-        @click.stop
-        :modelValue="isReferalPopupVisible"
-        @update:modelValue="isReferalPopupVisible = $event"
+      @click.stop
+      :modelValue="isReferalPopupVisible"
+      @update:modelValue="isReferalPopupVisible = $event"
     />
     <div class="list-header">
       <p>6 Friends</p>
@@ -53,6 +53,9 @@ const openReferalPopup = () => {
   width: 100%
   justify-content: space-between
   align-items: center
+
+  p
+    font-size: 18px
 
   button
     background: $c-light-element

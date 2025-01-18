@@ -153,7 +153,7 @@ onMounted(async () => {
       font-weight: 600
       line-height: 36px
 
-      @media (max-width: 400px)
+      @media (max-width: 390px)
         font-size: 19px
 
       @media (max-width: 325px)

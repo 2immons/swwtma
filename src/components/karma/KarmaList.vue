@@ -156,5 +156,5 @@ const handleScroll = (event: Event) => {
   display: grid
   grid-template-columns: 1fr 1fr
   column-gap: 10px
-  row-gap: 19px
+  row-gap: 13px
 </style>

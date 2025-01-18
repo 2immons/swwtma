@@ -13,8 +13,8 @@ export const settingsStore = defineStore("settings", {
         const webAppData = telegramStore().getWebAppData;
 
         const response = await axios.post(
-            `${config.backendURL}/api/delete-account`,
-            webAppData
+          `${config.backendURL}/api/delete-account`,
+          webAppData
         );
 
         checkResponseSuccess(response);
@@ -33,8 +33,8 @@ export const settingsStore = defineStore("settings", {
         };
 
         const response = await axios.post(
-            `${config.backendURL}/api/change-language`,
-            requestBody
+          `${config.backendURL}/api/change-language`,
+          requestBody
         );
 
         checkResponseSuccess(response);

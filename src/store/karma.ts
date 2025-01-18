@@ -137,7 +137,7 @@ export const karmaStore = defineStore("karma", {
 
         const response = await axios.post(
           `${config.backendURL}/api/cards/get-karma`,
-          webAppData
+          webAppData,
         );
 
         checkResponseSuccess(response);

@@ -74,7 +74,7 @@ const claimReward = async () => {
             promoTask.promo_task_status !== 'COMPLETED'
           "
         >
-          <button @click="openPromoTask">
+          <button @click="openPromoTask" class="start-btn">
             {{
               promoTask.promo_task_status === "IN_PROGRESS"
                 ? t("continue-promo-task")
@@ -85,6 +85,7 @@ const claimReward = async () => {
         <button
           @click="claimReward"
           v-else-if="promoTask.promo_task_status === 'COMPLETED'"
+          class="claim-btn"
         >
           {{ t("claim-task") }}
         </button>
@@ -175,14 +176,38 @@ const claimReward = async () => {
     height: 30px
 
   button
-    background: white
-    padding: 4px 15px
-    border: 0.4px solid #22F07D33
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0 14px
+    width: fit-content
     border-radius: 50px
-    font-size: 12px
-    font-weight: 700
-    height: 100%
+    height: 25px
+    font-size: 10px
+    font-weight: bolder
+    backdrop-filter: blur(2px)
+    gap: 3px
+
+  .start-btn
+    border: 1px solid $c-border-color
     color: $c-main-text
+    backdrop-filter: blur(2px)
+    background: white
+    height: 100%
+
+  .claim-btn
+    background: $c-light-element
+    color: $c-main-text
+
+  .claimed-wrapper
+    height: 25px
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0 14px
+    border-radius: 50px
+    backdrop-filter: blur(2px)
+    background: rgba(34, 240, 125, 0.2)
 
   .benefits
     border: 1px solid $c-border-color
@@ -195,7 +220,7 @@ const claimReward = async () => {
     align-items: center
     justify-content: center
     font-size: 12px
-    font-weight: 500
+    font-weight: bolder
 
   .claimed-wrapper
     height: 30px

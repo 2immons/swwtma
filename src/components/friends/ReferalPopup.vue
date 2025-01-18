@@ -6,12 +6,13 @@ import {
   onBeforeUnmount,
   ref,
   computed,
+  watch,
 } from "vue";
 import { useI18n } from "vue-i18n";
-import {friendsStore} from "@/store/friends";
+import { friendsStore } from "@/store/friends";
 import QrCode from "@/components/ui/QrCode.vue";
-import {telegramStore} from "@/store/telegram";
-import {eventBus} from "@/event_bus/eventBus";
+import { telegramStore } from "@/store/telegram";
+import { eventBus } from "@/event_bus/eventBus";
 
 const { t, locale } = useI18n();
 
@@ -28,48 +29,101 @@ const closePopup = () => {
 };
 
 const copy = async () => {
-  await navigator.clipboard.writeText(referalLink.value + "\n" + referalText.value)
-  const telegramStoreInstance = telegramStore()
-  telegramStoreInstance.showAlert("Ссылка: " + referalLink.value + " скопирована в буфер обмена!")
-}
+  await navigator.clipboard.writeText(
+    referalLink.value + "\n" + referalText.value
+  );
+  eventBus.emit("showInfoPopup", t("link-copied"));
+  closePopup()
+};
 
-const size = ref(270)
-const referalLink = ref("https://t.me/EcologyWorkers_bot/saveworldweb?startapp=ref_Tuq6WQIoEy");
-const referalText = ref("Присоединяйтесь!")
+const size = ref(270);
+const referalLink = ref(
+  "https://t.me/EcologyWorkers_bot/saveworldweb?startapp=ref_Tuq6WQIoEy"
+);
+const referalText = ref("Присоединяйтесь!");
 
-const telegramShareUrl = computed(() => `https://t.me/share/url?url=${encodeURIComponent(referalLink.value)}&text=${encodeURIComponent(referalText.value)}`)
+const telegramShareUrl = computed(
+  () =>
+    `https://t.me/share/url?url=${encodeURIComponent(
+      referalLink.value
+    )}&text=${encodeURIComponent(referalText.value)}`
+);
 
 onMounted(async () => {
-  await requestReferalData()
-})
+  if (props.modelValue) {
+    document.body.classList.add("no-scroll");
+  }
+  await requestReferalData();
+});
+
+onBeforeUnmount(() => {
+  document.body.classList.remove("no-scroll");
+});
+
+// Слушайте изменения `modelValue` и обновляйте класс
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    if (newVal) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }
+);
 
 const requestReferalData = async () => {
   try {
     referalLink.value = await friendsStoreInstance.ensureReferalLink();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message)
+    eventBus.emit("showErrorPopup", error.message);
   }
-}
+};
+
+const touchStartY = ref(0);
+const touchEndY = ref(0);
+const swipeThreshold = 50;
+const onTouchStart = (event: TouchEvent) => {
+  touchStartY.value = event.touches[0].clientY;
+};
+
+const onTouchMove = (event: TouchEvent) => {
+  touchEndY.value = event.touches[0].clientY;
+};
+
+const onTouchEnd = () => {
+  if (touchEndY.value - touchStartY.value > swipeThreshold) {
+    closePopup(); // Закрыть компонент при свайпе вниз
+  }
+};
 </script>
 
 <template>
   <Transition>
-    <div class="card-popup" v-if="modelValue" @click="closePopup">
+    <div
+      class="card-popup"
+      v-if="modelValue"
+      @click="closePopup"
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
+    >
       <div class="content" @click.stop>
         <div class="container">
-          <div class="popup-header">
-            <h2>Пригласить друга</h2>
-          </div>
-          <QrCode
-            :size="size"
-            :qrLink="referalLink"
-          />
-          <div class="buttons">
-            <a :href="telegramShareUrl" target="_blank" class="share-button">
-              Поделиться
-            </a>
-            <button @click="copy">Скопировать ссылку</button>
-            <button @click="closePopup">Закрыть</button>
+          <div class="wrapper no-scrollbar">
+            <div class="popup-header">
+              <h2>Пригласить друга</h2>
+            </div>
+            <div class="photo">
+              <QrCode :size="size" :qrLink="referalLink" />
+            </div>
+            <div class="buttons">
+              <a :href="telegramShareUrl" target="_blank" class="share-button">
+                Поделиться
+              </a>
+              <button @click="copy">Скопировать ссылку</button>
+              <button @click="closePopup">Закрыть</button>
+            </div>
           </div>
         </div>
       </div>
@@ -103,32 +157,47 @@ const requestReferalData = async () => {
   position: fixed
   bottom: 0
   background: $c-bg
+  height: 80%
+  max-height: 650px
   margin-top: 60px
-  padding-bottom: 8%
+  padding-bottom: 30px
   display: flex
   width: 100%
   flex-direction: column
   align-items: center
-  height: fit-content
   box-shadow: 0px -6px 54px 0px #FFFFFFB2
   border-top-right-radius: 40px
   border-top-left-radius: 40px
   z-index: 30
 
+.wrapper
+  display: flex
+  overflow: scroll
+  flex-direction: column
+  width: 100%
+  height: 100%
+  align-items: center
+  margin-top: 16px
+  border-top-right-radius: 30px
+  border-top-left-radius: 30px
+
+.container
+  height: 100%
+
 .photo
   position: relative
-  margin-top: 16px
   display: flex
   width: 100%
   border-radius: 20px
   justify-content: center
   align-items: center
-  height: 280px
+  min-height: 280px
   overflow: hidden
 
 .popup-header
   position: relative
   margin-top: 16px
+  min-height: fit-content
   display: flex
   width: 100%
   border-radius: 20px

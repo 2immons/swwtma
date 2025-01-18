@@ -60,7 +60,7 @@ export const profileStore = defineStore("profile", {
 
         const response = await axios.post(
           `${config.backendURL}/api/profile/myProfile`,
-            webAppData
+          webAppData
         );
 
         checkResponseSuccess(response);

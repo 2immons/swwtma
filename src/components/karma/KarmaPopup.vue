@@ -6,6 +6,7 @@ import {
   onBeforeUnmount,
   ref,
   computed,
+  watch,
 } from "vue";
 import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/layout/TheHeader.vue";
@@ -37,65 +38,115 @@ const closePopup = () => {
 const progressWidth = computed(() => {
   return String((props.karmaCard.raised / props.karmaCard.goal) * 100) + "%";
 });
+
+const touchStartY = ref(0);
+const touchEndY = ref(0);
+const swipeThreshold = 50;
+
+const onTouchStart = (event: TouchEvent) => {
+  touchStartY.value = event.touches[0].clientY;
+};
+
+const onTouchMove = (event: TouchEvent) => {
+  touchEndY.value = event.touches[0].clientY;
+};
+
+const onTouchEnd = () => {
+  if (touchEndY.value - touchStartY.value > swipeThreshold) {
+    closePopup(); // Закрыть компонент при свайпе вниз
+  }
+};
+
+onMounted(async () => {
+  if (props.modelValue) {
+    document.body.classList.add("no-scroll");
+  }
+});
+
+onBeforeUnmount(() => {
+  document.body.classList.remove("no-scroll");
+});
+
+// Слушайте изменения `modelValue` и обновляйте класс
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    if (newVal) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }
+);
 </script>
 
 <template>
   <Transition>
-    <div class="card-popup" v-if="modelValue" @click="closePopup">
+    <div
+      class="card-popup"
+      v-if="modelValue"
+      @click="closePopup"
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
+    >
       <div class="content" @click.stop>
         <div class="container">
-          <div class="photo">
-            <img src="../../assets/images/card-popup.png" alt="" />
-            <button @click="closePopup">+</button>
-          </div>
-          <div class="info">
-            <h3>{{ karmaCard.title }}</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam
-              commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et
-              amet consequat molestie. Fames in non vitae in
-            </p>
-          </div>
-          <hr />
-          <div class="stats">
-            <p>
-              {{ t("boost") }}: + {{ karmaCard.boost }}
-              <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-              /{{ t("h") }}
-            </p>
-          </div>
-          <div class="donation-goal">
-            <p>
-              {{ t("donation-goal") }}: {{ karmaCard.goal }}
-              <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-              ({{ t("last-donated") }}: {{ karmaCard.goal - karmaCard.raised }}
-              <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
-            </p>
-            <div class="donation-bar">
-              <div class="progress" :style="{ width: progressWidth }"></div>
+          <div class="wrapper no-scrollbar">
+            <div class="photo">
+              <img src="../../assets/images/card-popup.png" alt="" />
+              <button @click="closePopup">+</button>
             </div>
-            <p v-if="karmaCard.isPurchased">
-              {{ t("you-donated") }}: {{ karmaCard.userDonat }}
-              <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-            </p>
-            <p v-else-if="!karmaCard.isPurchased">
-              {{ t("not-donated") }}
-            </p>
+            <div class="info">
+              <h3>{{ karmaCard.title }}</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam
+                commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et
+                amet consequat molestie. Fames in non vitae in
+              </p>
+            </div>
+            <hr />
+            <div class="stats">
+              <p>
+                {{ t("boost") }}: + {{ karmaCard.boost }}
+                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+                /{{ t("h") }}
+              </p>
+            </div>
+            <div class="donation-goal">
+              <p>
+                {{ t("donation-goal") }}: {{ karmaCard.goal }}
+                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+                ({{ t("last-donated") }}:
+                {{ karmaCard.goal - karmaCard.raised }}
+                <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
+              </p>
+              <div class="donation-bar">
+                <div class="progress" :style="{ width: progressWidth }"></div>
+              </div>
+              <p v-if="karmaCard.isPurchased">
+                {{ t("you-donated") }}: {{ karmaCard.userDonat }}
+                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+              </p>
+              <p v-else-if="!karmaCard.isPurchased">
+                {{ t("not-donated") }}
+              </p>
+            </div>
+            <button
+              class="buy-btn"
+              v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+            >
+              {{ t("donate-from") }}: {{ karmaCard.price }}
+              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            </button>
+            <button
+              class="buy-btn"
+              v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+            >
+              {{ t("donate-more") }}
+              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            </button>
           </div>
-          <button
-            class="buy-btn"
-            v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
-          >
-            {{ t("donate-from") }}: {{ karmaCard.price }}
-            <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
-          </button>
-          <button
-            class="buy-btn"
-            v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
-          >
-            {{ t("donate-more") }}
-            <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
-          </button>
         </div>
       </div>
     </div>
@@ -128,27 +179,41 @@ const progressWidth = computed(() => {
   position: fixed
   bottom: 0
   background: $c-bg
+  height: 80%
+  max-height: 650px
   margin-top: 60px
-  padding-bottom: 8%
+  padding-bottom: 30px
   display: flex
   width: 100%
   flex-direction: column
   align-items: center
-  height: fit-content
   box-shadow: 0px -6px 54px 0px #FFFFFFB2
   border-top-right-radius: 40px
   border-top-left-radius: 40px
   z-index: 30
 
+.wrapper
+  display: flex
+  overflow: scroll
+  flex-direction: column
+  width: 100%
+  height: 100%
+  align-items: center
+  margin-top: 16px
+  border-top-right-radius: 30px
+  border-top-left-radius: 30px
+
+.container
+  height: 100%
+
 .photo
   position: relative
-  margin-top: 16px
   display: flex
   width: 100%
   border-radius: 20px
   justify-content: center
   align-items: center
-  height: 280px
+  min-height: 280px
   overflow: hidden
 
   button

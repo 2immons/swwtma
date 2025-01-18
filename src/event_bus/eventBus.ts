@@ -9,6 +9,7 @@ type Events = {
   disableSettingButton: boolean;
 
   showErrorPopup: string;
+  showInfoPopup: string;
 };
 
 export const eventBus = mitt<Events>();

@@ -115,7 +115,7 @@ onUnmounted(() => {
 <style scoped lang="sass">
 @import "../../styles/variables"
 footer
-  font-family: "Poppins", sans-serif
+  font-family: "Manrope", sans-serif
   bottom: 40px
   position: fixed
   z-index: 100
@@ -184,7 +184,7 @@ hr
     font-size: 14px
     white-space: nowrap
     line-height: 19px
-    font-weight: 700
+    font-weight: bold
   img
     width: 24px
     height: 24px

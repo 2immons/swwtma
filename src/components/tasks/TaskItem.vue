@@ -68,25 +68,35 @@ const claimReward = async () => {
     <div class="left-side">
       <img src="../../assets/svg/tasks/battery.svg" alt="" />
       <div class="info">
-        <h3>{{ task.title }}</h3>
-        <div class="income">
-          <p>+ 699</p>
-          <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-        </div>
+        <p>{{ task.title }}</p>
       </div>
     </div>
-    <div class="loader-wrapper" v-if="task.status === 'VERIFYING'">
-      <div class="loader"></div>
+    <div class="right-side">
+      <div class="income">
+        <p>+ 699</p>
+        <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+      </div>
+      <div class="loader-wrapper" v-if="task.status === 'VERIFYING'">
+        <div class="loader"></div>
+      </div>
+      <div class="claimed-wrapper" v-if="task.status === 'CLAIMED'">
+        <img src="../../assets/svg/v-icon.svg" alt="" />
+      </div>
+      <button
+          @click="acceptTask"
+          v-else-if="task.status === 'NOT_STARTED'"
+          class="start-btn"
+      >
+        {{ t("accept-task") }}
+      </button>
+      <button
+          @click="claimReward"
+          v-else-if="task.status === 'COMPLETED'"
+          class="claim-btn"
+      >
+        {{ t("claim-task") }}
+      </button>
     </div>
-    <div class="claimed-wrapper" v-if="task.status === 'CLAIMED'">
-      <p>{{ t("completed") }}</p>
-    </div>
-    <button @click="acceptTask" v-else-if="task.status === 'NOT_STARTED'">
-      {{ t("accept-task") }}
-    </button>
-    <button @click="claimReward" v-else-if="task.status === 'COMPLETED'">
-      {{ t("claim-task") }}
-    </button>
   </div>
 </template>
 
@@ -103,16 +113,39 @@ const claimReward = async () => {
   background: #FFFFFF05
   border: 1px solid $c-border-color
   border-radius: 18px
-  gap: 15px
+  gap: 12px
 
   .left-side
     display: flex
-    gap: 29px
+    gap: 21px
+    width: 90%
+
+  .right-side
+    display: flex
+    width: 10%
+    justify-content: space-between
+    min-width: 110px
 
   .info
+    flex: 1
     display: flex
-    flex-direction: column
     gap: 12px
+
+    p
+      font-size: 13px
+      font-weight: 600
+
+    @media (max-width: 360px)
+      p
+        font-size: 12px
+
+    @media (max-width: 345px)
+      p
+        font-size: 11px
+
+    @media (max-width: 338px)
+      p
+        font-size: 10px
 
   .income
     display: flex
@@ -150,51 +183,49 @@ const claimReward = async () => {
     display: flex
     align-items: center
     justify-content: center
-    padding: 0 14px
+    padding: 5px 14px
     width: fit-content
-    background: #FFFFFF1A
     border-radius: 50px
-    height: 25px
     font-size: 10px
-    font-weight: 800
-    color: white
-    border: 1px solid $c-border-color
+    font-weight: bold
     backdrop-filter: blur(2px)
     gap: 3px
 
-.claimed-wrapper
-  height: 25px
-  display: flex
-  align-items: center
-  justify-content: center
-  padding: 0 14px
-  border-radius: 50px
-  border: 1px solid $c-border-color
-  backdrop-filter: blur(2px)
-  background: #FFFFFF1A
-
-  p
-    font-size: 10px
-    font-weight: 600
+  .start-btn
+    background: #FFFFFF1A
     color: white
 
-.loader-wrapper
-  height: 25px
-  padding: 4px
-  background: #FFFFFF1A
-  border: 1px solid $c-border-color
-  border-radius: 50px
-  .loader
-    height: 100%
-    border: 3px solid #FFFFFF52
-    border-top: 3px solid #FFFFFFDE
-    border-radius: 50%
-    aspect-ratio: 1
-    animation: spin 1s linear infinite
+  .claim-btn
+    background: $c-light-element
+    color: $c-main-text
 
-    @keyframes spin
-      from
-        transform: rotate(0deg)
-      to
-        transform: rotate(360deg)
+  .claimed-wrapper
+    height: 25px
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 0 14px
+    border-radius: 50px
+    backdrop-filter: blur(2px)
+    background: rgba(34, 240, 125, 0.2)
+
+  .loader-wrapper
+    height: 25px
+    padding: 4px
+    background: #FFFFFF1A
+    border: 1px solid $c-border-color
+    border-radius: 50px
+    .loader
+      height: 100%
+      border: 3px solid #FFFFFF52
+      border-top: 3px solid #FFFFFFDE
+      border-radius: 50%
+      aspect-ratio: 1
+      animation: spin 1s linear infinite
+
+      @keyframes spin
+        from
+          transform: rotate(0deg)
+        to
+          transform: rotate(360deg)
 </style>

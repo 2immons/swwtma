@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import {telegramStore} from "@/store/telegram";
+import { telegramStore } from "@/store/telegram";
 
 // checkResponseSuccess проверяет поле response.data.success и выкидывает ошибку
 export function checkResponseSuccess(response: AxiosResponse) {

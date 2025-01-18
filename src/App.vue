@@ -28,6 +28,10 @@ html, body
   background-color: $c-bg
   position: relative
 
+.no-scroll
+  overflow: hidden
+  touch-action: none
+
 *
   user-select: none
   -webkit-user-select: none
@@ -82,6 +86,7 @@ input[type="submit"]
 
 h2
   font-size: 27px
+  font-family: inherit
 
 .container
   width: 92%
@@ -91,6 +96,7 @@ h2
   flex-direction: inherit
   justify-content: inherit
   align-items: inherit
+  font-family: inherit
 
 button
   background: transparent
@@ -99,10 +105,12 @@ button
   cursor: pointer
   -webkit-appearance: none
   color: $c-main-text
+  font-family: inherit
 
 a
   color: inherit
   text-decoration: none
+  font-family: inherit
 svg
   font-size: initial
 </style>

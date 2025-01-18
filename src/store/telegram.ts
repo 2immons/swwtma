@@ -14,7 +14,7 @@ interface UserData {
   firstName: string;
   lastName: string;
   language: string;
-  avatar: string,
+  avatar: string;
 }
 
 export const telegramStore = defineStore("telegram", {
@@ -26,7 +26,7 @@ export const telegramStore = defineStore("telegram", {
       firstName: "Unknown",
       lastName: "Unknown",
       language: "en",
-      avatar: ""
+      avatar: "",
     } as UserData,
     referalCode: null as null | string,
   }),
@@ -42,7 +42,9 @@ export const telegramStore = defineStore("telegram", {
           this.telegramWebApp.lockOrientation();
           this.telegramWebApp.disableVerticalSwipes();
 
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(
+            navigator.userAgent
+          );
           if (isMobile) {
             this.telegramWebApp.requestFullscreen();
           }
@@ -51,9 +53,11 @@ export const telegramStore = defineStore("telegram", {
         this.userData = this.getUserData();
         this.webAppData = this.generateWebAppData();
 
-        this.checkReferalCode()
+        this.checkReferalCode();
       } else {
-        console.error("Telegram WebApp недоступен. Методы инициализации Mini App пропущены.");
+        console.error(
+          "Telegram WebApp недоступен. Методы инициализации Mini App пропущены."
+        );
       }
     },
 
@@ -61,15 +65,14 @@ export const telegramStore = defineStore("telegram", {
     getUserData() {
       const user = this.telegramWebApp.initDataUnsafe?.user;
 
-      if (!user)
-        throw new Error("Ошибка получения данных пользователя")
+      if (!user) throw new Error("Ошибка получения данных пользователя");
 
       return {
         username: user.username || "No username",
         firstName: user.first_name || "Unknown",
         lastName: user.last_name || "Unknown",
         language: user.language_code || "en",
-        avatar: user.photo_url || ""
+        avatar: user.photo_url || "",
       };
     },
 
@@ -87,7 +90,7 @@ export const telegramStore = defineStore("telegram", {
               settingsStore().becomeReferal(this.referalCode);
           }
         } catch (error) {
-          throw new Error("Ошибка при проверке реферального кода.")
+          throw new Error("Ошибка при проверке реферального кода.");
         }
       }
     },
@@ -103,9 +106,9 @@ export const telegramStore = defineStore("telegram", {
       params.delete("hash");
 
       const dataCheckString = Array.from(params.entries())
-          .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
-          .map(([key, value]) => `${key}=${value}`)
-          .join("\n");
+        .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+        .map(([key, value]) => `${key}=${value}`)
+        .join("\n");
 
       return {
         web_app_data: {
@@ -117,20 +120,20 @@ export const telegramStore = defineStore("telegram", {
     },
 
     showAlert(msg: string) {
-      this.telegramWebApp.showAlert(msg)
+      this.telegramWebApp.showAlert(msg);
     },
 
     sendReferalLink(preparedInlineMessageID: number) {
-      this.telegramWebApp.shareMessage(preparedInlineMessageID)
-    }
+      this.telegramWebApp.shareMessage(preparedInlineMessageID);
+    },
   },
 
   getters: {
     getWebAppData: (state) => {
       if (!state.webAppData) {
-        throw new Error("WebAppData не установлена")
+        throw new Error("WebAppData не установлена");
       }
-      return state.webAppData
-    }
+      return state.webAppData;
+    },
   },
 });

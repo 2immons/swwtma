@@ -117,11 +117,11 @@ const becomeReferal = () => {
   }
 };
 
-const setLanguage = (language: string) => {
+const setLanguage = async (language: string) => {
   toggleLanguageSettings();
   locale.value = language;
   try {
-    settingsStoreInstance.changeLanguage(language);
+    await settingsStoreInstance.changeLanguage(language);
   } catch (error) {
     eventBus.emit("showErrorPopup", error.message);
   }
@@ -267,6 +267,8 @@ const deleteAccount = () => {
             </div>
           </div>
 
+          <h4>{{ t("game-settings") }}</h4>
+
           <div class="sliders">
             <div class="settings-wrapper">
               <h3>{{ t("vibration") }}</h3>
@@ -396,9 +398,11 @@ h2
     width: 100%
     justify-content: space-around
 
+h4
+  margin-top: 10px
+
 .sliders
   justify-content: space-between
-  margin-top: 10px
   width: 100%
   display: flex
   gap: 10px

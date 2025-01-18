@@ -179,7 +179,7 @@ const openCardPopup = () => {
     display: flex
     justify-content: space-between
     width: 100%
-    padding: 12px 0
+    padding: 10px 0
     text-align: left
     white-space: nowrap
 

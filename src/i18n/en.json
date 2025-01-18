@@ -41,5 +41,7 @@
   "not-donated": "You didn't donate yet",
   "buy": "Buy",
   "enter-referal": "Enter referal link",
-  "confirm-btn": "Confirm"
+  "confirm-btn": "Confirm",
+  "link-copied": "Referal link copied to clipboard!",
+  "game-settings": "Game settings:"
 }

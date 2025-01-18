@@ -34,19 +34,19 @@ export const questsStore = defineStore("tasks", {
         tasks: [
           {
             id: 0,
-            title: "Task 1",
+            title: "Recycle 5 battaries textet xtextetxtet",
             url: "https://vk.com/al_feed.php",
             status: "VERIFYING",
           },
           {
             id: 1,
-            title: "Tasks 2",
+            title: "Recycle 5 battaries textetxtextetxtet",
             url: "https://vk.com/al_feed.php",
             status: "CLAIMED",
           },
           {
             id: 2,
-            title: "Task 1",
+            title: "Recycle 5 battaries textetxtextetxtet",
             url: "https://vk.com/al_feed.php",
             status: "COMPLETED",
           },

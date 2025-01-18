@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, onUnmounted, computed, watch} from "vue";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import { telegramStore } from "@/store/telegram";
 import { useI18n } from "vue-i18n";
@@ -12,10 +12,18 @@ const isSettingsButtonDisabled = ref(false);
 const userData = computed(() => telegramStore().userData);
 
 const headerMarginClass = ref("");
-const isFullScreen = computed(() => telegramStore().telegramWebApp.isFullscreen)
-watch(isFullScreen, (newValue) => {
-  headerMarginClass.value = newValue ? "header-margin-calc" : "header-margin-default";
-}, { immediate: true });
+const isFullScreen = computed(
+  () => telegramStore().telegramWebApp.isFullscreen
+);
+watch(
+  isFullScreen,
+  (newValue) => {
+    headerMarginClass.value = newValue
+      ? "header-margin-calc"
+      : "header-margin-default";
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   eventBus.on("toggleHeaderBackBtnVisibility", (visible) => {
@@ -24,8 +32,6 @@ onMounted(() => {
   eventBus.on("disableSettingButton", (visible) => {
     isSettingsButtonDisabled.value = visible;
   });
-
-  locale.value = userData.value.language;
 });
 
 onUnmounted(() => {

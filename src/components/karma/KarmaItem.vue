@@ -128,7 +128,7 @@ const openCardPopup = () => {
   display: flex
   flex-direction: column
   width: 100%
-  padding: 21px
+  padding: 10px
   height: fit-content
   align-items: center
   justify-content: space-between
