@@ -158,6 +158,8 @@ const onTouchEnd = () => {
   bottom: 0
   background: vars.$c-bg
   height: 80%
+  display: flex
+  justify-content: center
   max-height: 650px
   margin-top: 60px
   padding-bottom: 30px

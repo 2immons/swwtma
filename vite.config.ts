@@ -6,7 +6,7 @@ import vueDevTools from "vite-plugin-vue-devtools";
 export default defineConfig(({ mode }) => ({
   plugins: [vue(), mode === "production" ? null : vueDevTools()],
   base:
-    mode === "production"
+    mode === "development"
       ? "https://2immons.github.io/save-world-web-tg-app/"
       : "/",
   resolve: {

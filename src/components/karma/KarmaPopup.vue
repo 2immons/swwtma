@@ -181,6 +181,8 @@ watch(
   background: vars.$c-bg
   height: 80%
   max-height: 650px
+  display: flex
+  justify-content: center
   margin-top: 60px
   padding-bottom: 30px
   border-top-right-radius: 30px
