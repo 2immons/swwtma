@@ -17,12 +17,8 @@ const props = defineProps<{
 }>();
 
 const tasksStoreInstance = questsStore();
-const { promoTasks } = storeToRefs(tasksStoreInstance);
 
-const promoTask = promoTasks.value.find(
-  (currentPromoTask) =>
-    currentPromoTask.promo_task_id === Number(props.promoTaskID)
-);
+const promoTask = tasksStoreInstance.groups[props.promoTaskID];
 
 const emit = defineEmits(["clicked"]);
 
@@ -61,7 +57,8 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .promo-task
   display: flex
   justify-content: center
@@ -76,7 +73,7 @@ onBeforeUnmount(() => {
   h2, h3
     display: flex
     align-self: start
-    color: $c-light-text
+    color: vars.$c-light-text
 
 .task-category__tasks
   height: fit-content

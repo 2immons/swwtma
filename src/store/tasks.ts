@@ -1,318 +1,230 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./utils/config";
-import { telegramStore } from "@/store/telegram";
-import { checkResponseSuccess } from "@/store/utils/apiUtils";
+import {checkResponseSuccess, getCsrfToken, requestConfig} from "@/store/utils/apiUtils";
+import { type TaskBaseSchema } from "@/types/types";
 
-interface Task {
-  id: number;
-  title: string;
-  url: string;
-  status: string;
+// Mock data
+const mockTasksResponse = {
+  groups: [
+    {
+      name: "Group 1",
+      description: "Description for Group 1",
+      is_active: true,
+      tasks: [
+        {
+          url: "https://example.com/task1",
+          name: "string",
+          description: "string",
+          reward: 100,
+          code_required: false,
+          id: 1,
+          category: "Category 1",
+          social: "Social 1",
+          is_done: false,
+        },
+      ],
+    },
+  ],
+  solo_tasks: [
+    {
+      url: "https://example.com/solo_task1",
+      name: "string",
+      description: "string 3",
+      reward: 50,
+      code_required: false,
+      id: 2,
+      category: "Category 2",
+      social: "Social 2",
+      is_done: false,
+    },
+    {
+      url: "https://example.com/solo_task1",
+      name: "string",
+      description: "string 1",
+      reward: 50,
+      code_required: false,
+      id: 1,
+      category: "Category 2",
+      social: "Social 2",
+      is_done: false,
+    },
+    {
+      url: "https://example.com/solo_task2",
+      name: "string",
+      description: "string 2",
+      reward: 75,
+      code_required: true,
+      id: 3,
+      category: "Category 3",
+      social: "Social 3",
+      is_done: true,
+    },
+  ],
+  tasks: [
+    {
+      url: "https://example.com/task2",
+      reward: 75,
+      code_required: true,
+      id: 3,
+      category: "Category 3",
+      social: "Social 3",
+      is_done: true,
+    },
+  ],
+};
+
+// Function to group tasks by category and add an index
+function groupTasksByCategory(
+  tasks: TaskBaseSchema[],
+): Array<{ category: string; index: number; tasks: TaskBaseSchema[] }> {
+  const categoryMap: { [key: string]: TaskBaseSchema[] } = {};
+
+  tasks.forEach((task) => {
+    const category = task.category || "Uncategorized"; // Default to 'Uncategorized' if category is null or undefined
+    if (!categoryMap[category]) {
+      categoryMap[category] = [];
+    }
+    categoryMap[category].push(task);
+  });
+
+  return Object.keys(categoryMap).map((category, index) => ({
+    category,
+    index,
+    tasks: categoryMap[category],
+  }));
 }
 
-interface Category {
-  cat_id: number;
-  title: string;
-  tasks: Task[];
-}
-
-interface PromoTask {
-  promo_task_id: number;
-  description: string;
-  title: string;
-  promo_task_status: string;
-  tasks: Task[];
-}
+// Function to determine the status of a group of tasks
+const getGroupTaskStatus = (tasks: TaskBaseSchema[]): string => {
+  if (tasks.every((task) => task.is_done)) {
+    return "completed";
+  } else if (tasks.some((task) => task.is_done)) {
+    return "in_progress";
+  } else {
+    return "not_started";
+  }
+};
 
 export const questsStore = defineStore("tasks", {
   state: () => ({
-    categories: [
-      {
-        cat_id: 0,
-        title: "Social",
-        tasks: [
-          {
-            id: 0,
-            title: "Recycle 5 battaries textet xtextetxtet",
-            url: "https://vk.com/al_feed.php",
-            status: "VERIFYING",
-          },
-          {
-            id: 1,
-            title: "Recycle 5 battaries textetxtextetxtet",
-            url: "https://vk.com/al_feed.php",
-            status: "CLAIMED",
-          },
-          {
-            id: 2,
-            title: "Recycle 5 battaries textetxtextetxtet",
-            url: "https://vk.com/al_feed.php",
-            status: "COMPLETED",
-          },
-          {
-            id: 3,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-          {
-            id: 4,
-            title: "Tasks 3",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-        ],
-      },
-      {
-        cat_id: 1,
-        title: "Social 2",
-        tasks: [
-          {
-            id: 5,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "VERIFYING",
-          },
-          {
-            id: 6,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "CLAIMED",
-          },
-          {
-            id: 7,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "COMPLETED",
-          },
-          {
-            id: 8,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-          {
-            id: 9,
-            title: "Tasks 3",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-        ],
-      },
-      {
-        cat_id: 2,
-        title: "Social 3",
-        tasks: [
-          {
-            id: 10,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "VERIFYING",
-          },
-          {
-            id: 11,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "CLAIMED",
-          },
-          {
-            id: 12,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "COMPLETED",
-          },
-        ],
-      },
-    ] as Category[],
-
-    promoTasks: [
-      {
-        promo_task_id: 0,
-        title: "Recycle",
-        description: "Recycle 5 batteries.",
-        promo_task_status: "NOT_STARTED",
-        tasks: [
-          {
-            id: 0,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "VERIFYING",
-          },
-          {
-            id: 1,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "CLAIMED",
-          },
-          {
-            id: 2,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "COMPLETED",
-          },
-          {
-            id: 3,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-          {
-            id: 4,
-            title: "Tasks 3",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-        ],
-      },
-      {
-        promo_task_id: 1,
-        title: "Animals",
-        description: "Recycle 5 batteries.",
-        promo_task_status: "NOT_STARTED",
-        tasks: [
-          {
-            id: 5,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "VERIFYING",
-          },
-          {
-            id: 6,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "CLAIMED",
-          },
-          {
-            id: 7,
-            title: "Task 1",
-            url: "https://vk.com/al_feed.php",
-            status: "COMPLETED",
-          },
-          {
-            id: 8,
-            title: "Tasks 2",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-          {
-            id: 9,
-            title: "Tasks 3",
-            url: "https://vk.com/al_feed.php",
-            status: "NOT_STARTED",
-          },
-        ],
-      },
-    ] as PromoTask[],
+    categories: groupTasksByCategory(mockTasksResponse.solo_tasks),
+    soloTasks: mockTasksResponse.solo_tasks,
+    groups: mockTasksResponse.groups,
   }),
 
   actions: {
     async fetchTasks() {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks`
+        const response = await axios.get(url, requestConfig);
 
-        const response = await axios.post(
-          `${config.backendURL}/api/cards/get-karma`,
-          webAppData
-        );
+        const validatedResponse = await checkResponseSuccess(response, url, "get")
 
-        checkResponseSuccess(response);
-
-        this.categories = response.data.data.tasks;
-        this.promoTasks = response.data.data.promoTasks;
+        this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
+        this.soloTasks = validatedResponse.data.solo_tasks;
       } catch (error) {
         console.error("Ошибка при получении заданий:", error);
         throw new Error("Server error when getting tasks list");
       }
     },
 
-    acceptTask(task: any) {
-      const category = this.categories.find((cat) =>
-        cat.tasks.some((t) => t.id === task.id)
-      );
-      if (category) {
-        const taskToUpdate = category.tasks.find((t) => t.id === task.id);
-        if (taskToUpdate) {
-          taskToUpdate.status = "VERIFYING";
+    // async completeTask(task: any) {
+    //   const category = this.categories.find((cat) =>
+    //     cat.tasks.some((t) => t.id === task.id)
+    //   );
+    //   if (category) {
+    //     const taskToUpdate = category.tasks.find((t) => t.id === task.id);
+    //     if (taskToUpdate) {
+    //       taskToUpdate.status = "VERIFYING";
 
-          // TODO: заменить ниже на получение ответа от сервера
-          setTimeout(() => {
-            taskToUpdate.status = "COMPLETED";
-          }, 5000);
-        }
-      }
-    },
+    //       const response = await axios.post(
+    //       `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion?task_id=${task.id}'`,
+    //       {
+    //         withCredentials: true,
+    //           headers: {
+    //             'X-CSRF-Token': getCsrfToken()
+    //           }
+    //         }
+    //       );
 
-    acceptPromoTask(task: any) {
-      const promoTask = this.promoTasks.find((pt) =>
-        pt.tasks.some((t) => t.id === task.id)
-      );
-      if (promoTask) {
-        const taskToUpdate = promoTask.tasks.find((t) => t.id === task.id);
-        if (taskToUpdate) {
-          taskToUpdate.status = "VERIFYING";
-          promoTask.promo_task_status = "IN_PROGRESS";
+    //       checkResponseSuccess(response);
+    //       setTimeout(() => {
+    //         taskToUpdate.status = "COMPLETED";
+    //       }, 5000);
+    //     }
+    //   }
+    // },
 
-          // TODO: заменить ниже на получение ответа от сервера
-          setTimeout(() => {
-            taskToUpdate.status = "COMPLETED";
-          }, 5000);
+    // acceptPromoTask(task: any) {
+    //   const promoTask = this.promoTasks.find((pt) =>
+    //     pt.tasks.some((t) => t.id === task.id)
+    //   );
+    //   if (promoTask) {
+    //     const taskToUpdate = promoTask.tasks.find((t) => t.id === task.id);
+    //     if (taskToUpdate) {
+    //       taskToUpdate.status = "VERIFYING";
+    //       promoTask.promo_task_status = "IN_PROGRESS";
 
-          let isAllTasksCompleted = true;
-          promoTask.tasks.forEach((task) => {
-            if (task.status !== "COMPLETED") {
-              isAllTasksCompleted = false;
-              return;
-            }
-          });
+    //       // TODO: заменить ниже на получение ответа от сервера
+    //       setTimeout(() => {
+    //         taskToUpdate.status = "COMPLETED";
+    //       }, 5000);
 
-          if (isAllTasksCompleted) {
-            promoTask.promo_task_status = "COMPLETED";
-          }
-        }
-      }
-    },
+    //       let isAllTasksCompleted = true;
+    //       promoTask.tasks.forEach((task) => {
+    //         if (task.status !== "COMPLETED") {
+    //           isAllTasksCompleted = false;
+    //           return;
+    //         }
+    //       });
 
-    claimPromoTaskReward(promoTask: PromoTask) {
-      const foundPromoTask = this.promoTasks.find(
-        (pt: PromoTask) => pt.promo_task_id === promoTask.promo_task_id
-      );
+    //       if (isAllTasksCompleted) {
+    //         promoTask.promo_task_status = "COMPLETED";
+    //       }
+    //     }
+    //   }
+    // },
 
-      // TODO: вставить здесь запрос на сервер
+    // claimPromoTaskReward(promoTask: PromoTask) {
+    //   const foundPromoTask = this.promoTasks.find(
+    //     (pt: PromoTask) => pt.promo_task_id === promoTask.promo_task_id
+    //   );
 
-      if (foundPromoTask) {
-        promoTask.promo_task_status = "CLAIMED";
-      }
-    },
+    //   // TODO: вставить здесь запрос на сервер
 
-    claimReward(task: any) {
-      const category = this.categories.find((cat) =>
-        cat.tasks.some((t) => t.id === task.id)
-      );
-      if (category) {
-        const taskToUpdate = category.tasks.find((t) => t.id === task.id);
-        if (taskToUpdate) {
-          taskToUpdate.status = "CLAIMED";
-        }
-      }
-    },
+    //   if (foundPromoTask) {
+    //     promoTask.promo_task_status = "CLAIMED";
+    //   }
+    // },
 
-    async joinQuest(quest: any) {
-      const response = await axios.post(
-        config.backendURL + "/orders/join-quest",
-        {
-          quest,
-          withCredentials: true,
-        }
-      );
+    // claimReward(task: any) {
+    //   const category = this.categories.find((cat) =>
+    //     cat.tasks.some((t) => t.id === task.id)
+    //   );
+    //   if (category) {
+    //     const taskToUpdate = category.tasks.find((t) => t.id === task.id);
+    //     if (taskToUpdate) {
+    //       taskToUpdate.status = "CLAIMED";
+    //     }
+    //   }
+    // },
 
-      if (response.status !== 201) {
-        throw new Error(
-          "Не удалось создать обращение. Неправильный статус ответа от сервера: " +
-            response.status
-        );
-      }
-    },
+    // async joinQuest(quest: any) {
+    //   const response = await axios.post(
+    //     config.backendURL + "/orders/join-quest",
+    //     {
+    //       quest,
+    //       withCredentials: true,
+    //     }
+    //   );
+
+    //   if (response.status !== 201) {
+    //     throw new Error(
+    //       "Не удалось создать обращение. Неправильный статус ответа от сервера: " +
+    //         response.status
+    //     );
+    //   }
+    // },
   },
 
   getters: {},

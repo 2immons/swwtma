@@ -8,7 +8,8 @@
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .game-bg
   width: 100%
   display: flex

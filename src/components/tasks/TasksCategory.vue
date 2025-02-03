@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, computed } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
+import { TaskBaseSchema } from "@/types/types";
 
 // Определение интерфейсов
 interface Task {
@@ -11,9 +12,9 @@ interface Task {
 }
 
 interface Category {
-  cat_id: number;
-  title: string;
-  tasks: Task[];
+  category: string;
+  index: number;
+  tasks: TaskBaseSchema[];
 }
 
 const props = defineProps<{
@@ -27,7 +28,7 @@ const emit = defineEmits(["clicked"]);
 <template>
   <div
     class="task-category__tasks"
-    v-if="props.activeCategory === props.category.cat_id"
+    v-if="props.activeCategory === props.category.index"
   >
     <TaskItem
       class="task-category__task"
@@ -40,6 +41,8 @@ const emit = defineEmits(["clicked"]);
 </template>
 
 <style scoped lang="sass">
+@use "@/styles/variables" as vars
+
 .task-category
   position: relative
 

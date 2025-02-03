@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./utils/config";
+
 import { telegramStore } from "@/store/telegram";
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
@@ -10,11 +10,11 @@ export const settingsStore = defineStore("settings", {
   actions: {
     async deleteAccount() {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const initData = telegramStore().initData;
 
         const response = await axios.post(
-          `${config.backendURL}/api/delete-account`,
-          webAppData
+          `${import.meta.env.VITE_BACKEND}/api/delete-account`,
+          initData,
         );
 
         checkResponseSuccess(response);
@@ -25,16 +25,16 @@ export const settingsStore = defineStore("settings", {
     },
     async changeLanguage(language: string) {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const initData = telegramStore().getInitData;
 
         const requestBody = {
-          ...webAppData,
+          // ...initData,
           language: language,
         };
 
         const response = await axios.post(
-          `${config.backendURL}/api/change-language`,
-          requestBody
+          `${import.meta.env.VITE_BACKEND}/api/change-language`,
+          requestBody,
         );
 
         checkResponseSuccess(response);
@@ -45,16 +45,16 @@ export const settingsStore = defineStore("settings", {
     },
     async becomeReferal(code: string) {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const initData = telegramStore().getInitData;
 
         const requestBody = {
-          ...webAppData,
+          //...initData,
           code: code,
         };
 
         const response = await axios.post(
-          `${config.backendURL}/api/become-referal`,
-          requestBody
+          `${import.meta.env.VITE_BACKEND}/api/become-referal`,
+          requestBody,
         );
 
         checkResponseSuccess(response);

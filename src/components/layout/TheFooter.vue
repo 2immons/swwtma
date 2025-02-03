@@ -113,7 +113,8 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 footer
   font-family: "Manrope", sans-serif
   bottom: 40px
@@ -126,24 +127,27 @@ footer
   flex-direction: column
   justify-content: start
   align-items: center
-  color: $c-light-text
+  color: vars.$c-light-text
+
 hr
   position: absolute
   top: -2px
   width: 100%
-  border: 1px solid $c-separator
+  border: 1px solid vars.$c-separator
+
 .footer-content
   display: flex
   justify-content: space-between
   width: 100%
   height: 76px
   align-items: center
-  background: $c-footer
-  border: 1px solid $c-border-color
+  background: vars.$c-footer
+  border: 1px solid vars.$c-border-color
   border-image-source: linear-gradient(0deg, rgba(34, 240, 125, 0.2), rgba(34, 240, 125, 0.2)), linear-gradient(86.36deg, rgba(255, 255, 255, 0) 49.24%, rgba(255, 255, 255, 0.2) 99.34%), linear-gradient(266.98deg, rgba(255, 255, 255, 0) 39.05%, rgba(255, 255, 255, 0.3) 119.18%)
   border-radius: 83px
   padding: 6px
   backdrop-filter: blur(7px)
+
 .nav-item
   display: flex
   flex-direction: column
@@ -154,7 +158,7 @@ hr
   img
     width: 24px
     height: 24px
-    color: $c-light-text
+    color: vars.$c-light-text
 
 .nav-item:first-child
   margin-left: 4%
@@ -168,6 +172,7 @@ hr
   align-items: center
   justify-content: center
   gap: 3px
+
 .active-nav-item
   border-radius: 70px
   border: 0.4px solid #00000066
@@ -178,15 +183,17 @@ hr
   overflow: hidden
   padding: 20px 30px
   height: 64px
-  background: $c-footer-active-element
+  background: vars.$c-footer-active-element
+
   p
-    color: $c-light-text
+    color: vars.$c-light-text
     font-size: 14px
     white-space: nowrap
     line-height: 19px
     font-weight: bold
+
   img
     width: 24px
     height: 24px
-    color: $c-light-text
+    color: vars.$c-light-text
 </style>

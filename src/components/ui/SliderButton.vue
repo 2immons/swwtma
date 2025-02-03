@@ -24,21 +24,22 @@ const moveSlider = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .slider-wrapper-left
   transition: ease 0.2s
   background: rgba(255, 255, 255, 0.03)
 
 .slider-wrapper-right
   transition: ease 0.2s
-  background: $c-light-element
+  background: vars.$c-light-element
 
 .slider-wrapper-left, .slider-wrapper-right
   position: relative
   width: 80px
   height: 35px
   border-radius: 21px
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   transition: ease 0.2s
 
   .left, .right
@@ -51,8 +52,9 @@ const moveSlider = () => {
     transform: translateY(-50%)
     left: 7px
     transition: ease 0.2s
+
   .right
     left: 48px
     transition: ease 0.2s
-    background: $c-main-text
+    background: vars.$c-main-text
 </style>

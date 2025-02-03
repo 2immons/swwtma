@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./utils/config";
+
 import { useI18n } from "vue-i18n";
 
 export const worldPopulationStore = defineStore("world-population", {

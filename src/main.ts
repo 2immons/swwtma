@@ -4,7 +4,6 @@ import router from "./router";
 import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "@/i18n";
-import Tres from "@tresjs/core";
 import PopupWindow from "@/components/PopupWindow.vue";
 import { telegramStore } from "@/store/telegram";
 
@@ -32,9 +31,11 @@ app.mixin({
 app.use(router);
 app.use(pinia);
 app.use(i18n);
-app.use(Tres);
 
-telegramStore().setMiniAppSettings();
+const telegramStoreInstance = telegramStore();
+
+telegramStoreInstance.setMiniAppSettings();
+telegramStoreInstance.setMiniAppData();
 
 app.component("PopupWindow", PopupWindow);
 

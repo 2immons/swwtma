@@ -26,7 +26,8 @@ const questsStoreInstance = questsStore();
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .stats-wrapper
   width: 100%
   display: flex
@@ -37,7 +38,7 @@ const questsStoreInstance = questsStore();
 
 .earned-coins-box
   position: relative
-  background: #FFFFFF0D
+  background: vars.$c-dark-element
   height: 120px
   width: 100%
   display: flex
@@ -45,7 +46,7 @@ const questsStoreInstance = questsStore();
   align-items: start
   justify-content: space-between
   padding: 22px
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   opacity: 100%
   border-radius: 20px
   overflow: hidden
@@ -91,9 +92,9 @@ const questsStoreInstance = questsStore();
       height: 30px
       width: 112px
       border-radius: 50px
-      color: $c-main-text
+      color: vars.$c-main-text
       background: white
-      border: 1px solid $c-border-color
+      border: 1px solid vars.$c-border-color
       font-weight: 700
 
 .help
@@ -112,7 +113,7 @@ const questsStoreInstance = questsStore();
     display: flex
     justify-content: center
     align-items: center
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     padding: 6px
     border-radius: 50px
     font-size: 10px

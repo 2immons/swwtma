@@ -33,10 +33,12 @@ const props = defineProps<{
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 hr
   border: 0.4px solid #F7F7F71A
   margin-bottom: 12px
+
 .friend
   width: 100%
   display: flex

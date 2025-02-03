@@ -1,40 +1,52 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+} from "vue-router";
 
-const routes: Array<RouteRecordRaw> = [
+import HomeView from "../views/HomeView.vue";
+import TasksView from "../views/TasksView.vue";
+import SettingsView from "../views/SettingsView.vue";
+import KarmaView from "../views/KarmaView.vue";
+import MiningView from "../views/MiningView.vue";
+import FriendsView from "../views/FriendsView.vue";
+import PromoTaskView from "../views/PromoTaskView.vue";
+
+const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../views/HomeView.vue"),
+    component: HomeView,
   },
   {
     path: "/tasks",
     name: "tasks",
-    component: () => import("../views/TasksView.vue"),
+    component: TasksView,
   },
   {
     path: "/settings",
     name: "settings",
-    component: () => import("../views/SettingsView.vue"),
+    component: SettingsView,
   },
   {
     path: "/karma",
     name: "karma",
-    component: () => import("../views/KarmaView.vue"),
+    component: KarmaView,
   },
   {
     path: "/mining",
     name: "mining",
-    component: () => import("../views/MiningView.vue"),
+    component: MiningView,
   },
   {
     path: "/friends",
     name: "friends",
-    component: () => import("../views/FriendsView.vue"),
+    component: FriendsView,
   },
   {
     path: "/tasks/promo-task/:promo_task_id",
     name: "promo-task",
-    component: () => import("../views/PromoTaskView.vue"),
+    component: PromoTaskView,
     props: true,
   },
 ];
@@ -42,6 +54,17 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: "smooth",
+      };
+    } else {
+      document.getElementById("app")?.scrollIntoView({ behavior: "instant" });
+      return { top: 0 };
+    }
+  },
 });
 
 export default router;

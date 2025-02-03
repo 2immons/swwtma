@@ -34,10 +34,11 @@ const gameBtnClass = ref("inactive-btn");
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .select-wrapper
   position: relative
-  background: #FFFFFF0D
+  background: vars.$c-dark-element
   border-radius: 70px
   height: 40px
   width: 100%
@@ -51,7 +52,7 @@ const gameBtnClass = ref("inactive-btn");
     opacity: 50%
 
   .active-btn
-    color: $c-main-text
+    color: vars.$c-main-text
     opacity: 100%
     background: #FBFBFB
     width: 100%

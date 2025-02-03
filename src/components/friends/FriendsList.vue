@@ -39,7 +39,8 @@ const openReferalPopup = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .friends-list
   color: white
   display: flex
@@ -58,17 +59,16 @@ const openReferalPopup = () => {
     font-size: 18px
 
   button
-    background: $c-light-element
-    border: 1px solid $c-border-color
+    background: vars.$c-light-element
+    border: 1px solid vars.$c-border-color
     padding: 10px 15px
     height: 30px
     display: flex
     align-items: center
-    color: $c-main-text
+    color: vars.$c-main-text
     border-radius: 50px
     font-size: 12px
     font-weight: 700
-
 
 .list
   display: flex

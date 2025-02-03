@@ -78,7 +78,8 @@ const openCardPopup = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .card-item
   position: relative
   overflow: hidden
@@ -88,9 +89,9 @@ const openCardPopup = () => {
   justify-content: space-between
   width: 100%
   height: fit-content
-  color: $c-light-text
+  color: vars.$c-light-text
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), linear-gradient(180deg, rgba(21, 23, 21, 0) 49.96%, rgba(34, 240, 125, 0.26) 112.51%)
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   border-radius: 18px
 
 .card-item--inactive
@@ -121,7 +122,7 @@ const openCardPopup = () => {
   width: 100%
   height: 161px
   overflow: hidden
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   border-radius: 18px
 
   img
@@ -151,7 +152,7 @@ const openCardPopup = () => {
       font-size: 14px
 
     .card__boost
-      color: $c-light-element
+      color: vars.$c-light-element
       font-size: 12px
       display: flex
       align-items: center
@@ -172,7 +173,7 @@ const openCardPopup = () => {
       background: #FFFFFF1A
 
   hr
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     width: 100%
 
   .footer
@@ -189,7 +190,7 @@ const openCardPopup = () => {
       display: flex
       justify-content: center
       gap: 3px
-      border: 1px solid $c-border-color
+      border: 1px solid vars.$c-border-color
 
       p
         font-size: 9px

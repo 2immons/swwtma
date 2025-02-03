@@ -93,7 +93,8 @@ const openCardPopup = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .card-item
   overflow: hidden
   display: flex
@@ -102,9 +103,9 @@ const openCardPopup = () => {
   justify-content: space-between
   width: 100%
   height: 338px
-  color: $c-light-text
-  background: #FFFFFF05
-  border: 1px solid $c-border-color
+  color: vars.$c-light-text
+  background: vars.$c-task-item-bg
+  border: 1px solid vars.$c-border-color
   border-radius: 18px
   position: relative
 
@@ -112,7 +113,7 @@ const openCardPopup = () => {
     position: absolute
     height: 72px
     width: 60%
-    background: $c-light-element
+    background: vars.$c-light-element
     filter: blur(22px)
     -webkit-filter: blur(22px)
     border-radius: 100px
@@ -140,7 +141,7 @@ const openCardPopup = () => {
     width: 100%
     height: 140px
     overflow: hidden
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     border-radius: 9px
 
   .info
@@ -157,7 +158,7 @@ const openCardPopup = () => {
       text-align: start
 
     .card__boost
-      color: $c-light-element
+      color: vars.$c-light-element
       font-size: 12px
       display: flex
       align-items: center
@@ -202,13 +203,13 @@ const openCardPopup = () => {
         align-items: center
         height: 4px
         width: 100%
-        background: #FFFFFF0D
+        background: vars.$c-dark-element
         border: 1px solid #FFFFFF40
         backdrop-filter: blur(2px)
         border-radius: 40px
 
         .progress
-          background: $c-light-element
+          background: vars.$c-light-element
           height: 5px
           border-radius: 40px
 
@@ -222,9 +223,9 @@ const openCardPopup = () => {
       font-weight: 700
       background: white
       padding: 9px 0
-      border: 1px solid $c-border-color
+      border: 1px solid vars.$c-border-color
       border-radius: 100px
-      color: $c-main-text
+      color: vars.$c-main-text
       z-index: 10
 
       img

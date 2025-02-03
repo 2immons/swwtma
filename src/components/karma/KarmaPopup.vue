@@ -76,7 +76,7 @@ watch(
     } else {
       document.body.classList.remove("no-scroll");
     }
-  }
+  },
 );
 </script>
 
@@ -154,7 +154,7 @@ watch(
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
 
 .v-enter-active,
 .v-leave-active
@@ -178,28 +178,11 @@ watch(
 .content
   position: fixed
   bottom: 0
-  background: $c-bg
+  background: vars.$c-bg
   height: 80%
   max-height: 650px
   margin-top: 60px
   padding-bottom: 30px
-  display: flex
-  width: 100%
-  flex-direction: column
-  align-items: center
-  box-shadow: 0px -6px 54px 0px #FFFFFFB2
-  border-top-right-radius: 40px
-  border-top-left-radius: 40px
-  z-index: 30
-
-.wrapper
-  display: flex
-  overflow: scroll
-  flex-direction: column
-  width: 100%
-  height: 100%
-  align-items: center
-  margin-top: 16px
   border-top-right-radius: 30px
   border-top-left-radius: 30px
 
@@ -216,16 +199,59 @@ watch(
   min-height: 280px
   overflow: hidden
 
+.popup-header
+  position: relative
+  margin-top: 16px
+  min-height: fit-content
+  display: flex
+  width: 100%
+  border-radius: 20px
+  justify-content: center
+  align-items: center
+  overflow: hidden
+  margin-bottom: 20px
+
   button
     position: absolute
     right: 10px
-    top: -12px
+    top: -25px
     rotate: 45deg
     font-weight: 200
     font-size: 60px
     line-height: 84px
     background: transparent
-    color: $c-main-text
+    color: vars.$c-main-text
+
+.buttons
+  display: flex
+  flex-direction: column
+  width: 100%
+  margin-top: 30px
+  gap: 15px
+
+  button, a
+    width: 100%
+    font-size: 16px
+    font-weight: 700
+    background: white
+    padding: 15px 0
+    border: 1px solid vars.$c-border-color
+    border-radius: 100px
+    align-items: center
+    justify-content: center
+    gap: 4px
+    color: vars.$c-main-text
+
+.wrapper
+  display: flex
+  overflow: scroll
+  flex-direction: column
+  width: 100%
+  height: 100%
+  align-items: center
+  margin-top: 16px
+  border-top-right-radius: 30px
+  border-top-left-radius: 30px
 
 .info
   margin-top: 26px
@@ -244,7 +270,7 @@ watch(
 hr
   margin: 20px 0
   width: 100%
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
 
 .stats
   display: flex
@@ -262,7 +288,6 @@ hr
     opacity: 70%
     img
       height: 12px
-
 
 .donation-goal
   display: flex
@@ -290,13 +315,13 @@ hr
     align-items: center
     height: 4px
     width: 100%
-    background: #FFFFFF0D
+    background: vars.$c-dark-element
     border: 1px solid #FFFFFF40
     backdrop-filter: blur(2px)
     border-radius: 40px
 
     .progress
-      background: $c-light-element
+      background: vars.$c-light-element
       height: 5px
       border-radius: 40px
 
@@ -307,13 +332,13 @@ hr
   font-weight: 700
   background: white
   padding: 15px 0
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   border-radius: 100px
   display: flex
   align-items: center
   justify-content: center
   gap: 4px
-  color: $c-main-text
+  color: vars.$c-main-text
 
   img
     height: 14px

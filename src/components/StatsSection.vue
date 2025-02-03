@@ -1,56 +1,3 @@
-<template>
-  <section class="stats-section">
-    <div class="container">
-      <div class="stats-content">
-        <div class="stats-wrapper">
-          <div class="stats__item stats__item--balance">
-            <p>{{ t("your-balance") }}</p>
-            <div class="amount">
-              {{ balance }}
-              <img src="../assets/svg/stats/green-coin.svg" alt="" />
-            </div>
-          </div>
-          <div class="stats__item stats__item--mining-speed">
-            <p>{{ t("mining-speed") }}</p>
-            <div class="amount">
-              + {{ speed }}/{{ t("h") }}
-              <img src="../assets/svg/stats/green-coin.svg" alt="" />
-            </div>
-          </div>
-        </div>
-        <div class="mining-progress-wrapper">
-          <div class="mining-progress-bar">
-            <div
-              class="progress"
-              :style="{ width: progressWidth }"
-              v-if="processState === 'active'"
-            >
-              <div class="interface">
-                <button @click="claimProcessReward">Claim</button>
-                <div class="time">
-                  <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>{{ hours }} {{ t("h") }} {{ minutes }} {{ t("m") }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="progress" v-if="processState === 'closed'">
-              <div class="interface">
-                <button @click="claimProcessReward" :class="claimButtonClass">
-                  {{ t("claim") }}
-                </button>
-                <div class="time">
-                  <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>{{ hours }} {{ t("h") }} {{ minutes }} {{ t("m") }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
@@ -60,34 +7,27 @@ const { t, locale } = useI18n();
 
 const profileStoreInstance = profileStore();
 
-const speed = computed(() => profileStoreInstance.getNewSpeed);
 const balance = computed(() => profileStoreInstance.getBalance);
-const processState = computed(() => profileStoreInstance.getProcessState);
+const power = computed(() => profileStoreInstance.getPower);
+const miningInfo = computed(() => profileStoreInstance.getMiningInfo);
 
 const claimButtonClass = computed(() => {
-  return processState.value === "active"
+  return miningInfo.value.status === "pending"
     ? "claim-button--active"
     : "claim-button";
 });
 
-const remainingSeconds = computed(
-  () => profileStoreInstance.getRemainingSeconds
-);
-const totalProcessSeconds = computed(
-  () => profileStoreInstance.getTotalProcessSeconds
-);
-
 const progressWidth = computed(() => {
   return (
-    String((remainingSeconds.value / totalProcessSeconds.value) * 100) + "%"
+    String(
+      (miningInfo.value.remainingSeconds / miningInfo.value.elapsedSeconds) *
+        100,
+    ) + "%"
   );
 });
 
-const hours = ref(Math.floor(remainingSeconds.value / 60));
-const minutes = ref(remainingSeconds.value % 60);
-
 const claimProcessReward = () => {
-  profileStoreInstance.claimProcessReward();
+  profileStoreInstance.claimMining();
 };
 
 const fetchUserProfile = async () => {
@@ -103,8 +43,70 @@ onMounted(async () => {
 });
 </script>
 
+<template>
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-content">
+        <div class="stats-wrapper">
+          <div class="stats__item stats__item--balance">
+            <p>{{ t("your-balance") }}</p>
+            <div class="amount">
+              {{ balance }}
+              <img src="../assets/svg/stats/green-coin.svg" alt="" />
+            </div>
+          </div>
+          <div class="stats__item stats__item--mining-speed">
+            <p>{{ t("mining-speed") }}</p>
+            <div class="amount">
+              + {{ power }}/{{ t("h") }}
+              <img src="../assets/svg/stats/green-coin.svg" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="mining-progress-wrapper">
+          <div class="mining-progress-bar">
+            <div
+              class="progress"
+              :style="{ width: progressWidth }"
+              v-if="miningInfo.status === 'pending'"
+            >
+              <div class="interface">
+                <button @click="claimProcessReward" :class="claimButtonClass">
+                  {{ t("claim") }}
+                </button>
+                <div class="time">
+                  <img src="../assets/svg/stats/time.svg" alt="" />
+                  <p>
+                    {{ miningInfo.remainingHours }} {{ t("h") }}
+                    {{ miningInfo.remainingMinutes }} {{ t("m") }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="progress" v-if="miningInfo.status === 'completed'">
+              <div class="interface">
+                <button @click="claimProcessReward" :class="claimButtonClass">
+                  {{ t("claim") }}
+                </button>
+                <div class="time">
+                  <img src="../assets/svg/stats/time.svg" alt="" />
+                  <p>
+                    {{ miningInfo.remainingHours }} {{ t("h") }}
+                    {{ miningInfo.remainingMinutes }} {{ t("m") }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
 <style scoped lang="sass">
-@import "src/styles/variables"
+@use "@/styles/variables" as vars
+
 .stats-section
   z-index: 200
   display: flex
@@ -126,17 +128,17 @@ onMounted(async () => {
 
   .stats__item
     border-radius: 20px
-    background: $c-dark-element
+    background: vars.$c-dark-element
     display: flex
     flex-direction: column
     justify-content: center
     align-items: start
     gap: 20px
-    color: white
+    color: vars.$c-light-text
     padding: 22px 20px
     height: 100px
     backdrop-filter: blur(2.5px)
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
 
     p
       line-height: 16.4px
@@ -160,9 +162,9 @@ onMounted(async () => {
         font-size: 17px
 
 .mining-progress-wrapper
-  background: $c-dark-element
+  background: vars.$c-dark-element
   border-radius: 20px
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   height: 71px
   display: flex
   align-items: center
@@ -175,7 +177,7 @@ onMounted(async () => {
   border-radius: 50px
   position: relative
   overflow: hidden
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
 .progress
   position: absolute
   left: 0
@@ -191,7 +193,7 @@ onMounted(async () => {
   background: #1517154D
   border-radius: 50px
   height: 25px
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   gap: 8px
   display: flex
   margin-left: 3px
@@ -202,9 +204,9 @@ onMounted(async () => {
 
   .claim-button, .claim-button--active
     width: 75px
-    background: $c-btn
+    background: vars.$c-btn
     border-radius: 31.64px
-    color: $c-main-text
+    color: vars.$c-main-text
     font-weight: 700
     font-size: 10px
 

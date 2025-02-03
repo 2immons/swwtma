@@ -17,7 +17,7 @@ const categories = computed(() => {
 });
 
 const karmaCards = ref<KarmaCard[]>(
-  categories.value[activeCategory.value].karmaCards
+  categories.value[activeCategory.value].karmaCards,
 );
 
 // Определение интерфейсов
@@ -95,10 +95,12 @@ const handleScroll = (event: Event) => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .task-list
   width: 100%
   margin-top: 46px
+
 .nav-wrapper
   position: relative
   width: 100%
@@ -112,7 +114,7 @@ const handleScroll = (event: Event) => {
   width: 128px
   height: 100%
   pointer-events: none
-  background: $c-gradient-nav-right
+  background: vars.$c-gradient-nav-right
 
 .nav
   display: flex
@@ -122,11 +124,11 @@ const handleScroll = (event: Event) => {
 
 .nav-overlay--left
   left: 0
-  background: $c-gradient-nav-right
+  background: vars.$c-gradient-nav-right
 
 .nav-overlay--right
   right: 0
-  background: $c-gradient-nav-left
+  background: vars.$c-gradient-nav-left
 
 .category-title, .category-title--active
   font-size: 18px

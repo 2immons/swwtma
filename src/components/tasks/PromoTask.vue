@@ -2,36 +2,13 @@
 import { computed, defineProps } from "vue";
 import { questsStore } from "@/store/tasks";
 import { storeToRefs } from "pinia";
+import { TaskBaseSchema, TaskGroupBaseSchema } from "@/types/types";
 const tasksStoreInstance = questsStore();
 
-interface Task {
-  id: number;
-  title: string;
-  url: string;
-  status: string; // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
-}
-
-interface PromoTask {
-  promo_task_id: number;
-  description: string;
-  title: string;
-  promo_task_status: string;
-  tasks: Task[];
-}
-
 const props = defineProps<{
-  promoTask: PromoTask;
+  index: number;
+  group: TaskGroupBaseSchema;
 }>();
-
-const { promoTasks } = storeToRefs(tasksStoreInstance);
-
-const promoTask = computed((): PromoTask => {
-  const foundPromoTask = promoTasks.value.find(
-    (currentPromoTask) =>
-      currentPromoTask.promo_task_id === props.promoTask.promo_task_id
-  );
-  return foundPromoTask ? foundPromoTask : props.promoTask;
-});
 
 const openPromoTask = async () => {
   try {
@@ -42,14 +19,28 @@ const openPromoTask = async () => {
   }
 };
 
-const claimReward = async () => {
-  try {
-    tasksStoreInstance.claimPromoTaskReward(promoTask.value);
-  } catch (error) {
-    console.error(error);
-    return;
+const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
+  if (tasks) {
+    if (tasks.every((task) => task.is_done)) {
+      return "COMPLETED";
+    } else if (tasks.some((task) => task.is_done)) {
+      return "IN_PROGRESS";
+    } else {
+      return "NOT_STARTED";
+    }
+  } else {
+    return "not_started";
   }
 };
+
+// const claimReward = async () => {
+//   try {
+//     tasksStoreInstance.claimPromoTaskReward(props.group.value);
+//   } catch (error) {
+//     console.error(error);
+//     return;
+//   }
+// };
 </script>
 
 <template>
@@ -61,22 +52,22 @@ const claimReward = async () => {
         class="bg-image"
       />
       <div class="bg-ellepsis"></div>
-      <p class="title">{{ promoTask.title }}</p>
-      <p class="name">{{ promoTask.description }}</p>
+      <p class="title">{{ group.name }}</p>
+      <p class="name">{{ group.description }}</p>
       <div class="footer">
         <router-link
           :to="{
             name: 'promo-task',
-            params: { promo_task_id: promoTask.promo_task_id },
+            params: { promo_task_id: props.index },
           }"
           v-if="
-            promoTask.promo_task_status !== 'CLAIMED' &&
-            promoTask.promo_task_status !== 'COMPLETED'
+            getGroupTaskStatus(props.group.tasks) !== 'CLAIMED' &&
+            getGroupTaskStatus(props.group.tasks) !== 'COMPLETED'
           "
         >
           <button @click="openPromoTask" class="start-btn">
             {{
-              promoTask.promo_task_status === "IN_PROGRESS"
+              getGroupTaskStatus(props.group.tasks) === "IN_PROGRESS"
                 ? t("continue-promo-task")
                 : t("accept-task")
             }}
@@ -84,7 +75,7 @@ const claimReward = async () => {
         </router-link>
         <button
           @click="claimReward"
-          v-else-if="promoTask.promo_task_status === 'COMPLETED'"
+          v-else-if="getGroupTaskStatus(props.group.tasks) === 'COMPLETED'"
           class="claim-btn"
         >
           {{ t("claim-task") }}
@@ -107,7 +98,8 @@ const claimReward = async () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .promo-task-wrapper
   width: 100%
   overflow-x: visible // Видимость "выглядывающих" элементов
@@ -121,14 +113,14 @@ const claimReward = async () => {
 
 .promo-task-box
   position: relative
-  background: #FFFFFF0D
+  background: vars.$c-dark-element
   width: 100%
   display: flex
   flex-direction: column
   align-items: start
   justify-content: space-between
   padding: 22px
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   opacity: 100%
   border-radius: 20px
   overflow: hidden
@@ -160,6 +152,7 @@ const claimReward = async () => {
     font-size: 10px
     opacity: 50%
     text-align: left
+
   .name
     font-size: 25px
     font-weight: 600
@@ -189,15 +182,15 @@ const claimReward = async () => {
     gap: 3px
 
   .start-btn
-    border: 1px solid $c-border-color
-    color: $c-main-text
+    border: 1px solid vars.$c-border-color
+    color: vars.$c-main-text
     backdrop-filter: blur(2px)
     background: white
     height: 100%
 
   .claim-btn
-    background: $c-light-element
-    color: $c-main-text
+    background: vars.$c-light-element
+    color: vars.$c-main-text
 
   .claimed-wrapper
     height: 25px
@@ -210,9 +203,9 @@ const claimReward = async () => {
     background: rgba(34, 240, 125, 0.2)
 
   .benefits
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     backdrop-filter: blur(2px)
-    background: $c-dark-element
+    background: vars.$c-dark-element
     height: 100%
     border-radius: 50px
     padding: 4px 15px
@@ -229,9 +222,9 @@ const claimReward = async () => {
     justify-content: center
     padding: 0 14px
     border-radius: 50px
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     backdrop-filter: blur(2px)
-    background: $c-dark-element
+    background: vars.$c-dark-element
 
     p
       font-size: 10px

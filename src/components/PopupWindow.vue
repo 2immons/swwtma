@@ -3,7 +3,10 @@ import { computed, onMounted, ref, watch } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import { telegramStore } from "@/store/telegram";
 
-enum PopupType { ERROR, INFO }
+enum PopupType {
+  ERROR,
+  INFO,
+}
 
 interface Popup {
   id: number;
@@ -38,7 +41,7 @@ onMounted(() => {
 
 const popupMarginClacc = ref("");
 const isFullScreen = computed(
-  () => telegramStore().telegramWebApp.isFullscreen
+  () => telegramStore().telegramWebApp.isFullscreen,
 );
 watch(
   isFullScreen,
@@ -47,7 +50,7 @@ watch(
       ? "popup-margin-calc"
       : "popup-margin-default";
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
@@ -59,14 +62,14 @@ watch(
           class="popup-item__content popup-item__content--error"
           v-if="popup.type === PopupType.ERROR"
         >
-          <img src="../assets/svg/alert-icon.svg" alt="">
+          <img src="../assets/svg/alert-icon.svg" alt="" />
           <p>{{ popup.message }}</p>
         </div>
         <div
           class="popup-item__content popup-item__content--info"
           v-else-if="popup.type === PopupType.INFO"
         >
-          <img src="../assets/svg/v-icon--success.svg" alt="">
+          <img src="../assets/svg/v-icon--success.svg" alt="" />
           <p>{{ popup.message }}</p>
         </div>
       </div>

@@ -30,23 +30,23 @@ const closePopup = () => {
 
 const copy = async () => {
   await navigator.clipboard.writeText(
-    referalLink.value + "\n" + referalText.value
+    referalLink.value + "\n" + referalText.value,
   );
   eventBus.emit("showInfoPopup", t("link-copied"));
-  closePopup()
+  closePopup();
 };
 
 const size = ref(270);
 const referalLink = ref(
-  "https://t.me/EcologyWorkers_bot/saveworldweb?startapp=ref_Tuq6WQIoEy"
+  "https://t.me/EcologyWorkers_bot/saveworldweb?startapp=ref_Tuq6WQIoEy",
 );
 const referalText = ref("Присоединяйтесь!");
 
 const telegramShareUrl = computed(
   () =>
     `https://t.me/share/url?url=${encodeURIComponent(
-      referalLink.value
-    )}&text=${encodeURIComponent(referalText.value)}`
+      referalLink.value,
+    )}&text=${encodeURIComponent(referalText.value)}`,
 );
 
 onMounted(async () => {
@@ -69,7 +69,7 @@ watch(
     } else {
       document.body.classList.remove("no-scroll");
     }
-  }
+  },
 );
 
 const requestReferalData = async () => {
@@ -132,7 +132,7 @@ const onTouchEnd = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
 
 .v-enter-active,
 .v-leave-active
@@ -156,7 +156,7 @@ const onTouchEnd = () => {
 .content
   position: fixed
   bottom: 0
-  background: $c-bg
+  background: vars.$c-bg
   height: 80%
   max-height: 650px
   margin-top: 60px
@@ -215,7 +215,7 @@ const onTouchEnd = () => {
     font-size: 60px
     line-height: 84px
     background: transparent
-    color: $c-light-text
+    color: vars.$c-light-text
 
 .buttons
   display: flex
@@ -230,10 +230,10 @@ const onTouchEnd = () => {
     font-weight: 700
     background: white
     padding: 15px 0
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     border-radius: 100px
     align-items: center
     justify-content: center
     gap: 4px
-    color: $c-main-text
+    color: vars.$c-main-text
 </style>

@@ -31,24 +31,28 @@ const miningType = ref("mining");
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .quests
   display: flex
   justify-content: center
   margin: 46px 0 20px 0
+
 .quests-content
   width: 100%
   align-items: center
   flex-direction: column
   display: flex
+
 h2, h3
   display: flex
   align-self: start
-  color: $c-light-text
+  color: vars.$c-light-text
 
   span
     font-size: 30px
     margin-left: 8px
+
 .quests-list
   display: flex
   margin-top: 15px
@@ -94,15 +98,15 @@ h2, h3
   width: 128px
   height: 100%
   pointer-events: none
-  background: $c-gradient-nav-right
+  background: vars.$c-gradient-nav-right
 
 .nav-overlay--left
   left: 0
-  background: $c-gradient-nav-right
+  background: vars.$c-gradient-nav-right
 
 .nav-overlay--right
   right: 0
-  background: $c-gradient-nav-left
+  background: vars.$c-gradient-nav-left
 
 .nav
   display: flex
@@ -110,7 +114,7 @@ h2, h3
   overflow-x: scroll
 
 hr
-  border: 1px solid $c-dark-element
+  border: 1px solid vars.$c-dark-element
   margin: 10px 0
 
 .tasks-nav
@@ -121,7 +125,7 @@ hr
   font-size: 18px
   font-weight: 500
   white-space: nowrap
-  color: $c-light-text
+  color: vars.$c-light-text
   opacity: 50%
   line-height: 24.6px
 

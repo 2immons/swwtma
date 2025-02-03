@@ -74,16 +74,18 @@ const pressBackBtn = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 header
   display: flex
   flex-direction: column
   align-items: center
-  color: $c-light-text
+  color: vars.$c-light-text
   z-index: 10
 
 .header-margin-calc
   margin-top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top))
+
 .header-margin-default
   margin-top: 29px
 
@@ -100,11 +102,11 @@ header
   margin-right: 4px
   height: 100%
   aspect-ratio: 1
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   display: flex
   justify-content: center
   align-items: center
-  background: $c-dark-element
+  background: vars.$c-dark-element
 
   img
     height: 16px
@@ -119,11 +121,11 @@ header
     display: flex
     align-items: center
     height: 100%
-    background: $c-dark-element
+    background: vars.$c-dark-element
     border-radius: 50px
     gap: 7px
     padding: 4px 16px 4px 4px
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     backdrop-filter: blur(2px)
     width: fit-content
     max-width: 100%
@@ -132,7 +134,8 @@ header
       height: 28px
       width: 28px
       border-radius: 50px
-      background: $c-light-element
+      background: vars.$c-light-element
+
     p
       font-size: 18px
       text-overflow: ellipsis
@@ -146,8 +149,8 @@ header
   align-items: center
   width: 36px
   height: 36px
-  background: $c-dark-element
-  border: 1px solid $c-border-color
+  background: vars.$c-dark-element
+  border: 1px solid vars.$c-border-color
   backdrop-filter: blur(2px)
   border-radius: 50px
 </style>

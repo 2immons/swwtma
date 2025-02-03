@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./utils/config";
+
 import { telegramStore } from "@/store/telegram";
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
@@ -49,11 +49,11 @@ export const cardsStore = defineStore("cards", {
   actions: {
     async fetchCards() {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const initData = telegramStore().getInitData;
 
         const response = await axios.post(
-          `${config.backendURL}/api/cards/get-cards`,
-          webAppData
+          `${import.meta.env.VITE_BACKEND}/api/cards/get-cards`,
+          initData,
         );
 
         checkResponseSuccess(response);
@@ -71,13 +71,13 @@ export const cardsStore = defineStore("cards", {
         {
           quest,
           withCredentials: true,
-        }
+        },
       );
 
       if (response.status !== 201) {
         throw new Error(
           "Не удалось создать обращение. Неправильный статус ответа от сервера: " +
-            response.status
+            response.status,
         );
       }
     },

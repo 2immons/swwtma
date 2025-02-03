@@ -1,71 +1,89 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./utils/config";
 import { useI18n } from "vue-i18n";
-import { telegramStore } from "@/store/telegram";
-import { checkResponseSuccess } from "@/store/utils/apiUtils";
+import {checkResponseSuccess, getCsrfToken, requestConfig} from "@/store/utils/apiUtils";
+import {
+  type MiningBase,
+  type MiningStatus,
+  type UserBase,
+  type UserGetSchema,
+} from "@/types/types";
 
-interface ProfileResponse {
-  balance: number;
-  newSpeed: number;
-  chatId: string;
-  name: string;
-  language: string;
-  process: {
-    state: string; // active, closed
-    remainingSeconds: number;
-    totalProcessSeconds: number;
-    miningResult: number;
-  };
-}
+const mockUserProfile: UserGetSchema = {
+  id: 0,
+  user_id: 0,
+  username: "string",
+  referrer_id: 0,
+  is_banned: false,
+  is_deleted: false,
+  referral_code: "string",
+  balance: {
+    balance: 0,
+    mining_power: 0,
+  },
+  settings: {
+    language: "en",
+    vibration: false,
+    animation: false,
+  },
+  done_tasks: [],
+  user_cards: [],
+  karma_donates: [],
+  minings: [
+    {
+      amount: 0,
+      status: "pending",
+      start_time: "2025-02-03T13:07:16.660503",
+      end_time: "2025-02-03T13:07:16.660503",
+      is_claimed: false,
+    },
+  ],
+  referrer: {
+    id: 0,
+    user_id: 0,
+    username: "string",
+    referrer_id: 0,
+    is_banned: false,
+    is_deleted: false,
+    referral_code: "string",
+  },
+};
 
 export const profileStore = defineStore("profile", {
   state: () => ({
-    balance: 40000,
-    newSpeed: 0.36,
-    chatId: "",
-    name: "",
-    process: {
-      state: "closed", // active, closed
-      remainingSeconds: 122,
-      totalProcessSeconds: 8 * 60 * 60,
-      miningResult: 300,
-    },
+    userProfile: mockUserProfile,
   }),
 
   actions: {
     // setProfileVariables устанавливает переменные профиля
-    setProfileVariables(responseData: ProfileResponse) {
+    setProfileVariables(responseData: UserGetSchema) {
+      this.userProfile = responseData;
+
       const { locale } = useI18n();
-
-      const process = responseData.process;
-
-      this.process.state = process.state;
-
-      if (this.process.state === "ACTIVE") {
-        this.process.remainingSeconds = process.remainingSeconds;
-      }
-
-      this.balance = responseData.balance;
-      this.newSpeed = responseData.newSpeed;
-      this.chatId = responseData.chatId;
-      this.name = responseData.name;
-      locale.value = responseData.language || "en";
+      locale.value = responseData.settings?.language || "en";
     },
 
     // getUserProfile получает информацию о профиле пользователя
     async getUserProfile() {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/?extra=all`
+        const response = await axios.get(url, requestConfig);
 
-        const response = await axios.post(
-          `${config.backendURL}/api/profile/myProfile`,
-          webAppData
-        );
+        const validatedResponse = await checkResponseSuccess(response, url, "get")
 
-        checkResponseSuccess(response);
+        this.setProfileVariables(validatedResponse.data);
+      } catch (error) {
+        console.error("Ошибка при получении профиля пользователя:", error);
+        throw new Error("Server error when getting the user profile");
+      }
+    },
 
-        this.setProfileVariables(response.data);
+    async startMining() {
+      try {
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/start-mining`
+        const response = await axios.post(url, requestConfig);
+
+        const validatedResponse = await checkResponseSuccess(response, url, "post")
       } catch (error) {
         console.error("Ошибка при получении профиля пользователя:", error);
         throw new Error("Server error when getting the user profile");
@@ -73,16 +91,12 @@ export const profileStore = defineStore("profile", {
     },
 
     // claimProcessReward отправляет запрос на получение награды за процесс
-    async claimProcessReward() {
+    async claimMining() {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/claim-mining`
+        const response = await axios.post(url, requestConfig);
 
-        const response = await axios.post(
-          `${config.backendURL}/api/profile/myProfile`,
-          webAppData
-        );
-
-        checkResponseSuccess(response);
+        const validatedResponse = await checkResponseSuccess(response, url, "post")
       } catch (error) {
         console.error("Ошибка при получении награды за процесс:", error);
         throw new Error("Server error when claiming reward");
@@ -92,19 +106,58 @@ export const profileStore = defineStore("profile", {
 
   getters: {
     getBalance(state) {
-      return state.balance;
+      return state.userProfile.balance?.balance;
     },
-    getNewSpeed(state) {
-      return state.newSpeed.toFixed(2);
+    getPower(state) {
+      return state.userProfile.balance?.mining_power;
     },
-    getRemainingSeconds(state) {
-      return state.process.remainingSeconds;
-    },
-    getTotalProcessSeconds(state) {
-      return state.process.totalProcessSeconds;
-    },
-    getProcessState(state) {
-      return state.process.state;
+
+    getMiningInfo(
+      state,
+    ): MiningBase & {
+      remainingHours: number;
+      remainingMinutes: number;
+      elapsedSeconds: number;
+      totalSeconds: number;
+      remainingSeconds: number;
+    } {
+      const miningInfo = state.userProfile.minings[0];
+      const endTime = new Date(miningInfo.end_time).getTime();
+      const startTime = new Date(miningInfo.start_time).getTime();
+      const currentTime = Date.now();
+
+      // Calculate the timezone offset in milliseconds
+      const userTimezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+      const moscowTimezoneOffset = -180 * 60 * 1000; // Moscow is UTC+3, so -180 minutes
+
+      // Adjust the end time and start time to the user's timezone
+      const adjustedEndTime =
+        endTime + userTimezoneOffset - moscowTimezoneOffset;
+      const adjustedStartTime =
+        startTime + userTimezoneOffset - moscowTimezoneOffset;
+
+      const remainingMilliseconds = adjustedEndTime - currentTime;
+      const elapsedMilliseconds = currentTime - adjustedStartTime;
+      const totalMilliseconds = adjustedEndTime - adjustedStartTime;
+
+      const remainingHours = Math.floor(
+        remainingMilliseconds / (1000 * 60 * 60),
+      );
+      const remainingMinutes = Math.floor(
+        (remainingMilliseconds % (1000 * 60 * 60)) / (1000 * 60),
+      );
+      const remainingSeconds = Math.floor(remainingMilliseconds / 1000);
+      const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+      const totalSeconds = Math.floor(totalMilliseconds / 1000);
+
+      return {
+        ...miningInfo,
+        remainingHours,
+        remainingMinutes,
+        remainingSeconds,
+        elapsedSeconds,
+        totalSeconds,
+      };
     },
   },
 });

@@ -22,7 +22,7 @@ const { t, locale } = useI18n();
 
 const toggleDropdown = (
   isVisible: Ref<boolean, boolean>,
-  arrowRef: Ref<string, string>
+  arrowRef: Ref<string, string>,
 ) => {
   isVisible.value = !isVisible.value;
   arrowRef.value = isVisible.value ? "arrow-icon--open" : "arrow-icon";
@@ -287,12 +287,14 @@ const deleteAccount = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .settings
   display: flex
   justify-content: center
   margin: 46px 0 20px 0
   color: white
+
 .bg
   position: absolute
   top: 0
@@ -300,14 +302,16 @@ const deleteAccount = () => {
   height: 100%
   width: 100vw
   background-image: url("../../assets/svg/settings-vectors.svg")
+
 .settings-content
   width: 100%
   align-items: start
   flex-direction: column
   display: flex
+
 h2
   font-weight: 600
-  color: $c-light-text
+  color: vars.$c-light-text
   margin-bottom: 46px
 
 .settings-list
@@ -319,9 +323,9 @@ h2
 
 .settings-wrapper
   background: rgba(255, 255, 255, 0.02)
-  box-shadow: $c-element-shadow
+  box-shadow: vars.$c-element-shadow
   backdrop-filter: blur(8.53px)
-  border: 1px solid $c-border-color
+  border: 1px solid vars.$c-border-color
   border-radius: 18px
   display: flex
   flex-direction: column
@@ -380,7 +384,7 @@ h2
     padding: 3px 0
     background: transparent
     border: none
-    border-bottom: 1px solid $c-dark-element
+    border-bottom: 1px solid vars.$c-dark-element
     font-size: 11px
     outline: none
     color: white
@@ -388,7 +392,7 @@ h2
     transition: 0.2s border-bottom-color ease
 
   input:focus
-    border-bottom: 1px solid $c-light-element
+    border-bottom: 1px solid vars.$c-light-element
 
 .setting-dropdown--confirm
   align-items: center
@@ -406,7 +410,7 @@ h4
   width: 100%
   display: flex
   gap: 10px
-  color: $c-light-text
+  color: vars.$c-light-text
 
 .slider-setting
   display: flex
@@ -417,23 +421,24 @@ h4
 .setting-btn, setting-btn--confirm, setting-btn--deny
   font-size: 18px
   border-radius: 12px
-  border: 1px solid $c-main-text
+  border: 1px solid vars.$c-main-text
   padding: 5px 10px
-  box-shadow: $c-element-shadow
+  box-shadow: vars.$c-element-shadow
 
 .setting-btn--confirm
-  background: $c-light-element
-  color: $c-main-text
+  background: vars.$c-light-element
+  color: vars.$c-main-text
+
 .setting-btn--deny
-  background: $c-btn-deny
-  color: $c-light-text
+  background: vars.$c-btn-deny
+  color: vars.$c-light-text
 
 .politic
   opacity: 60%
   font-size: 12px
   align-self: start
   margin-top: 30px
-  color: $c-light-text
+  color: vars.$c-light-text
 
 .arrow-icon
   transform: rotateZ(0deg)
@@ -450,12 +455,12 @@ h4
   border-radius: 10px
   width: 40px
   height: 40px
-  background: $c-dark-element
-  box-shadow: $c-element-shadow
+  background: vars.$c-dark-element
+  box-shadow: vars.$c-element-shadow
 
 .language-settings
   position: absolute
-  background: $c-light-text
+  background: vars.$c-light-text
   height: fit-content
   width: 200px
   top: 47px
@@ -472,5 +477,5 @@ h4
     align-items: center
     gap: 10px
     font-size: 20px
-    color: $c-main-text
+    color: vars.$c-main-text
 </style>

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { config } from "./utils/config";
+
 import { telegramStore } from "@/store/telegram";
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
@@ -39,11 +39,11 @@ export const friendsStore = defineStore("friends", {
   actions: {
     async fetchFriends() {
       try {
-        const webAppData = telegramStore().getWebAppData;
+        const initData = telegramStore().getInitData;
 
         const response = await axios.post(
-          `${config.backendURL}/api/cards/get-karma`,
-          webAppData
+          `${import.meta.env.VITE_BACKEND}/api/cards/get-karma`,
+          initData,
         );
 
         checkResponseSuccess(response);
@@ -68,11 +68,11 @@ export const friendsStore = defineStore("friends", {
     },
 
     async requestReferalLink(): Promise<string> {
-      const webAppData = telegramStore().getWebAppData;
+      const initData = telegramStore().getInitData;
 
       const response = await axios.post(
-        `${config.backendURL}/api/request-invite-link`,
-        webAppData
+        `${import.meta.env.VITE_BACKEND}/api/request-invite-link`,
+        initData,
       );
 
       checkResponseSuccess(response);

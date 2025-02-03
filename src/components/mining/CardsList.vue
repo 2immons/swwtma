@@ -30,6 +30,8 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="sass">
+@use "@/styles/variables" as vars
+
 .task-list
   display: grid
   grid-template-columns: 1fr 1fr

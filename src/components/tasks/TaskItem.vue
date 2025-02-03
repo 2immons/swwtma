@@ -3,12 +3,13 @@ import { computed, defineProps } from "vue";
 import { questsStore } from "@/store/tasks";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
+import { TaskBaseSchema } from "@/types/types";
 const { t, locale } = useI18n();
 
 const tasksStoreInstance = questsStore();
 
 const props = defineProps<{
-  task: Task;
+  task: TaskBaseSchema;
   isPromoTask: boolean;
 }>();
 
@@ -21,46 +22,46 @@ interface Task {
 
 const { categories } = storeToRefs(tasksStoreInstance);
 
-const task = computed((): Task => {
+const task = computed((): TaskBaseSchema => {
   const category = categories.value.find((currentCategory) =>
     currentCategory.tasks.some(
-      (currentTask) => currentTask.id === props.task.id
-    )
+      (currentTask) => currentTask.id === props.task.id,
+    ),
   );
   const foundTask = category?.tasks.find(
-    (currentTask) => currentTask.id === props.task.id
+    (currentTask) => currentTask.id === props.task.id,
   );
   return foundTask || props.task;
 });
 
-const acceptPromoTask = async () => {
-  try {
-    window.open(task.value.url, "_blank");
-    tasksStoreInstance.acceptPromoTask(task.value);
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-};
+// const acceptPromoTask = async () => {
+//   try {
+//     window.open(task.value.url, "_blank");
+//     tasksStoreInstance.acceptPromoTask(task.value);
+//   } catch (error) {
+//     console.error(error);
+//     return;
+//   }
+// };
 
-const acceptTask = async () => {
-  try {
-    window.open(task.value.url, "_blank");
-    tasksStoreInstance.acceptTask(task.value);
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-};
+// const acceptTask = async () => {
+//   try {
+//     window.open(task.value.url, "_blank");
+//     tasksStoreInstance.completeTask(task.value);
+//   } catch (error) {
+//     console.error(error);
+//     return;
+//   }
+// };
 
-const claimReward = async () => {
-  try {
-    tasksStoreInstance.claimReward(task.value);
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-};
+// const claimReward = async () => {
+//   try {
+//     tasksStoreInstance.claimReward(task.value);
+//   } catch (error) {
+//     console.error(error);
+//     return;
+//   }
+// };
 </script>
 
 <template>
@@ -68,7 +69,7 @@ const claimReward = async () => {
     <div class="left-side">
       <img src="../../assets/svg/tasks/battery.svg" alt="" />
       <div class="info">
-        <p>{{ task.title }}</p>
+        <p>{{ task.name }}</p>
       </div>
     </div>
     <div class="right-side">
@@ -83,16 +84,16 @@ const claimReward = async () => {
         <img src="../../assets/svg/v-icon.svg" alt="" />
       </div>
       <button
-          @click="acceptTask"
-          v-else-if="task.status === 'NOT_STARTED'"
-          class="start-btn"
+        @click="acceptTask"
+        v-else-if="task.status === 'NOT_STARTED'"
+        class="start-btn"
       >
         {{ t("accept-task") }}
       </button>
       <button
-          @click="claimReward"
-          v-else-if="task.status === 'COMPLETED'"
-          class="claim-btn"
+        @click="claimReward"
+        v-else-if="task.status === 'COMPLETED'"
+        class="claim-btn"
       >
         {{ t("claim-task") }}
       </button>
@@ -101,7 +102,8 @@ const claimReward = async () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../styles/variables"
+@use "@/styles/variables" as vars
+
 .task-item
   padding: 20px 17px
   display: flex
@@ -109,9 +111,9 @@ const claimReward = async () => {
   justify-content: space-between
   width: 100%
   height: fit-content
-  color: $c-light-text
-  background: #FFFFFF05
-  border: 1px solid $c-border-color
+  color: vars.$c-light-text
+  background: vars.$c-task-item-bg
+  border: 1px solid vars.$c-border-color
   border-radius: 18px
   gap: 12px
 
@@ -196,8 +198,8 @@ const claimReward = async () => {
     color: white
 
   .claim-btn
-    background: $c-light-element
-    color: $c-main-text
+    background: vars.$c-light-element
+    color: vars.$c-main-text
 
   .claimed-wrapper
     height: 25px
@@ -213,8 +215,9 @@ const claimReward = async () => {
     height: 25px
     padding: 4px
     background: #FFFFFF1A
-    border: 1px solid $c-border-color
+    border: 1px solid vars.$c-border-color
     border-radius: 50px
+
     .loader
       height: 100%
       border: 3px solid #FFFFFF52

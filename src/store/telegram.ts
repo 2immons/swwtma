@@ -1,13 +1,8 @@
 import { defineStore } from "pinia";
 import { settingsStore } from "@/store/settings";
+import axios from "axios";
 
-interface WebAppData {
-  web_app_data: {
-    data_check_string: string | null;
-    auth_date: string | null;
-    hash: string | null;
-  };
-}
+import { checkResponseSuccess } from "@/store/utils/apiUtils";
 
 interface UserData {
   username: string;
@@ -17,10 +12,13 @@ interface UserData {
   avatar: string;
 }
 
+const mockInitData =
+  "query_id=AAELmUAuAAAAAAuZQC7lzaSb user=%7B%22id%22%3A775985419%2C%22first_name%22%3A%22%D0%9F%D0%B0%D0%B2%D0%B5%D0%BB%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22simmons34%22%2C%22language_code%22%3A%22ru%22%2C%22is_premium%22%3Atrue%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2F0gYkc5PaYG3VubCPhiYdBwbyGmIOyRU1S333mpporE4.svg%22%7D&auth_date=1738574312&signature=zBcFAgoCzpmSD0o0usAipu8xeBNcyPzgzIzuOttJ1b7RSdIY1Wj9yOnT5P8hSRNRBPHPqHhhfLBxnilF5bcSAg&hash=534b327d6bdb3bc359bab7e18eb04a3bfefe60a06a5bbcc29672f6e15f298fa1";
+
 export const telegramStore = defineStore("telegram", {
   state: () => ({
     telegramWebApp: (window as any).Telegram?.WebApp ?? null,
-    webAppData: null as null | WebAppData,
+    initData: "",
     userData: {
       username: "No username",
       firstName: "Unknown",
@@ -43,7 +41,7 @@ export const telegramStore = defineStore("telegram", {
           this.telegramWebApp.disableVerticalSwipes();
 
           const isMobile = /iPhone|iPad|iPod|Android/i.test(
-            navigator.userAgent
+            navigator.userAgent,
           );
           if (isMobile) {
             this.telegramWebApp.requestFullscreen();
@@ -51,14 +49,47 @@ export const telegramStore = defineStore("telegram", {
         }
 
         this.userData = this.getUserData();
-        this.webAppData = this.generateWebAppData();
-
-        this.checkReferalCode();
       } else {
         console.error(
-          "Telegram WebApp недоступен. Методы инициализации Mini App пропущены."
+          "Telegram WebApp недоступен. Методы настройки Mini App пропущены.",
         );
       }
+    },
+
+    async setMiniAppData() {
+      if (
+        import.meta.env.MODE === "production" ||
+        import.meta.env.MODE === "development"
+      ) {
+        this.setInitData();
+        await this.auth();
+        return;
+      }
+
+      this.setMockInitData();
+      this.checkReferalCode();
+    },
+
+    async auth() {
+      try {
+        const initData = telegramStore().getInitData;
+
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND}/api/v1/auth`,
+          initData,
+          { withCredentials: true },
+        );
+      } catch (error) {
+        console.error("Ошибка авторизации:", error);
+      }
+    },
+
+    async refreshAuthToken() {
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`,
+        {},
+        { withCredentials: true },
+      );
     },
 
     // Получает от Телеграма данные пользователя (язык, имя и т.д.)
@@ -95,28 +126,12 @@ export const telegramStore = defineStore("telegram", {
       }
     },
 
-    // Возвращает из Telegram.WebApp.initData данные для валидационного объекта
-    generateWebAppData(): WebAppData {
-      const queryString = this.telegramWebApp.initData;
-      const params = new URLSearchParams(queryString);
+    setInitData() {
+      this.initData = this.telegramWebApp.initData;
+    },
 
-      const authDate = params.get("auth_date");
-      const hash = params.get("hash");
-
-      params.delete("hash");
-
-      const dataCheckString = Array.from(params.entries())
-        .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
-        .map(([key, value]) => `${key}=${value}`)
-        .join("\n");
-
-      return {
-        web_app_data: {
-          data_check_string: dataCheckString,
-          auth_date: authDate,
-          hash: hash,
-        },
-      };
+    setMockInitData() {
+      this.initData = mockInitData;
     },
 
     showAlert(msg: string) {
@@ -129,11 +144,11 @@ export const telegramStore = defineStore("telegram", {
   },
 
   getters: {
-    getWebAppData: (state) => {
-      if (!state.webAppData) {
-        throw new Error("WebAppData не установлена");
+    getInitData: (state) => {
+      if (!state.initData) {
+        throw new Error("InitData не установлена");
       }
-      return state.webAppData;
+      return state.initData;
     },
   },
 });
