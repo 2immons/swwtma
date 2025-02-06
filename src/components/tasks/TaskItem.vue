@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, defineProps } from "vue";
-import { questsStore } from "@/store/tasks";
-import { storeToRefs } from "pinia";
-import { useI18n } from "vue-i18n";
-import { TaskBaseSchema } from "@/types/types";
+import {computed, defineProps, ref} from "vue";
+import {questsStore} from "@/store/tasks";
+import {storeToRefs} from "pinia";
+import {useI18n} from "vue-i18n";
+import {TaskAction, TaskBaseSchema} from "@/types/types";
+import {telegramStore} from "@/store/telegram.ts";
+
 const { t, locale } = useI18n();
 
 const tasksStoreInstance = questsStore();
@@ -62,6 +64,60 @@ const task = computed((): TaskBaseSchema => {
 //     return;
 //   }
 // };
+
+const telegramStoreInstance = telegramStore();
+
+const setupStory = () => {
+  const lang = telegramStoreInstance.userData.language;
+  let mediaUrl = "";
+  if (lang === "ru") {
+    mediaUrl = "https://hash-seeker.com/public/bot/story_ru.png";
+  } else {
+    mediaUrl = "https://hash-seeker.com/public/bot/story_en.png";
+  }
+
+  const params = {
+    text: "Join now! https://t.me/HashSeekerBot",
+  };
+
+  telegramStoreInstance.telegramWebApp.shareToStory(mediaUrl, params);
+};
+
+const isTaskVerifying = ref(false);
+
+const startTask = async () => {
+  isTaskVerifying.value = true
+  switch (props.task.action) {
+    case TaskAction.redirect_tg:
+      redirectToTelegramLink();
+      break;
+    case TaskAction.tg_subscription_check:
+      redirectToTelegramLink();
+      break;
+    case TaskAction.redirect_other_social:
+      redirectToOtherLink();
+      break;
+    case TaskAction.tg_story:
+      setupStory();
+      break;
+  }
+};
+const redirectToTaskLink = () => {
+  if (props.task.link) {
+    telegramStoreInstance.telegramWebApp.openTelegramLink(props.task.link);
+  } else {
+    console.error("Ссылка отсутствует");
+  }
+};
+
+const redirectToTaskLinkOther = () => {
+  if (props.task.link) {
+    window.open(props.task.link, "_blank");
+  } else {
+    console.error("Ссылка отсутствует");
+  }
+};
+
 </script>
 
 <template>
@@ -77,10 +133,10 @@ const task = computed((): TaskBaseSchema => {
         <p>+ 699</p>
         <img src="../../assets/svg/stats/green-coin.svg" alt="" />
       </div>
-      <div class="loader-wrapper" v-if="task.status === 'VERIFYING'">
+      <div class="loader-wrapper" v-if="isTaskVerifying">
         <div class="loader"></div>
       </div>
-      <div class="claimed-wrapper" v-if="task.status === 'CLAIMED'">
+      <div class="claimed-wrapper" v-if="task.is_done">
         <img src="../../assets/svg/v-icon.svg" alt="" />
       </div>
       <button

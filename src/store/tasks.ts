@@ -36,6 +36,7 @@ const mockTasksResponse = {
       category: "Category 2",
       social: "Social 2",
       is_done: false,
+      action: "redirect_other_social"
     },
     {
       url: "https://example.com/solo_task1",
@@ -47,6 +48,7 @@ const mockTasksResponse = {
       category: "Category 2",
       social: "Social 2",
       is_done: false,
+      action: "redirect_other_social"
     },
     {
       url: "https://example.com/solo_task2",
@@ -58,6 +60,7 @@ const mockTasksResponse = {
       category: "Category 3",
       social: "Social 3",
       is_done: true,
+      action: "redirect_other_social"
     },
   ],
   tasks: [

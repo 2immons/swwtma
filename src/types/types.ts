@@ -125,6 +125,15 @@ export interface SettingsUpdate {
   animation: boolean;
 }
 
+export enum TaskAction {
+  tg_subscription_check = "tg_subscription_check",
+  redirect_tg = "redirect_tg",
+  redirect_tg_code = "redirect_tg_code",
+  redirect_other_social = "redirect_other_social",
+  redirect_other_social_code = "redirect_other_social_code",
+  tg_story = "tg_story"
+}
+
 export interface TaskBaseSchema {
   url: string;
   name: string;
@@ -135,6 +144,7 @@ export interface TaskBaseSchema {
   category: string | null;
   social: string | null;
   is_done: boolean;
+  action: TaskAction;
 }
 
 export interface TaskGroupBaseSchema {
