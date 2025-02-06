@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [vue(), mode === "production" ? null : vueDevTools()],
   base:
     mode === "development"
-      ? "https://2immons.github.io/save-world-web-tg-app/"
+      ? "https://sww.tonycrypto.site/"
       : "/",
   resolve: {
     alias: {
