@@ -20,7 +20,9 @@ jobs:
 
     - name: Deploy services
       run: |
-        ssh -v -o StrictHostKeyChecking=no root@45.95.234.232 << 'EOF'
-        cd /var/www/swwf
-        git pull
-        npm build dev
+        ssh -v -o StrictHostKeyChecking=no deployuser@45.95.234.232 << 'EOF'
+          cd /var/www/swwf
+          git pull origin master
+          npm install
+          npm run build-dev
+        EOF
