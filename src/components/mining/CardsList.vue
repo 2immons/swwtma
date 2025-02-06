@@ -19,7 +19,7 @@ const fetchCards = async () => {
 };
 
 onMounted(async () => {
-  // await fetchCards();
+  await fetchCards();
 });
 </script>
 

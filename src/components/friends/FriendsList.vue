@@ -4,11 +4,11 @@ import { friendsStore } from "@/store/friends";
 import FriendItem from "@/components/friends/FriendItem.vue";
 import ReferalPopup from "@/components/friends/ReferalPopup.vue";
 
-const friendsStoreInstance = friendsStore();
+import { type UserReferrals } from "@/types/types";
 
-const friends = computed(() => {
-  return friendsStoreInstance.friends;
-});
+const props = defineProps<{
+  friends: UserReferrals
+}>();
 
 const isReferalPopupVisible = ref(false);
 
@@ -30,7 +30,7 @@ const openReferalPopup = () => {
     </div>
     <div class="list">
       <FriendItem
-        v-for="(friend, index) in friends"
+        v-for="(friend, index) in friends.referrals"
         :key="index"
         :friend="friend"
       />

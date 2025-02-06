@@ -16,6 +16,7 @@ export interface CardBase {
   level_map: CardsLevelMapBase[] | null;
   is_bought: boolean;
   is_available: boolean;
+  purchase_cost: number;
   user_card: UserCardsBase | null;
 }
 
@@ -163,6 +164,8 @@ export interface UserCardsBase {
   card_id: number | null;
   level: number;
   power: number;
+  upgrade_cost: number;
+  max_level: boolean;
 }
 
 export type UserGetFields =
@@ -210,7 +213,7 @@ export interface UserReferrals {
   is_deleted: boolean;
   referral_code: string | null;
   claimable: number;
-  referrals: UserReferrals[] | null;
+  referrals: UserReferralIncomeSchema[] | null;
 }
 
 export interface UserTasksBase {

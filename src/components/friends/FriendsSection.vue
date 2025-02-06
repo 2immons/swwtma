@@ -1,59 +1,29 @@
 <script setup lang="ts">
-import QuestItem from "@/components/tasks/TaskItem.vue";
-import { questsStore } from "@/store/tasks";
-import { computed, onMounted, ref } from "vue";
-import TaskItem from "@/components/tasks/TaskItem.vue";
-import PromoTask from "@/components/tasks/PromoTask.vue";
-import TasksCategory from "@/components/tasks/TasksCategory.vue";
-import MiningSelect from "@/components/mining/MiningSelect.vue";
-import CardsList from "@/components/mining/CardsList.vue";
 import FriendsStats from "@/components/friends/FriendsStats.vue";
 import FriendsList from "@/components/friends/FriendsList.vue";
+import { defineProps, defineEmits, onMounted, computed } from "vue";
+import { questsStore } from "@/store/tasks";
+import { friendsStore } from "@/store/friends";
+import { eventBus } from "@/event_bus/eventBus";
 
-const miningType = ref();
+const friendsStoreInstance = friendsStore();
 
-const isAtStart = ref(true);
-const isAtEnd = ref(false);
+const friends = computed(() => {
+  return friendsStoreInstance.friends;
+});
 
-const handleScroll = (event: Event) => {
-  const target = event.target as HTMLElement;
-  isAtStart.value = target.scrollLeft === 0;
-  isAtEnd.value = target.scrollLeft + target.offsetWidth >= target.scrollWidth;
-};
-
-onMounted(() => {
-  const navElement = document.querySelector(".nav");
-  if (navElement) {
-    navElement.addEventListener("scroll", handleScroll);
+const fetchFriends = async () => {
+  try {
+    await friendsStoreInstance.fetchFriends();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
   }
-});
-
-const availableTasks = ref(10);
-
-const isPromoQuests = ref(false);
-const isWeeklyQuests = ref(false);
-
-const questsStoreInstance = questsStore();
-
-const promoTasks = computed(() => {
-  return questsStoreInstance.promoTasks;
-});
-
-const activeCategory = ref(0);
-
-const categories = computed(() => {
-  return questsStoreInstance.categories;
-});
-
-const setActiveCategory = (index: number) => {
-  activeCategory.value = index;
 };
 
-const categoryTitleClass = (index: number) => {
-  return index === activeCategory.value
-    ? "category-title--active"
-    : "category-title";
-};
+onMounted(async () => {
+  await fetchFriends();
+});
+
 </script>
 
 <template>
@@ -63,8 +33,8 @@ const categoryTitleClass = (index: number) => {
         <h2>
           {{ t("invite-friends") }}
         </h2>
-        <FriendsStats />
-        <FriendsList />
+        <FriendsStats :friends="friends"/>
+        <FriendsList :friends="friends"/>
       </div>
     </div>
   </section>

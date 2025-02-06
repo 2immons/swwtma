@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits, onMounted, computed } from "vue";
 import { questsStore } from "@/store/tasks";
-const questsStoreInstance = questsStore();
+import { friendsStore } from "@/store/friends";
+import { eventBus } from "@/event_bus/eventBus";
+import { type UserReferrals } from "@/types/types";
+
+const props = defineProps<{
+  friends: UserReferrals
+}>();
+
+const claimReward = async () => {
+  await friendsStore().claimReward()
+}
 </script>
 
 <template>
@@ -11,8 +21,8 @@ const questsStoreInstance = questsStore();
       <div class="bg-ellepsis"></div>
       <p>You Earned:</p>
       <div class="coins">
-        <p>+ 6399 <img src="../../assets/svg/stats/green-coin.svg" alt="" /></p>
-        <button>Claim</button>
+        <p>+ {{ friends.claimable }} <img src="../../assets/svg/stats/green-coin.svg" alt="" /></p>
+        <button @click="claimReward">Claim</button>
       </div>
     </div>
     <div class="help">

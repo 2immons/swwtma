@@ -30,17 +30,21 @@ const closePopup = () => {
 
 const copy = async () => {
   await navigator.clipboard.writeText(
-    referalLink.value + "\n" + referalText.value,
+    `${referalLink.value}\n${referalText.value}`,
   );
   eventBus.emit("showInfoPopup", t("link-copied"));
   closePopup();
 };
 
+const referalLink = computed(() => {
+  return friendsStoreInstance.referalLink
+})
+
+const referalText = computed(() => {
+  return friendsStoreInstance.referalText
+})
+
 const size = ref(270);
-const referalLink = ref(
-  "https://t.me/EcologyWorkers_bot/saveworldweb?startapp=ref_Tuq6WQIoEy",
-);
-const referalText = ref("Присоединяйтесь!");
 
 const telegramShareUrl = computed(
   () =>
@@ -53,7 +57,6 @@ onMounted(async () => {
   if (props.modelValue) {
     document.body.classList.add("no-scroll");
   }
-  await requestReferalData();
 });
 
 onBeforeUnmount(() => {
@@ -71,14 +74,6 @@ watch(
     }
   },
 );
-
-const requestReferalData = async () => {
-  try {
-    referalLink.value = await friendsStoreInstance.ensureReferalLink();
-  } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
-  }
-};
 
 const touchStartY = ref(0);
 const touchEndY = ref(0);

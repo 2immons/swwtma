@@ -2,23 +2,15 @@
 import { computed, defineProps, ref } from "vue";
 import KarmaPopup from "@/components/karma/KarmaPopup.vue";
 import { useI18n } from "vue-i18n";
+import type { KarmaBase } from "@/types/types";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
-  karmaCard: {
-    title: string;
-    price: number;
-    boost: number;
-    goal: number;
-    raised: number;
-    userDonat: number;
-    isPurchased: boolean;
-    status: string; // "ACTIVE", "CLOSED"
-  };
+  karmaCard: KarmaBase
 }>();
 
 const progressWidth = computed(() => {
-  return String((props.karmaCard.raised / props.karmaCard.goal) * 100) + "%";
+  return String((props.karmaCard.current / props.karmaCard.goal) * 100) + "%";
 });
 
 const isCardPopupVisible = ref(false);
@@ -36,23 +28,23 @@ const openCardPopup = () => {
       :modelValue="isCardPopupVisible"
       @update:modelValue="isCardPopupVisible = $event"
     />
-    <div class="ellepsis ellepsis--upper" v-if="karmaCard.isPurchased"></div>
-    <div class="ellepsis ellepsis--bottom" v-if="karmaCard.isPurchased"></div>
+    <div class="ellepsis ellepsis--upper" v-if="karmaCard.is_donated"></div>
+    <div class="ellepsis ellepsis--bottom" v-if="karmaCard.is_donated"></div>
     <div class="content">
       <div class="photo">
         <img src="../../assets/images/card.png" alt="" />
       </div>
       <div class="info">
         <p class="card__title">{{ karmaCard.title }}</p>
-        <p class="card__boost" v-if="karmaCard.status === 'ACTIVE'">
-          {{ t("boost") }}: + {{ karmaCard.boost }}
+        <p class="card__boost" v-if="karmaCard.status === 'active'">
+          {{ t("boost") }}: + {{ karmaCard.income_percent / 100 * (karmaCard.donate_amount || 0) }}
           <img
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""
           />
           {{ t("h") }}
         </p>
-        <p class="card__boost" v-else-if="karmaCard.status === 'CLOSED'">
+        <p class="card__boost" v-else-if="karmaCard.status === 'completed'">
           {{ t("raised-all-money") }}
         </p>
       </div>
@@ -66,22 +58,22 @@ const openCardPopup = () => {
           <div class="donation-bar">
             <div class="progress" :style="{ width: progressWidth }"></div>
           </div>
-          <p v-if="karmaCard.isPurchased">
-            {{ t("you-donated") }}: {{ karmaCard.userDonat }}
+          <p v-if="karmaCard.is_donated">
+            {{ t("you-donated") }}: {{ karmaCard.donate_amount }}
             <img src="../../assets/svg/stats/green-coin.svg" alt="" />
           </p>
         </div>
         <button
           class="buy-btn"
-          v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+          v-if="!karmaCard.is_donated && karmaCard.status === 'active'"
           @click="openCardPopup"
         >
-          {{ t("donate-from") }} {{ karmaCard.price }}
+          {{ t("donate-from") }} {{ karmaCard.min_donation }}
           <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
         </button>
         <button
           class="buy-btn"
-          v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+          v-else-if="karmaCard.is_donated && karmaCard.status === 'active'"
           @click="openCardPopup"
         >
           {{ t("donate-more") }}

@@ -13,19 +13,11 @@ import PageHeader from "@/components/layout/TheHeader.vue";
 import { karmaStore } from "@/store/karma";
 const karmaStoreInstance = karmaStore();
 import { useI18n } from "vue-i18n";
+import type { KarmaBase } from "@/types/types";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
-  karmaCard: {
-    title: string;
-    price: number;
-    boost: number;
-    goal: number;
-    raised: number;
-    userDonat: number;
-    isPurchased: boolean;
-    status: string; // "ACTIVE", "CLOSED"
-  };
+  karmaCard: KarmaBase
   modelValue: boolean;
 }>();
 
@@ -36,7 +28,7 @@ const closePopup = () => {
 };
 
 const progressWidth = computed(() => {
-  return String((props.karmaCard.raised / props.karmaCard.goal) * 100) + "%";
+  return String((props.karmaCard.current / props.karmaCard.goal) * 100) + "%";
 });
 
 const touchStartY = ref(0);
@@ -99,16 +91,12 @@ watch(
             </div>
             <div class="info">
               <h3>{{ karmaCard.title }}</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam
-                commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et
-                amet consequat molestie. Fames in non vitae in
-              </p>
+              <p>{{ karmaCard.info }}</p>
             </div>
             <hr />
             <div class="stats">
               <p>
-                {{ t("boost") }}: + {{ karmaCard.boost }}
+                {{ t("boost") }}: + {{ karmaCard.income_percent / 100 * (karmaCard.donate_amount || 0) }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
                 /{{ t("h") }}
               </p>
@@ -118,30 +106,30 @@ watch(
                 {{ t("donation-goal") }}: {{ karmaCard.goal }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
                 ({{ t("last-donated") }}:
-                {{ karmaCard.goal - karmaCard.raised }}
+                {{ karmaCard.goal - karmaCard.current }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
               </p>
               <div class="donation-bar">
                 <div class="progress" :style="{ width: progressWidth }"></div>
               </div>
-              <p v-if="karmaCard.isPurchased">
-                {{ t("you-donated") }}: {{ karmaCard.userDonat }}
+              <p v-if="karmaCard.is_donated">
+                {{ t("you-donated") }}: {{ karmaCard.donate_amount }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
               </p>
-              <p v-else-if="!karmaCard.isPurchased">
+              <p v-else-if="!karmaCard.is_donated">
                 {{ t("not-donated") }}
               </p>
             </div>
             <button
               class="buy-btn"
-              v-if="!karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+              v-if="!karmaCard.is_donated && karmaCard.status === 'active'"
             >
-              {{ t("donate-from") }}: {{ karmaCard.price }}
+              {{ t("donate-from") }}: {{ karmaCard.min_donation }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
             <button
               class="buy-btn"
-              v-else-if="karmaCard.isPurchased && karmaCard.status === 'ACTIVE'"
+              v-else-if="karmaCard.is_donated && karmaCard.status === 'active'"
             >
               {{ t("donate-more") }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />

@@ -4,17 +4,13 @@ import { cardsStore } from "@/store/cards";
 import CardPopup from "@/components/mining/CardPopup.vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
 import { useI18n } from "vue-i18n";
+import type { CardBase } from "@/types/types";
 const { t, locale } = useI18n();
 
 const cardsStoreInstance = cardsStore();
 
 const props = defineProps<{
-  card: {
-    title: string;
-    price: number;
-    level: number;
-    isActive: boolean;
-  };
+  card: CardBase
 }>();
 
 const isCardPopupVisible = ref(false);
@@ -28,7 +24,7 @@ const openCardPopup = () => {
   <div class="card-item" @click="openCardPopup">
     <div
       class="card-item--inactive"
-      v-if="!card.isActive"
+      v-if="!card.is_available"
       @click="openCardPopup"
     >
       <button>
@@ -53,7 +49,7 @@ const openCardPopup = () => {
       <div class="info">
         <p class="card__title">{{ card.title }}</p>
         <p class="card__boost">
-          {{ t("boost") }}: + 0.5
+          {{ t("boost") }}: + {{ card.user_card?.power }}
           <img
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""
@@ -66,10 +62,10 @@ const openCardPopup = () => {
       <div class="footer">
         <div class="footer__item footer__item--level">
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-          <p>Lvl {{ card.level }}</p>
+          <p>Lvl {{ card.user_card?.level }}</p>
         </div>
-        <div class="footer__item footer__item--price">
-          <p>{{ t("price") }}: {{ card.price }}</p>
+        <div class="footer__item footer__item--price" v-if="!card.user_card?.max_level">
+          <p>{{ t("price") }}: {{ card.is_bought ? card.user_card?.upgrade_cost : card.purchase_cost }}</p>
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
         </div>
       </div>

@@ -2,87 +2,82 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 import { telegramStore } from "@/store/telegram";
-import { checkResponseSuccess } from "@/store/utils/apiUtils";
+import { checkResponseSuccess, requestConfig } from "@/store/utils/apiUtils";
+import { profileStore } from "./user-profile";
+import type { UserReferrals } from "@/types/types";
+
+const mockReferalsResponse = {
+  id: 0,
+  user_id: 0,
+  username: "string",
+  referrer_id: 0,
+  user_image_url: "string",
+  is_banned: false,
+  is_deleted: false,
+  referral_code: "string",
+  claimable: 0,
+  referrals: [
+    {
+      username: "string",
+      user_id: 0,
+      total_income: 1,
+      claimed_income: 4,
+      unclaimed_income: 0
+    },
+    {
+      username: "string",
+      user_id: 2,
+      total_income: 2,
+      claimed_income: 3,
+      unclaimed_income: 0
+    }
+  ]
+} as UserReferrals
+
+function getReferalLink(code: string | null) {
+  return `https://t.me/EcologyWorkers_bot/saveworldweb?startapp=${code}`
+}
 
 export const friendsStore = defineStore("friends", {
   state: () => ({
-    referalLink: null as null | string,
-    friends: [
-      {
-        name: "Имя",
-        boost: 10,
-        total: 20,
-      },
-      {
-        name: "Имя",
-        boost: 10,
-        total: 20,
-      },
-      {
-        name: "Имя",
-        boost: 10,
-        total: 20,
-      },
-      {
-        name: "Имя",
-        boost: 10,
-        total: 20,
-      },
-      {
-        name: "Имя",
-        boost: 10,
-        total: 20,
-      },
-    ],
+    referalText: "Присоединяйтесь!",
+    referalLink: getReferalLink(profileStore().userProfile.referral_code),
+    friends: mockReferalsResponse
   }),
 
   actions: {
     async fetchFriends() {
       try {
-        const initData = telegramStore().getInitData;
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals`
+        const response = await axios.get(url, requestConfig);
 
-        const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND}/api/cards/get-karma`,
-          initData,
-        );
+        const validatedResponse = await checkResponseSuccess(response, url, "get")
 
-        checkResponseSuccess(response);
-
-        this.friends = response.data.data.friends;
+        if(validatedResponse) {
+          this.friends = validatedResponse.data;
+        }
       } catch (error) {
         console.error("Ошибка при получении друзей:", error);
         throw new Error("Server error when getting friends list");
       }
     },
 
-    async ensureReferalLink() {
-      if (!this.referalLink) {
-        try {
-          this.referalLink = await this.requestReferalLink();
-        } catch (error) {
-          console.error("Ошибка получения реферальных данных:", error);
-          throw new Error("Error when getting referal link");
+    async claimReward() {
+      try {
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals`
+        const response = await axios.post(url, {}, requestConfig);
+
+        const validatedResponse = await checkResponseSuccess(response, url, "post")
+
+        if(validatedResponse) {
+          this.friends = validatedResponse.data;
+          profileStore().updateBalance(validatedResponse.data.balance.balance, validatedResponse.data.balance.mining_power)
         }
+      } catch (error) {
+        console.error("Ошибка при получении друзей:", error);
+        throw new Error("Server error when getting friends list");
       }
-      return this.referalLink;
-    },
-
-    async requestReferalLink(): Promise<string> {
-      const initData = telegramStore().getInitData;
-
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND}/api/request-invite-link`,
-        initData,
-      );
-
-      checkResponseSuccess(response);
-
-      if (response.data.data.referalLink === null) {
-        throw new Error("Реферальная ссылка полученная с сервера пустая");
-      }
-
-      return response.data.data.referalLink;
-    },
+    }
   },
 
   getters: {},

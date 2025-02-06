@@ -2,13 +2,27 @@
 import { computed, ref, onMounted } from "vue";
 import { karmaStore } from "@/store/karma";
 import KarmaItem from "@/components/karma/KarmaItem.vue";
+import { eventBus } from "@/event_bus/eventBus";
 
 // Иконки категорий:
 import recyclingIcon from "@/assets/svg/karma/recycling.svg";
 import medIcon from "@/assets/svg/karma/med.svg";
 import animalsIcon from "@/assets/svg/karma/animals.svg";
+import type { KarmaBase } from "@/types/types";
 
 const karmaStoreInstance = karmaStore();
+
+const fetchKarmas = async () => {
+  try {
+    await karmaStoreInstance.fetchKarma();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
+};
+
+onMounted(async () => {
+  await fetchKarmas();
+});
 
 const activeCategory = ref(0);
 
@@ -16,21 +30,9 @@ const categories = computed(() => {
   return karmaStoreInstance.categories;
 });
 
-const karmaCards = ref<KarmaCard[]>(
-  categories.value[activeCategory.value].karmaCards,
+const karmaCards = ref<KarmaBase[]>(
+  categories.value[activeCategory.value].karmas,
 );
-
-// Определение интерфейсов
-interface KarmaCard {
-  title: string;
-  price: number;
-}
-
-interface Category {
-  id: number;
-  title: string;
-  karmaCards: KarmaCard[];
-}
 
 const srcToCategoryIcons = ref([
   recyclingIcon,
@@ -44,7 +46,7 @@ const srcToCategoryIcon = ref(srcToCategoryIcons.value[0]);
 const setActiveCategory = (index: number) => {
   activeCategory.value = index;
   srcToCategoryIcon.value = srcToCategoryIcons.value[index];
-  karmaCards.value = categories.value[activeCategory.value].karmaCards;
+  karmaCards.value = categories.value[activeCategory.value].karmas;
 };
 
 const categoryTitleClass = (index: number) => {
@@ -76,9 +78,9 @@ const handleScroll = (event: Event) => {
           <img
             :src="srcToCategoryIcon"
             alt=""
-            v-if="category.id === activeCategory"
+            v-if="category.index === activeCategory"
           />
-          {{ category.title }}
+          {{ category.category }}
         </button>
       </div>
       <div class="nav-overlay nav-overlay--left" v-if="!isAtStart"></div>

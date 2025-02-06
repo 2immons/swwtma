@@ -120,8 +120,10 @@ export const questsStore = defineStore("tasks", {
 
         const validatedResponse = await checkResponseSuccess(response, url, "get")
 
-        this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
-        this.soloTasks = validatedResponse.data.solo_tasks;
+        if(validatedResponse) {
+          this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
+          this.soloTasks = validatedResponse.data.solo_tasks;
+        }
       } catch (error) {
         console.error("Ошибка при получении заданий:", error);
         throw new Error("Server error when getting tasks list");

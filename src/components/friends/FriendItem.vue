@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import { friendsStore } from "@/store/friends";
+import { type UserReferralIncomeSchema } from "@/types/types"
+
 const friendsStoreInstance = friendsStore();
 
 const props = defineProps<{
-  friend: {
-    name: string;
-    boost: number;
-    total: number;
-  };
+  friend: UserReferralIncomeSchema
 }>();
 </script>
 
@@ -16,15 +14,15 @@ const props = defineProps<{
   <div class="friend">
     <div class="photo"></div>
     <div class="info">
-      <p class="name">{{ friend.name }}</p>
+      <p class="name">{{ friend.username }}</p>
       <p class="boost">
         <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-        + {{ friend.boost }}
+        + {{ friend.unclaimed_income }}
       </p>
     </div>
     <div class="total">
       <p>
-        + {{ friend.total }}
+        + {{ friend.total_income }}
         <img src="../../assets/svg/stats/green-coin.svg" alt="" />
       </p>
     </div>

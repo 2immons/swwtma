@@ -11,14 +11,11 @@ import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/layout/TheHeader.vue";
 const cardsStoreInstance = cardsStore();
 import { useI18n } from "vue-i18n";
+import type { CardBase } from "@/types/types";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
-  card: {
-    title: string;
-    price: number;
-    level: number;
-  };
+  card: CardBase;
   modelValue: boolean;
 }>();
 
@@ -67,6 +64,14 @@ watch(
     }
   },
 );
+
+const purchaseCard = async () => {
+  if (!props.card.is_bought) {
+    await cardsStoreInstance.purchaseCard(props.card.id)
+  } else {
+    await cardsStoreInstance.upgradeCard(props.card.id)
+  }
+}
 </script>
 
 <template>
@@ -88,11 +93,7 @@ watch(
             </div>
             <div class="info">
               <h3>{{ card.title }}</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur. Sed eros viverra aliquam
-                commodo sit sed. Tempor cras adipiscing ut et. Quam porttitor et
-                amet consequat molestie. Fames in non vitae in
-              </p>
+              <p>{{ card.info }}</p>
             </div>
             <hr />
             <div class="stats">
@@ -101,15 +102,15 @@ watch(
                   src="../../assets/svg/stats/green-coin--light-green.svg"
                   alt=""
                 />
-                Lvl {{ card.level }}
+                Lvl {{ card.is_bought ? card.user_card?.level : card.level_map[0].level }}
               </p>
               <p class="income">
-                {{ t("boost") }}: + {{ card.price }}
+                {{ t("boost") }}: + {{ card.user_card?.power }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
               </p>
             </div>
-            <button class="buy-btn">
-              {{ t("buy") }} {{ card.price }}
+            <button class="buy-btn" @click="purchaseCard()">
+              {{ t("buy") }} {{ card.is_bought ? card.user_card?.upgrade_cost : card.purchase_cost }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
           </div>
@@ -146,9 +147,9 @@ watch(
   bottom: 0
   background: vars.$c-bg
   height: 80%
+  max-height: 650px
   display: flex
   justify-content: center
-  max-height: 650px
   margin-top: 60px
   padding-bottom: 30px
   border-top-right-radius: 30px

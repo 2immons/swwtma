@@ -1,10 +1,11 @@
 import axios, { Axios, type AxiosResponse, type AxiosRequestConfig } from "axios";
+import Cookies from "js-cookie";
 import { telegramStore } from "@/store/telegram";
 
 export async function checkResponseSuccess(origResponse: AxiosResponse, url: string, type: string) {
   if (origResponse.status === 401) {
     const url = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`
-    const refreshTokenResponse = await axios.get(url, requestConfig);
+    const refreshTokenResponse = await axios.post(url, {}, requestConfig);
 
     let newResponse;
 
@@ -16,7 +17,7 @@ export async function checkResponseSuccess(origResponse: AxiosResponse, url: str
           else { parseErrors(newResponse); return newResponse }
 
         case "post":
-          newResponse = await axios.post(url, requestConfig)
+          newResponse = await axios.post(url, {}, requestConfig)
           if (newResponse.status === 200) return newResponse
           else { parseErrors(newResponse); return newResponse }
 
@@ -45,7 +46,7 @@ function parseErrors (response: AxiosResponse) {
   throw new Error("Запрос отработал с ошибкой. " + errors);
 }
 
-export const requestConfig = {
+export const requestConfig: AxiosRequestConfig = {
   withCredentials: true,
   headers: {
     "X-CSRF-Token": getCsrfToken(),
@@ -53,8 +54,5 @@ export const requestConfig = {
 }
 
 export function getCsrfToken() {
-  const csrfCookie = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("csrf_token="));
-  return csrfCookie ? csrfCookie.split("=")[1] : "";
+  return Cookies.get('csrf_token');
 }

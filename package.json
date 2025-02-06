@@ -18,6 +18,7 @@
   "dependencies": {
     "@tonconnect/ui": "^2.0.9",
     "gameanalytics": "^4.4.7",
+    "js-cookie": "^3.0.5",
     "pinia": "^2.2.6",
     "qrcode.vue": "^3.6.0",
     "vue": "^3.5.13",
@@ -27,6 +28,7 @@
     "@intlify/vue-i18n-bridge": "^1.1.0",
     "@tonconnect/sdk": "^3.0.5",
     "@tsconfig/node22": "^22.0.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.9.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "@volar/vue-language-server": "^1.6.5",
