@@ -15,13 +15,6 @@ const props = defineProps<{
   isPromoTask: boolean;
 }>();
 
-interface Task {
-  id: number;
-  title: string;
-  url: string;
-  status: string; // VERIFYING, NOT_STARTED, COMPLETED, CLAIMED
-}
-
 const { categories } = storeToRefs(tasksStoreInstance);
 
 const task = computed((): TaskBaseSchema => {
@@ -84,9 +77,10 @@ const setupStory = () => {
 };
 
 const isTaskVerifying = ref(false);
+const isTaskReady = ref(false);
 
 const startTask = async () => {
-  isTaskVerifying.value = true
+  isTaskReady.value = true;
   switch (props.task.action) {
     case TaskAction.redirect_tg:
       redirectToTelegramLink();
@@ -94,7 +88,7 @@ const startTask = async () => {
     case TaskAction.tg_subscription_check:
       redirectToTelegramLink();
       break;
-    case TaskAction.redirect_other_social:
+    case TaskAction.redirect_other:
       redirectToOtherLink();
       break;
     case TaskAction.tg_story:
@@ -102,21 +96,36 @@ const startTask = async () => {
       break;
   }
 };
-const redirectToTaskLink = () => {
-  if (props.task.link) {
-    telegramStoreInstance.telegramWebApp.openTelegramLink(props.task.link);
+const redirectToTelegramLink = () => {
+  if (props.task.url) {
+    telegramStoreInstance.telegramWebApp.openTelegramLink(props.task.url);
   } else {
     console.error("Ссылка отсутствует");
   }
 };
 
-const redirectToTaskLinkOther = () => {
-  if (props.task.link) {
-    window.open(props.task.link, "_blank");
+const redirectToOtherLink = () => {
+  if (props.task.url) {
+    window.open(props.task.url, "_blank");
   } else {
     console.error("Ссылка отсутствует");
   }
 };
+
+const completeTask = async () => {
+  isTaskReady.value = false;
+  isTaskVerifying.value = true;
+  const isTaskValid = await tasksStoreInstance.completeTask(props.task.id)
+  isTaskVerifying.value = false;
+  if (isTaskValid) {
+    const task = tasksStoreInstance.soloTasks.find((task) => task.id === props.task.id)
+    if (task) {
+      task.is_done = true;
+    }
+  } else {
+    //
+  }
+}
 
 </script>
 
@@ -136,19 +145,19 @@ const redirectToTaskLinkOther = () => {
       <div class="loader-wrapper" v-if="isTaskVerifying">
         <div class="loader"></div>
       </div>
-      <div class="claimed-wrapper" v-if="task.is_done">
-        <img src="../../assets/svg/v-icon.svg" alt="" />
-      </div>
       <button
-        @click="acceptTask"
-        v-else-if="task.status === 'NOT_STARTED'"
-        class="start-btn"
+          @click="startTask"
+          v-else-if="!isTaskVerifying && !task.is_done && !isTaskReady"
+          class="start-btn"
       >
         {{ t("accept-task") }}
       </button>
+      <div class="claimed-wrapper" v-else-if="task.is_done">
+        <img src="../../assets/svg/v-icon.svg" alt="" />
+      </div>
       <button
-        @click="claimReward"
-        v-else-if="task.status === 'COMPLETED'"
+        @click="completeTask"
+        v-else-if="isTaskReady"
         class="claim-btn"
       >
         {{ t("claim-task") }}

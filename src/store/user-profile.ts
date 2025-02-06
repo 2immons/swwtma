@@ -56,10 +56,12 @@ export const profileStore = defineStore("profile", {
   }),
 
   actions: {
-    updateBalance(balance: number, mining_power: number) {
+    updateBalance(balance?: number, mining_power?: number) {
       if (this.userProfile.balance) {
-        this.userProfile.balance.balance = balance
-        this.userProfile.balance.mining_power = mining_power
+        if (balance)
+          this.userProfile.balance.balance = balance
+        if (mining_power)
+          this.userProfile.balance.mining_power = mining_power
       }
     },
 
@@ -150,27 +152,25 @@ export const profileStore = defineStore("profile", {
       remainingPercentage: number;
     } {
       const miningInfo = state.userProfile.minings[0];
-      const MSK_OFFSET = 3 * 60 * 60 * 1000; // UTC+3 в миллисекундах
+      const MSK_OFFSET = 3 * 60 * 60 * 1000;
 
-      const startTimeMSK = new Date(miningInfo.start_time).getTime(); // Сервер хранит MSK-время
+      const startTimeMSK = new Date(miningInfo.start_time).getTime();
       const endTimeMSK = new Date(miningInfo.end_time).getTime();
 
-// Приводим MSK-время к UTC
       const startTime = startTimeMSK - MSK_OFFSET;
       const endTime = endTimeMSK - MSK_OFFSET;
-      const currentTime = Date.now(); // Уже в UTC
+      const currentTime = Date.now();
 
-// Вычисления
       const totalMilliseconds = endTime - startTime;
       const remainingMilliseconds = endTime - currentTime;
 
       const totalSeconds = Math.floor(totalMilliseconds / 1000);
-      const remainingSeconds = Math.max(0, Math.floor(remainingMilliseconds / 1000)); // Не даем уйти в минус
+      const remainingSeconds = Math.max(0, Math.floor(remainingMilliseconds / 1000));
 
       const remainingHours = Math.floor(remainingSeconds / 3600);
       const remainingMinutes = Math.floor((remainingSeconds % 3600) / 60);
 
-      const remainingPercentage = ((remainingMilliseconds / totalMilliseconds) * 100).toFixed(2);
+      const remainingPercentage = ((remainingMilliseconds / totalMilliseconds) * 100);
 
       console.log(`Total Seconds: ${totalSeconds}`);
       console.log(`Remaining Seconds: ${remainingSeconds}`);

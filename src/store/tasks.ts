@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import {checkResponseSuccess, getCsrfToken, requestConfig} from "@/store/utils/apiUtils";
 import { type TaskBaseSchema } from "@/types/types";
+import {profileStore} from "@/store/user-profile.ts";
 
 // Mock data
 const mockTasksResponse = {
@@ -47,7 +48,7 @@ const mockTasksResponse = {
       id: 1,
       category: "Category 2",
       social: "Social 2",
-      is_done: false,
+      is_done: true,
       action: "redirect_other_social"
     },
     {
@@ -133,79 +134,24 @@ export const questsStore = defineStore("tasks", {
       }
     },
 
-    async completeTask() {
+    async completeTask(id: number, secret?: string) {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion/?task_id=${id}&secret=${secret}`
         const response = await axios.post(url, {}, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "post")
 
-        if(validatedResponse) {
-          this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
-          this.soloTasks = validatedResponse.data.solo_tasks;
+        if (validatedResponse) {
+          if (validatedResponse.status === 200) {
+            profileStore().updateBalance(validatedResponse.data.balance.balance)
+            return true
+          }
         }
       } catch (error) {
         console.error("Ошибка при получении заданий:", error);
         throw new Error("Server error when getting tasks list");
       }
     },
-
-    // async completeTask(task: any) {
-    //   const category = this.categories.find((cat) =>
-    //     cat.tasks.some((t) => t.id === task.id)
-    //   );
-    //   if (category) {
-    //     const taskToUpdate = category.tasks.find((t) => t.id === task.id);
-    //     if (taskToUpdate) {
-    //       taskToUpdate.status = "VERIFYING";
-
-    //       const response = await axios.post(
-    //       `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion?task_id=${task.id}'`,
-    //       {
-    //         withCredentials: true,
-    //           headers: {
-    //             'X-CSRF-Token': getCsrfToken()
-    //           }
-    //         }
-    //       );
-
-    //       checkResponseSuccess(response);
-    //       setTimeout(() => {
-    //         taskToUpdate.status = "COMPLETED";
-    //       }, 5000);
-    //     }
-    //   }
-    // },
-
-    // acceptPromoTask(task: any) {
-    //   const promoTask = this.promoTasks.find((pt) =>
-    //     pt.tasks.some((t) => t.id === task.id)
-    //   );
-    //   if (promoTask) {
-    //     const taskToUpdate = promoTask.tasks.find((t) => t.id === task.id);
-    //     if (taskToUpdate) {
-    //       taskToUpdate.status = "VERIFYING";
-    //       promoTask.promo_task_status = "IN_PROGRESS";
-
-    //       // TODO: заменить ниже на получение ответа от сервера
-    //       setTimeout(() => {
-    //         taskToUpdate.status = "COMPLETED";
-    //       }, 5000);
-
-    //       let isAllTasksCompleted = true;
-    //       promoTask.tasks.forEach((task) => {
-    //         if (task.status !== "COMPLETED") {
-    //           isAllTasksCompleted = false;
-    //           return;
-    //         }
-    //       });
-
-    //       if (isAllTasksCompleted) {
-    //         promoTask.promo_task_status = "COMPLETED";
-    //       }
-    //     }
-    //   }
-    // },
 
     // claimPromoTaskReward(promoTask: PromoTask) {
     //   const foundPromoTask = this.promoTasks.find(

@@ -4,11 +4,9 @@ import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
 
 export default defineConfig(({ mode }) => ({
-  plugins: [vue(), mode === "production" ? null : vueDevTools()],
+  plugins: [vue(), (mode === "production" || mode == "development") ? null : vueDevTools()],
   base:
-    mode === "development"
-      ? "https://sww.tonycrypto.site/"
-      : "/",
+    mode === "development" ? "https://sww.tonycrypto.site/" : "/",
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -25,5 +23,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: true,
     port: 5175,
+    strictPort: true,
+    allowedHosts: ["sww.tonycrypto.site"],
+    cors: true
   },
 }));

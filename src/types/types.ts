@@ -129,9 +129,10 @@ export enum TaskAction {
   tg_subscription_check = "tg_subscription_check",
   redirect_tg = "redirect_tg",
   redirect_tg_code = "redirect_tg_code",
-  redirect_other_social = "redirect_other_social",
-  redirect_other_social_code = "redirect_other_social_code",
-  tg_story = "tg_story"
+  redirect_other = "redirect_other",
+  redirect_other_code = "redirect_other_code",
+  tg_story = "tg_story",
+  special = "special",
 }
 
 export interface TaskBaseSchema {
