@@ -4,7 +4,7 @@ export interface BalanceBase {
 
 export interface BalanceBaseSchema {
   balance: number;
-  mining_power: number | null;
+  mining_power: number | null; // 22
 }
 
 export interface CardBase {
