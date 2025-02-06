@@ -22,6 +22,8 @@ jobs:
       run: |
         ssh -v -o StrictHostKeyChecking=no deployuser@45.95.234.232 << 'EOF'
           cd /var/www/swwf
+          git reset --hard HEAD
+          git clean -fd
           git pull origin master
           npm install
           npm run build-dev
