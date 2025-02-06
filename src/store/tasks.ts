@@ -130,6 +130,23 @@ export const questsStore = defineStore("tasks", {
       }
     },
 
+    async completeTask() {
+      try {
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks`
+        const response = await axios.post(url, {}, requestConfig);
+
+        const validatedResponse = await checkResponseSuccess(response, url, "post")
+
+        if(validatedResponse) {
+          this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
+          this.soloTasks = validatedResponse.data.solo_tasks;
+        }
+      } catch (error) {
+        console.error("Ошибка при получении заданий:", error);
+        throw new Error("Server error when getting tasks list");
+      }
+    },
+
     // async completeTask(task: any) {
     //   const category = this.categories.find((cat) =>
     //     cat.tasks.some((t) => t.id === task.id)

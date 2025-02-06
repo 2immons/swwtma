@@ -34,8 +34,8 @@ const mockUserProfile: UserGetSchema = {
     {
       amount: 0,
       status: "pending",
-      start_time: "2025-02-06T17:07:16.660503",
-      end_time: "2025-02-07T15:45:16.660503",
+      start_time: "2025-02-06T18:07:16.660503",
+      end_time: "2025-02-07T06:45:16.660503",
       is_claimed: false,
     },
   ],
@@ -147,6 +147,7 @@ export const profileStore = defineStore("profile", {
       remainingSeconds: number;
       remainingHours: number;
       remainingMinutes: number;
+      remainingPercentage: number;
     } {
       const miningInfo = state.userProfile.minings[0];
       const MSK_OFFSET = 3 * 60 * 60 * 1000; // UTC+3 в миллисекундах

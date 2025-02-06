@@ -14,22 +14,17 @@ const miningInfo = computed(() => profileStoreInstance.getMiningInfo);
 const claimButtonClass = computed(() => {
   if (miningInfo.value.status === 'pending') {
     if (miningInfo.value.remainingSeconds === 0) {
-      return "claim-button--active"
-    } else {
       return "claim-button"
+    } else {
+      return "claim-button--active"
     }
   } else {
-    return "claim-button--active"
+    return "claim-button"
   }
 });
 
 const progressWidth = computed(() => {
-  return (
-    String(
-      (miningInfo.value.remainingSeconds / miningInfo.value.totalSeconds) *
-        100,
-    ) + "%"
-  );
+  return String(miningInfo.value.remainingPercentage) + "%"
 });
 
 const claimReward = async () => {
@@ -233,5 +228,5 @@ onMounted(async () => {
     font-weight: 600
 
     p
-      opacity: 80%
+      white-space: nowrap
 </style>
