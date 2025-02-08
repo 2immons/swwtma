@@ -31,20 +31,20 @@ const mockUserProfile: UserGetSchema = {
   user_cards: [],
   karma_donates: [],
   minings: [
+    {
+      amount: 50,
+      status: "pending",
+      start_time: "2025-02-08T23:46:48.070144",
+      end_time: "2025-02-09T07:46:48.085681",
+      is_claimed: false,
+    },
     // {
     //   amount: 0,
-    //   status: "pending",
-    //   start_time: "2025-02-06T18:07:16.660503",
-    //   end_time: "2025-02-07T06:45:16.660503",
-    //   is_claimed: false,
-    // },
-    {
-      amount: 0,
-      status: "completed",
-      start_time: "2020-01-01T20:42:16.989Z",
-      end_time: "2020-01-01T20:42:16.989Z",
-      is_claimed: true,
-    }
+    //   status: "completed",
+    //   start_time: "2020-01-01T20:42:16.989Z",
+    //   end_time: "2020-01-01T20:42:16.989Z",
+    //   is_claimed: true,
+    // }
   ],
   referrer: {
     id: 0,
@@ -169,30 +169,36 @@ export const profileStore = defineStore("profile", {
       remainingPercentage: number;
     } {
       const miningInfo = state.userProfile.minings[state.userProfile.minings.length - 1];
-      const MSK_OFFSET = 3 * 60 * 60 * 1000;
 
-      const startTimeMSK = new Date(miningInfo.start_time).getTime();
-      const endTimeMSK = new Date(miningInfo.end_time).getTime();
+      const MSK_OFFSET = 1 * 60 * 60 * 1000
 
-      const startTime = startTimeMSK - MSK_OFFSET;
-      const endTime = endTimeMSK - MSK_OFFSET;
-      const currentTime = Date.now();
+      // Просто парсим время, без корректировки смещения!
+      const startTime = new Date(miningInfo.start_time).getTime() + MSK_OFFSET;
+      const endTime = new Date(miningInfo.end_time).getTime() + MSK_OFFSET;
+      const currentTime = Date.now(); // Текущее UTC-время
+
+      console.log("Start Time (raw):", miningInfo.start_time);
+      console.log("End Time (raw):", miningInfo.end_time);
+      console.log("Current Time:", new Date().toISOString());
+
+      console.log("Start Time UTC:", new Date(startTime).toISOString());
+      console.log("End Time UTC:", new Date(endTime).toISOString());
 
       const totalMilliseconds = endTime - startTime;
-      const remainingMilliseconds = endTime - currentTime;
+      const remainingMilliseconds = Math.max(0, endTime - currentTime);
 
       const totalSeconds = Math.floor(totalMilliseconds / 1000);
-      const remainingSeconds = Math.max(0, Math.floor(remainingMilliseconds / 1000));
+      const remainingSeconds = Math.floor(remainingMilliseconds / 1000);
 
       const remainingHours = Math.floor(remainingSeconds / 3600);
       const remainingMinutes = Math.floor((remainingSeconds % 3600) / 60);
 
-      const remainingPercentage = ((remainingMilliseconds / totalMilliseconds) * 100);
+      const remainingPercentage = Math.abs((remainingMilliseconds / totalMilliseconds) * 100 - 100);
 
-      console.log(`Total Seconds: ${totalSeconds}`);
-      console.log(`Remaining Seconds: ${remainingSeconds}`);
-      console.log(`Remaining Time: ${remainingHours}h ${remainingMinutes}m`);
-
+      console.log(`Total Hours: ${totalMilliseconds / 3600000}h`);
+      console.log(`Remaining Hours: ${remainingHours}h`);
+      console.log(`Remaining Minutes: ${remainingMinutes}m`);
+      console.log(`Remaining Minutes: ${remainingPercentage}m`);
 
       return {
         ...miningInfo,
@@ -202,6 +208,7 @@ export const profileStore = defineStore("profile", {
         remainingMinutes,
         remainingPercentage
       };
-    },
+    }
+
   },
 });
