@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import {computed, defineProps, ref} from "vue";
 import { cardsStore } from "@/store/cards";
 import CardPopup from "@/components/mining/CardPopup.vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
@@ -18,6 +18,40 @@ const isCardPopupVisible = ref(false);
 const openCardPopup = () => {
   isCardPopupVisible.value = true;
 };
+
+const targetLevel = computed(() => {
+  if (props.card.is_bought) {
+    if (props.card.user_card?.max_level) {
+      const targetLevel = props.card.user_card.level;
+
+      for (let i = 0; i < props.card.level_map.length; i++) {
+        if (props.card.level_map[i].level === targetLevel) {
+          return props.card.level_map[i];
+        }
+      }
+    } else {
+      if (props.card.user_card) {
+        const targetLevel = props.card.user_card.level;
+
+        for (let i = 0; i < props.card.level_map.length; i++) {
+          if (props.card.level_map[i].level === targetLevel) {
+            return props.card.level_map[i];
+          }
+        }
+      }
+    }
+  } else {
+    if (props.card.level_map) {
+      const targetLevel = 1;
+
+      for (let i = 0; i < props.card.level_map.length; i++) {
+        if (props.card.level_map[i].level === targetLevel) {
+          return props.card.level_map[i];
+        }
+      }
+    }
+  }
+});
 </script>
 
 <template>
@@ -49,7 +83,7 @@ const openCardPopup = () => {
       <div class="info">
         <p class="card__title">{{ card.title }}</p>
         <p class="card__boost">
-          {{ t("boost") }}: + {{ card.user_card?.power }}
+          {{ t("boost") }}: + {{ targetLevel?.power }}
           <img
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""
@@ -62,10 +96,10 @@ const openCardPopup = () => {
       <div class="footer">
         <div class="footer__item footer__item--level">
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-          <p>Lvl {{ card.user_card?.level }}</p>
+          <p>Lvl {{ targetLevel?.level }}</p>
         </div>
         <div class="footer__item footer__item--price" v-if="!card.user_card?.max_level">
-          <p>{{ t("price") }}: {{ card.is_bought ? card.user_card?.upgrade_cost : card.purchase_cost }}</p>
+          <p>{{ t("price") }}: {{ targetLevel?.upgrade_cost }}</p>
           <img src="../../assets/svg/stats/green-coin.svg" alt="" />
         </div>
       </div>

@@ -5,7 +5,7 @@ import {
   onMounted,
   onBeforeUnmount,
   ref,
-  watch,
+  watch, computed,
 } from "vue";
 import { cardsStore } from "@/store/cards";
 import PageHeader from "@/components/layout/TheHeader.vue";
@@ -72,7 +72,43 @@ const purchaseCard = async () => {
     await cardsStoreInstance.upgradeCard(props.card.id)
   }
 }
+
+const targetLevel = computed(() => {
+  if (props.card.is_bought) {
+    if (props.card.user_card?.max_level) {
+      const targetLevel = props.card.user_card.level;
+
+      for (let i = 0; i < props.card.level_map.length; i++) {
+        if (props.card.level_map[i].level === targetLevel) {
+          return props.card.level_map[i];
+        }
+      }
+    } else {
+      if (props.card.user_card) {
+        const targetLevel = props.card.user_card.level + 1;
+
+        for (let i = 0; i < props.card.level_map.length; i++) {
+          if (props.card.level_map[i].level === targetLevel) {
+            return props.card.level_map[i];
+          }
+        }
+      }
+    }
+  } else {
+    if (props.card.level_map) {
+      const targetLevel = 1;
+
+      for (let i = 0; i < props.card.level_map.length; i++) {
+        if (props.card.level_map[i].level === targetLevel) {
+          return props.card.level_map[i];
+        }
+      }
+    }
+  }
+});
 </script>
+
+
 
 <template>
   <Transition>
@@ -102,15 +138,15 @@ const purchaseCard = async () => {
                   src="../../assets/svg/stats/green-coin--light-green.svg"
                   alt=""
                 />
-                Lvl {{ card.is_bought ? card.user_card?.level : card.level_map[0].level }}
+                Lvl {{ targetLevel?.level }}
               </p>
               <p class="income">
-                {{ t("boost") }}: + {{ card.user_card?.power }}
+                {{ t("boost") }}: + {{ targetLevel?.power }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
               </p>
             </div>
             <button class="buy-btn" @click="purchaseCard()">
-              {{ t("buy") }} {{ card.is_bought ? card.user_card?.upgrade_cost : card.purchase_cost }}
+              {{ t("buy") }} {{ targetLevel?.upgrade_cost }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
           </div>

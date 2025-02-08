@@ -13,7 +13,7 @@ export interface CardBase {
   image: CustomImageField | null;
   backdrop: string;
   id: number;
-  level_map: CardsLevelMapBase[] | null;
+  level_map: CardsLevelMapBase[];
   is_bought: boolean;
   is_available: boolean;
   purchase_cost: number;
