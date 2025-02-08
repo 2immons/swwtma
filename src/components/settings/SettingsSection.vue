@@ -139,6 +139,22 @@ const setLanguage = async (language: Language) => {
   }
 };
 
+const changeVibration = async() => {
+  try {
+    await settingsStoreInstance.changeVibration();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
+}
+
+const changeAnimation = async() => {
+  try {
+    await settingsStoreInstance.changeAnimation();
+  } catch (error) {
+    eventBus.emit("showErrorPopup", error.message);
+  }
+}
+
 const deleteAccount = () => {
   toggleConfirmModal();
   try {
@@ -284,11 +300,11 @@ const deleteAccount = () => {
           <div class="sliders">
             <div class="settings-wrapper">
               <h3>{{ t("vibration") }}</h3>
-              <SliderButton />
+              <SliderButton @click="changeVibration"/>
             </div>
             <div class="settings-wrapper">
               <h3>{{ t("coin-animation") }}</h3>
-              <SliderButton />
+              <SliderButton @click="changeAnimation"/>
             </div>
           </div>
         </div>

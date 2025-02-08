@@ -33,16 +33,16 @@ export const settingsStore = defineStore("settings", {
         await this.changeSettings(newSettings)
     },
 
-    async changeVibration(value: boolean) {
-      const newSettings = { ...profileStore().userProfile.settings }
-      newSettings.vibration = value
+    async changeVibration() {
+      let newSettings = { ...profileStore().userProfile.settings }
+      newSettings.vibration = !newSettings.vibration
       if (newSettings)
         await this.changeSettings(newSettings)
     },
 
-    async changeAnimation(value: boolean) {
-      const newSettings = { ...profileStore().userProfile.settings }
-      newSettings.animation = value
+    async changeAnimation() {
+      let newSettings = { ...profileStore().userProfile.settings }
+      newSettings.animation = !newSettings.animation
       if (newSettings)
         await this.changeSettings(newSettings)
     },
