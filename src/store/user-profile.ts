@@ -31,13 +31,20 @@ const mockUserProfile: UserGetSchema = {
   user_cards: [],
   karma_donates: [],
   minings: [
+    // {
+    //   amount: 0,
+    //   status: "pending",
+    //   start_time: "2025-02-06T18:07:16.660503",
+    //   end_time: "2025-02-07T06:45:16.660503",
+    //   is_claimed: false,
+    // },
     {
       amount: 0,
-      status: "pending",
-      start_time: "2025-02-06T18:07:16.660503",
-      end_time: "2025-02-07T06:45:16.660503",
-      is_claimed: false,
-    },
+      status: "completed",
+      start_time: "2020-01-01T20:42:16.989Z",
+      end_time: "2020-01-01T20:42:16.989Z",
+      is_claimed: true,
+    }
   ],
   referrer: {
     id: 0,
@@ -81,6 +88,16 @@ export const profileStore = defineStore("profile", {
     // setProfileVariables устанавливает переменные профиля
     setProfileVariables(responseData: UserGetSchema) {
       this.userProfile = responseData;
+
+      if (responseData.minings.length <= 0) {
+        this.userProfile.minings[0] = {
+          amount: 0,
+          status: "completed",
+          start_time: "2020-01-01T20:42:16.989Z",
+          end_time: "2020-01-01T20:42:16.989Z",
+          is_claimed: true,
+        }
+      }
 
       const { locale } = useI18n();
       locale.value = responseData.settings?.language || "en";
@@ -151,7 +168,7 @@ export const profileStore = defineStore("profile", {
       remainingMinutes: number;
       remainingPercentage: number;
     } {
-      const miningInfo = state.userProfile.minings[0];
+      const miningInfo = state.userProfile.minings[state.userProfile.minings.length - 1];
       const MSK_OFFSET = 3 * 60 * 60 * 1000;
 
       const startTimeMSK = new Date(miningInfo.start_time).getTime();
