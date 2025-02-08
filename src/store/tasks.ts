@@ -139,7 +139,7 @@ export const questsStore = defineStore("tasks", {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion/?task_id=${id}&secret=${secret}`
         const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post")
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
 
         if (validatedResponse) {
           if (validatedResponse.status === 200) {

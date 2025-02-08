@@ -2,7 +2,7 @@ import axios, { Axios, type AxiosResponse, type AxiosRequestConfig } from "axios
 import Cookies from "js-cookie";
 import { telegramStore } from "@/store/telegram";
 
-export async function checkResponseSuccess(origResponse: AxiosResponse, url: string, type: string) {
+export async function checkResponseSuccess(origResponse: AxiosResponse, url: string, type: string, data?: any) {
   if (origResponse.status === 401) {
     const url = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`
     const refreshTokenResponse = await axios.post(url, {}, requestConfig);
@@ -17,12 +17,12 @@ export async function checkResponseSuccess(origResponse: AxiosResponse, url: str
           else { parseErrors(newResponse); return newResponse }
 
         case "post":
-          newResponse = await axios.post(url, {}, requestConfig)
+          newResponse = await axios.post(url, data, requestConfig)
           if (newResponse.status === 200) return newResponse
           else { parseErrors(newResponse); return newResponse }
 
         case "patch":
-          newResponse = await axios.patch(url, requestConfig)
+          newResponse = await axios.patch(url, data, requestConfig)
           if (newResponse.status === 200) return newResponse
           else { parseErrors(newResponse); return newResponse }
       }

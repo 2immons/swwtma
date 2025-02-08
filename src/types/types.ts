@@ -199,7 +199,7 @@ export interface UserGetSchema {
   is_deleted: boolean;
   referral_code: string | null;
   balance: BalanceBaseSchema | null;
-  settings: SettingsBase | null;
+  settings: SettingsBase;
   done_tasks: UserTasksBase[];
   user_cards: UserCardsBase[];
   karma_donates: KarmaDonateBase[];

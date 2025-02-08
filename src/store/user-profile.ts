@@ -124,7 +124,7 @@ export const profileStore = defineStore("profile", {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/start-mining`
         const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post")
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
         if (validatedResponse) {
           const responseData = validatedResponse.data as MiningStartOut
           this.updateMining(responseData)
@@ -141,7 +141,7 @@ export const profileStore = defineStore("profile", {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/claim-mining`
         const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post")
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
         if (validatedResponse) {
           this.updateBalance(validatedResponse.data.balance, validatedResponse.data.mining_power)
           this.userProfile.minings[this.userProfile.minings.length - 1].status = 'completed'
@@ -173,12 +173,12 @@ export const profileStore = defineStore("profile", {
       const MSK_OFFSET = 1 * 60 * 60 * 1000
 
       // Просто парсим время, без корректировки смещения!
-      const startTime = new Date(miningInfo.start_time).getTime() + MSK_OFFSET;
-      const endTime = new Date(miningInfo.end_time).getTime() + MSK_OFFSET;
+      const startTime = new Date(miningInfo.start_time + "+03:00").getTime();
+      const endTime = new Date(miningInfo.end_time + "+03:00").getTime();
       const currentTime = Date.now(); // Текущее UTC-время
 
-      console.log("Start Time (raw):", miningInfo.start_time);
-      console.log("End Time (raw):", miningInfo.end_time);
+      console.log("Start Time (raw):", miningInfo.start_time + "+03:00");
+      console.log("End Time (raw):", miningInfo.end_time + "+03:00");
       console.log("Current Time:", new Date().toISOString());
 
       console.log("Start Time UTC:", new Date(startTime).toISOString());

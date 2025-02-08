@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
-import { onBeforeUnmount, onMounted, Ref, ref } from "vue";
+import {computed, onBeforeUnmount, onMounted, Ref, ref} from "vue";
 import { useI18n } from "vue-i18n";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
 import { settingsStore } from "@/store/settings";
+import {profileStore} from "@/store/user-profile.ts";
+import type {Language} from "@/types/types.ts";
 
 const settingsStoreInstance = settingsStore();
 
@@ -105,19 +107,29 @@ onBeforeUnmount(() => {
   eventBus.off("headerBackBtnPressed");
 });
 
-const referalLink = ref();
-const becomeReferal = () => {
-  toggleReferalSettings();
-  const regex = /startapp=ref_([a-zA-Z0-9]+)/;
-  const match = referalLink.value.match(regex);
-  try {
-    settingsStoreInstance.becomeReferal(match[1]);
-  } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
-  }
-};
+const profileStoreInstance = profileStore()
 
-const setLanguage = async (language: string) => {
+onMounted(async () => {
+  return await profileStoreInstance.getUserProfile()
+})
+
+const settingsComputed = computed(() => {
+  return profileStoreInstance.userProfile.settings
+})
+
+const referalLink = ref();
+// const becomeReferal = () => {
+//   toggleReferalSettings();
+//   const regex = /startapp=ref_([a-zA-Z0-9]+)/;
+//   const match = referalLink.value.match(regex);
+//   try {
+//     settingsStoreInstance.becomeReferal(match[1]);
+//   } catch (error) {
+//     eventBus.emit("showErrorPopup", error.message);
+//   }
+// };
+
+const setLanguage = async (language: Language) => {
   toggleLanguageSettings();
   locale.value = language;
   try {

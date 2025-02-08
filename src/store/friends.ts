@@ -67,7 +67,7 @@ export const friendsStore = defineStore("friends", {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals`
         const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post")
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
 
         if(validatedResponse) {
           this.friends = validatedResponse.data;

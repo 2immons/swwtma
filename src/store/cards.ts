@@ -98,7 +98,7 @@ export const cardsStore = defineStore("cards", {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards/purchase/?card_id=${id}`;
         const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post");
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {});
 
         if (validatedResponse) {
           profileStore().userProfile = validatedResponse.data;
@@ -114,7 +114,7 @@ export const cardsStore = defineStore("cards", {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards/upgrade/?card_id=${id}`
         const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post")
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
 
         if (validatedResponse)
           profileStore().userProfile = validatedResponse.data
