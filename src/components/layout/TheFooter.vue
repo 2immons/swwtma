@@ -32,7 +32,7 @@ onUnmounted(() => {
             src="../../assets/svg/footer/home.svg"
             alt=""
           />
-          <div v-if="$route.path === '/'" class="active-nav-item">
+          <div v-if="$route.path === '/home'" class="active-nav-item">
             <img src="../../assets/svg/footer/home.svg" alt="" />
             <p>{{ t("home") }}</p>
           </div>
