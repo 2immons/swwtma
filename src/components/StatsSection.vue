@@ -119,8 +119,6 @@ const deleteStorage = () => {
             </div>
           </div>
         </div>
-
-        <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
         <div class="mining-progress-wrapper">
           <div class="mining-progress-bar">
             <div
@@ -176,6 +174,7 @@ const deleteStorage = () => {
             </div>
           </div>
         </div>
+        <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
       </div>
     </div>
   </section>
