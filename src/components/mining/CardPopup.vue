@@ -106,6 +106,11 @@ const targetLevel = computed(() => {
     }
   }
 });
+
+const imageUrl = computed(() => {
+      if (props.card.image)
+        return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.card.image.upload_storage}/${props.card.image.file_id}`
+    })
 </script>
 
 
@@ -124,7 +129,8 @@ const targetLevel = computed(() => {
         <div class="container">
           <div class="wrapper no-scrollbar">
             <div class="photo">
-              <img src="../../assets/images/card-test.png" alt="" />
+              <!--      <img src="../../assets/images/card-test.png" alt="" />-->
+              <img :src=imageUrl>
               <button @click="closePopup">+</button>
             </div>
             <div class="info">

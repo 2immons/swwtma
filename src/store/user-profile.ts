@@ -31,13 +31,13 @@ const mockUserProfile: UserGetSchema = {
   user_cards: [],
   karma_donates: [],
   minings: [
-    {
-      amount: 50,
-      status: "pending",
-      start_time: "2025-02-08T23:46:48.070144",
-      end_time: "2025-02-09T07:46:48.085681",
-      is_claimed: false,
-    },
+    // {
+    //   amount: 50,
+    //   status: "pending",
+    //   start_time: "2025-02-08T23:46:48.070144",
+    //   end_time: "2025-02-09T07:46:48.085681",
+    //   is_claimed: false,
+    // },
     // {
     //   amount: 0,
     //   status: "completed",

@@ -70,6 +70,11 @@ watch(
     }
   },
 );
+
+const imageUrl = computed(() => {
+      if (props.karmaCard.image)
+        return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.karmaCard.image.upload_storage}/${props.karmaCard.image.file_id}`
+    })
 </script>
 
 <template>
@@ -86,7 +91,7 @@ watch(
         <div class="container">
           <div class="wrapper no-scrollbar">
             <div class="photo">
-              <img src="../../assets/images/card-popup.png" alt="" />
+              <img :src=imageUrl>
               <button @click="closePopup">+</button>
             </div>
             <div class="info">

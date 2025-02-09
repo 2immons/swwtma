@@ -9,14 +9,56 @@ const profileStoreInstance = profileStore();
 
 const balance = computed(() => profileStoreInstance.getBalance);
 const power = computed(() => profileStoreInstance.getPower);
-const miningInfo = computed(() => profileStoreInstance.getMiningInfo);
+const miningInfo = computed(() => {
+  if (profileStore().userProfile.minings.length <= 0) {
+    return undefined
+  } else {
+    return profileStoreInstance.getMiningInfo
+  }
+});
+
+const isMiningExist = computed(() => {
+  if (miningInfo.value) {
+    return true
+  } else {
+    return false
+  }
+})
+
+const isClaimingPossible = computed(() => {
+  if (miningInfo.value) {
+    if (miningInfo.value?.status === 'completed') {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+})
+
+const isMiningPending = computed(() => {
+  if (miningInfo.value) {
+    if (miningInfo.value?.status === 'pending') {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+})
 
 const claimButtonClass = computed(() => {
-  if (miningInfo.value.status === 'pending') {
-    if (miningInfo.value.remainingSeconds === 0) {
-      return "claim-button"
+  if (miningInfo.value) {
+    if (miningInfo.value.status === 'completed') {
+      if (miningInfo.value.remainingSeconds === 0) {
+        return "claim-button"
+      } else {
+        return "claim-button--active"
+      }
     } else {
-      return "claim-button--active"
+      return "claim-button"
     }
   } else {
     return "claim-button"
@@ -24,7 +66,11 @@ const claimButtonClass = computed(() => {
 });
 
 const progressWidth = computed(() => {
-  return String(miningInfo.value.remainingPercentage) + "%"
+  if (miningInfo.value) {
+    return String(miningInfo.value.remainingPercentage) + "%"
+  } else {
+    return "0%"
+  }
 });
 
 const claimReward = async () => {
@@ -73,9 +119,27 @@ onMounted(async () => {
         <div class="mining-progress-wrapper">
           <div class="mining-progress-bar">
             <div
+                class="progress"
+                :style="{ width: progressWidth }"
+                v-if="!isClaimingPossible && !isMiningExist && !isMiningPending"
+            >
+              <div class="interface">
+                <button :class="claimButtonClass" @click="startMining">
+                  {{ t("start") }}
+                </button>
+                <div class="time">
+                  <img src="../assets/svg/stats/time.svg" alt="" />
+                  <p>
+                    0 {{ t("h") }}
+                    0 {{ t("m") }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
               class="progress"
               :style="{ width: progressWidth }"
-              v-if="miningInfo.status === 'pending'"
+              v-else-if="isClaimingPossible && !isMiningPending && isMiningExist"
             >
               <div class="interface">
                 <button :class="claimButtonClass" @click="claimReward">
@@ -84,23 +148,23 @@ onMounted(async () => {
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
                   <p>
-                    {{ miningInfo.remainingHours < 0 ? 0 : miningInfo.remainingHours }} {{ t("h") }}
-                    {{ miningInfo.remainingMinutes < 0 ? 0 : miningInfo.remainingMinutes }} {{ t("m") }}
+                    0 {{ t("h") }}
+                    0 {{ t("m") }}
                   </p>
                 </div>
               </div>
             </div>
             <div class="progress"
-                 v-else-if="miningInfo.status === 'completed'">
+                 v-else-if="isMiningPending && isMiningExist && !isClaimingPossible">
               <div class="interface">
-                <button @click="startMining" :class="claimButtonClass">
-                  {{ t("start") }}
+                <button @click="claimReward" :class="claimButtonClass">
+                  {{ t("claim") }}
                 </button>
-                <div class="time" м>
+                <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>
-                    {{ miningHours }} {{ t("h") }}
-                    {{ 0 }} {{ t("m") }}
+                  <p v-if="miningInfo">
+                    {{ miningInfo.remainingHours }} {{ t("h") }}
+                    {{ miningInfo.remainingMinutes }} {{ t("m") }}
                   </p>
                 </div>
               </div>

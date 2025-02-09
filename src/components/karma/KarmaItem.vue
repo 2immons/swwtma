@@ -18,6 +18,11 @@ const isCardPopupVisible = ref(false);
 const openCardPopup = () => {
   isCardPopupVisible.value = true;
 };
+
+const imageUrl = computed(() => {
+  if (props.karmaCard.image)
+    return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.karmaCard.image.upload_storage}/${props.karmaCard.image.file_id}`
+})
 </script>
 
 <template>
@@ -32,7 +37,7 @@ const openCardPopup = () => {
     <div class="ellepsis ellepsis--bottom" v-if="karmaCard.is_donated"></div>
     <div class="content">
       <div class="photo">
-        <img src="../../assets/images/card.png" alt="" />
+        <img :src=imageUrl>
       </div>
       <div class="info">
         <p class="card__title">{{ karmaCard.title }}</p>

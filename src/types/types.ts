@@ -29,6 +29,8 @@ export interface CardsLevelMapBase {
 export interface CustomImageField {
   url: string;
   filename: string;
+  upload_storage: string;
+  file_id: string;
 }
 
 export interface HTTPValidationError {
