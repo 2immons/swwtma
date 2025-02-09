@@ -267,7 +267,7 @@ const deleteStorage = () => {
   width: 100%
 
 .interface
-  background: #1517154D
+  background: #767776
   border-radius: 50px
   height: 25px
   border: 1px solid vars.$c-border-color
