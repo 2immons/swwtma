@@ -3,6 +3,8 @@ import { questsStore } from "@/store/tasks";
 import { computed, onMounted, ref } from "vue";
 import MiningSelect from "@/components/mining/MiningSelect.vue";
 import CardsList from "@/components/mining/CardsList.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 import GameSection from "@/components/game/GameSection.vue";
 
 const miningType = ref("mining");

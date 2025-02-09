@@ -3,7 +3,8 @@ import { computed, onMounted } from "vue";
 import CardItem from "@/components/mining/CardItem.vue";
 import { cardsStore } from "@/store/cards";
 import { eventBus } from "@/event_bus/eventBus";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const cardsStoreInstance = cardsStore();
 
 const cards = computed(() => {

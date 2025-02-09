@@ -2,7 +2,8 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import { telegramStore } from "@/store/telegram";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 enum PopupType {
   ERROR,
   INFO,

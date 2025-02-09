@@ -5,7 +5,8 @@ import { defineProps, defineEmits, onMounted, computed } from "vue";
 import { questsStore } from "@/store/tasks";
 import { friendsStore } from "@/store/friends";
 import { eventBus } from "@/event_bus/eventBus";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const friendsStoreInstance = friendsStore();
 
 const friends = computed(() => {

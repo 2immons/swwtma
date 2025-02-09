@@ -93,6 +93,7 @@ const miningHours = ref(import.meta.env.VITE_MINING_HOURS)
 
 onMounted(async () => {
   await fetchUserProfile();
+  locale.value = profileStoreInstance.userProfile.settings.language
 });
 </script>
 

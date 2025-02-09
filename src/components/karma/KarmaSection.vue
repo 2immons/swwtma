@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import KarmaList from "@/components/karma/KarmaList.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 </script>
 
 <template>

@@ -2,6 +2,7 @@
   <section class="logo">
     <div class="container">
       <div class="logo-wrapper" @click="openWorldPopulationStats">
+        <button @click="deleteStorage" v-if="!isProd">Удалить</button>
         <div class="background">
           <img src="../assets/svg/bg-earth-vectors.svg" alt="" />
         </div>
@@ -14,7 +15,11 @@
 
 <script setup lang="ts">
 import { eventBus } from "@/event_bus/eventBus";
-
+import {telegramStore} from "@/store/telegram.ts";
+const isProd = import.meta.env.MODE === "production";
+const deleteStorage = () => {
+  telegramStore().removeCompletedOnboarding();
+};
 const openWorldPopulationStats = () => {
   eventBus.emit("toggleWorldStatictics", true);
 };

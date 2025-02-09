@@ -11,6 +11,8 @@ import { storeToRefs } from "pinia";
 import { questsStore } from "@/store/tasks";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const props = defineProps<{
   promoTaskID: number;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SliderButton from "@/components/ui/SliderButton.vue";
-import {computed, onBeforeUnmount, onMounted, Ref, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import { useI18n } from "vue-i18n";
 import { eventBus } from "@/event_bus/eventBus";
 import router from "@/router";

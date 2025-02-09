@@ -11,10 +11,16 @@ import KarmaView from "../views/KarmaView.vue";
 import MiningView from "../views/MiningView.vue";
 import FriendsView from "../views/FriendsView.vue";
 import PromoTaskView from "../views/PromoTaskView.vue";
+import OnboardingView from "@/views/OnboardingView.vue";
 
 const routes = [
   {
     path: "/",
+    name: "onboarding",
+    component: OnboardingView,
+  },
+  {
+    path: "/home",
     name: "home",
     component: HomeView,
   },

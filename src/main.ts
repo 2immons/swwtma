@@ -9,33 +9,25 @@ import { telegramStore } from "@/store/telegram";
 
 const pinia = createPinia();
 
+const app = createApp(App);
+
+app.use(router);
+app.use(pinia);
+
+const telegramStoreInstance = telegramStore();
+telegramStoreInstance.getUserData()
+
 const messages = Object.assign(languages);
 const i18n = createI18n({
-  legacy: false,
-  locale: defaultLocale,
+  locale: telegramStoreInstance.userData.language || defaultLocale,
   fallbackLocale: "en",
   messages,
 });
 
-const app = createApp(App);
-
-// Миксин для локализации
-app.mixin({
-  methods: {
-    t(key: string) {
-      return i18n.global.t(key);
-    },
-  },
-});
-
-app.use(router);
-app.use(pinia);
-app.use(i18n);
-
-const telegramStoreInstance = telegramStore();
-
 telegramStoreInstance.setMiniAppSettings();
 telegramStoreInstance.setMiniAppData();
+
+app.use(i18n);
 
 app.component("PopupWindow", PopupWindow);
 

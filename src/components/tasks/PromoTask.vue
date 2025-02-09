@@ -3,6 +3,8 @@ import { computed, defineProps } from "vue";
 import { questsStore } from "@/store/tasks";
 import { storeToRefs } from "pinia";
 import { TaskBaseSchema, TaskGroupBaseSchema } from "@/types/types";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const tasksStoreInstance = questsStore();
 
 const props = defineProps<{

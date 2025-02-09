@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, computed } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
-import { TaskBaseSchema } from "@/types/types";
-
+import { type TaskBaseSchema } from "@/types/types";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 // Определение интерфейсов
 interface Task {
   id: number;

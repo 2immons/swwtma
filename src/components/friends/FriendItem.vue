@@ -2,7 +2,8 @@
 import { defineProps } from "vue";
 import { friendsStore } from "@/store/friends";
 import { type UserReferralIncomeSchema } from "@/types/types"
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const friendsStoreInstance = friendsStore();
 
 const props = defineProps<{

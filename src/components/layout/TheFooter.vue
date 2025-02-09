@@ -2,6 +2,8 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 const isFooterVisible = ref(true);
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 onMounted(() => {
   eventBus.on("toggleFooterVisibility", (visible) => {

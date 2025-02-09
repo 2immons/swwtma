@@ -3,6 +3,7 @@ import { settingsStore } from "@/store/settings";
 import axios from "axios";
 
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
+import router from "@/router";
 
 interface UserData {
   username: string;
@@ -19,6 +20,8 @@ export const telegramStore = defineStore("telegram", {
   state: () => ({
     telegramWebApp: (window as any).Telegram?.WebApp ?? null,
     initData: "",
+    isOnboardingCompleted: import.meta.env.MODE !== "production" ? false : true,
+    isOnboardingChecking: import.meta.env.MODE !== "production" ? true : true,
     userData: {
       username: "No username",
       firstName: "Unknown",
@@ -30,23 +33,87 @@ export const telegramStore = defineStore("telegram", {
   }),
 
   actions: {
+    isOnboardingCompleted() {
+      if (this.telegramWebApp && this.telegramWebApp.initData) {
+        (window as any).Telegram.WebApp.CloudStorage.getItem(
+            "onboardingCompleted",
+            async function (err: any, value: any) {
+              if (err) {
+                console.error("Ошибка получения данных из cloud storage:", err);
+              } else {
+                if (value === "true") {
+                  await router.replace("/home");
+                  return;
+                }
+                telegramStore().isOnboardingChecking = false;
+              }
+            },
+        );
+      }
+    },
+
+    setCompletedOnboarding() {
+      if (this.telegramWebApp && this.telegramWebApp.initData) {
+        const key = "onboardingCompleted";
+        const value = "true";
+        (window as any).Telegram.WebApp.CloudStorage.setItem(
+            key,
+            value,
+            function (err: any, success: any) {
+              if (err) {
+                console.error(
+                    "Ошибка при сохранении данных в cloud storage:",
+                    err,
+                );
+              } else {
+                console.log("Статус онбординга успешно сохранен:", success);
+              }
+            },
+        );
+      }
+    },
+
+    removeCompletedOnboarding() {
+      if (this.telegramWebApp && this.telegramWebApp.initData) {
+        const key = "onboardingCompleted";
+        (window as any).Telegram.WebApp.CloudStorage.removeItem(
+            key,
+            function (err: any, success: any) {
+              if (err) {
+                console.error(
+                    "Ошибка при сохранении данных в cloud storage:",
+                    err,
+                );
+              } else {
+                console.log("Статус онбординга успешно сохранен:", success);
+              }
+            },
+        );
+      }
+    },
+
+    setMiniAppPreferences() {
+      this.telegramWebApp.expand();
+      if (this.telegramWebApp.version >= 8) {
+        this.telegramWebApp.lockOrientation();
+        this.telegramWebApp.disableVerticalSwipes();
+
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(
+            navigator.userAgent,
+        );
+        if (isMobile) {
+          this.telegramWebApp.requestFullscreen();
+        }
+      }
+    },
+
     setMiniAppSettings() {
+      telegramStore().isOnboardingChecking = true;
       if (this.telegramWebApp && this.telegramWebApp.initData) {
         this.telegramWebApp.ready();
 
-        // Стилизация и настройка Mini App
-        this.telegramWebApp.expand();
-        if (this.telegramWebApp.version >= 8) {
-          this.telegramWebApp.lockOrientation();
-          this.telegramWebApp.disableVerticalSwipes();
-
-          const isMobile = /iPhone|iPad|iPod|Android/i.test(
-            navigator.userAgent,
-          );
-          if (isMobile) {
-            this.telegramWebApp.requestFullscreen();
-          }
-        }
+        this.isOnboardingCompleted();
+        this.setMiniAppPreferences();
 
         this.userData = this.getUserData();
       } else {
@@ -67,7 +134,6 @@ export const telegramStore = defineStore("telegram", {
       }
 
       this.setMockInitData();
-      this.checkReferalCode();
     },
 
     async auth() {
@@ -96,34 +162,13 @@ export const telegramStore = defineStore("telegram", {
     getUserData() {
       const user = this.telegramWebApp.initDataUnsafe?.user;
 
-      if (!user) throw new Error("Ошибка получения данных пользователя");
-
       return {
-        username: user.username || "No username",
-        firstName: user.first_name || "Unknown",
-        lastName: user.last_name || "Unknown",
-        language: user.language_code || "en",
-        avatar: user.photo_url || "",
+        username: user?.username || "No username",
+        firstName: user?.first_name || "Unknown",
+        lastName: user?.last_name || "Unknown",
+        language: user?.language_code || "ru",
+        avatar: user?.photo_url || "",
       };
-    },
-
-    // Проверяет наличие валидного реферального кода в startParam и вызывает запрос о привязке на сервер
-    checkReferalCode() {
-      const startParam = this.telegramWebApp.initDataUnsafe.start_param;
-      if (this.referalCode === null && startParam) {
-        try {
-          const match = startParam?.match(/ref_([a-zA-Z0-9]+)/);
-
-          if (match && match[1]) {
-            this.referalCode = match[1];
-
-            if (this.referalCode)
-              settingsStore().becomeReferal(this.referalCode);
-          }
-        } catch (error) {
-          throw new Error("Ошибка при проверке реферального кода.");
-        }
-      }
     },
 
     setInitData() {
@@ -136,10 +181,6 @@ export const telegramStore = defineStore("telegram", {
 
     showAlert(msg: string) {
       this.telegramWebApp.showAlert(msg);
-    },
-
-    sendReferalLink(preparedInlineMessageID: number) {
-      this.telegramWebApp.shareMessage(preparedInlineMessageID);
     },
   },
 

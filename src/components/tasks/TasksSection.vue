@@ -5,7 +5,8 @@ import { computed, onMounted, ref } from "vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
 import PromoTask from "@/components/tasks/PromoTask.vue";
 import TasksCategory from "@/components/tasks/TasksCategory.vue";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
 

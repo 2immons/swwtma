@@ -3,7 +3,7 @@ import {computed, defineProps, ref} from "vue";
 import {questsStore} from "@/store/tasks";
 import {storeToRefs} from "pinia";
 import {useI18n} from "vue-i18n";
-import {TaskAction, TaskBaseSchema} from "@/types/types";
+import {TaskAction, type TaskBaseSchema} from "@/types/types";
 import {telegramStore} from "@/store/telegram.ts";
 
 const { t, locale } = useI18n();

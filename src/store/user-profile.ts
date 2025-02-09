@@ -23,7 +23,7 @@ const mockUserProfile: UserGetSchema = {
     mining_power: 0,
   },
   settings: {
-    language: "en",
+    language: "ru",
     vibration: false,
     animation: false,
   },

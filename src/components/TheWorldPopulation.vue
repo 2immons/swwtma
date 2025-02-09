@@ -4,7 +4,8 @@ import { eventBus } from "@/event_bus/eventBus";
 import axios from "axios";
 import { worldPopulationStore } from "@/store/world-population";
 import router from "@/router";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const population = ref("");
 const populationStore = worldPopulationStore();
 

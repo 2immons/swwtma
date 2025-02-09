@@ -5,7 +5,8 @@ import FriendItem from "@/components/friends/FriendItem.vue";
 import ReferalPopup from "@/components/friends/ReferalPopup.vue";
 
 import { type UserReferrals } from "@/types/types";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const props = defineProps<{
   friends: UserReferrals
 }>();

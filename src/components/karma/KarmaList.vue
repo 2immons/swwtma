@@ -3,7 +3,8 @@ import { computed, ref, onMounted } from "vue";
 import { karmaStore } from "@/store/karma";
 import KarmaItem from "@/components/karma/KarmaItem.vue";
 import { eventBus } from "@/event_bus/eventBus";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 // Иконки категорий:
 import recyclingIcon from "@/assets/svg/karma/recycling.svg";
 import medIcon from "@/assets/svg/karma/med.svg";

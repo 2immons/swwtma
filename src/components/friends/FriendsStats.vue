@@ -4,7 +4,8 @@ import { questsStore } from "@/store/tasks";
 import { friendsStore } from "@/store/friends";
 import { eventBus } from "@/event_bus/eventBus";
 import { type UserReferrals } from "@/types/types";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 const props = defineProps<{
   friends: UserReferrals
 }>();
