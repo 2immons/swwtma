@@ -51,18 +51,14 @@ const isMiningPending = computed(() => {
 })
 
 const claimButtonClass = computed(() => {
-  if (miningInfo.value) {
-    if (miningInfo.value.status === 'completed') {
-      if (miningInfo.value.remainingSeconds === 0) {
-        return "claim-button"
-      } else {
-        return "claim-button--active"
-      }
+  if (isMiningExist) {
+    if (isClaimingPossible) {
+      return "claim-button--active"
     } else {
       return "claim-button"
     }
   } else {
-    return "claim-button"
+    return "claim-button--active"
   }
 });
 
