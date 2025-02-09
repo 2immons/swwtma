@@ -183,7 +183,7 @@ export const profileStore = defineStore("profile", {
       const remainingHours = Math.floor(remainingSeconds / 3600);
       const remainingMinutes = Math.floor((remainingSeconds % 3600) / 60);
 
-      const remainingPercentage = Math.abs((remainingMilliseconds / totalMilliseconds) * 100 - 100);
+      const remainingPercentage = Math.abs(Math.floor((remainingMilliseconds / totalMilliseconds) * 100 - 100));
 
       console.log(`Total Hours: ${totalMilliseconds / 3600000}h`);
       console.log(`Remaining Hours: ${remainingHours}h`);
