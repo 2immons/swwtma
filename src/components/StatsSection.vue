@@ -246,9 +246,10 @@ const deleteStorage = () => {
   display: flex
   align-items: center
   justify-content: center
+  padding: 18px
 
 .mining-progress-bar
-  width: 91%
+  width: 100%
   height: 33px
   background: #0000002B
   border-radius: 50px
