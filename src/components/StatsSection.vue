@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue";
 import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
 import { useI18n } from "vue-i18n";
+import {telegramStore} from "@/store/telegram.ts";
 const { t, locale } = useI18n();
 
 const profileStoreInstance = profileStore();
@@ -95,6 +96,11 @@ onMounted(async () => {
   await fetchUserProfile();
   locale.value = profileStoreInstance.userProfile.settings.language
 });
+
+const isProd = import.meta.env.MODE === "production";
+const deleteStorage = () => {
+  telegramStore().removeCompletedOnboarding();
+};
 </script>
 
 <template>
@@ -117,6 +123,8 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+
+        <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
         <div class="mining-progress-wrapper">
           <div class="mining-progress-bar">
             <div
