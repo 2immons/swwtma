@@ -89,16 +89,6 @@ export const profileStore = defineStore("profile", {
     setProfileVariables(responseData: UserGetSchema) {
       this.userProfile = responseData;
 
-      if (responseData.minings.length <= 0) {
-        this.userProfile.minings[0] = {
-          amount: 0,
-          status: "completed",
-          start_time: "2020-01-01T20:42:16.989Z",
-          end_time: "2020-01-01T20:42:16.989Z",
-          is_claimed: true,
-        }
-      }
-
       const { locale } = useI18n();
       locale.value = responseData.settings?.language || "en";
     },

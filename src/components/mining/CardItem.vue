@@ -54,8 +54,10 @@ const targetLevel = computed(() => {
 });
 
 const imageUrl = computed(() => {
-  if (props.card.image)
+  if (props.card.image) {
+    console.log(`${import.meta.env.VITE_BACKEND}/api/v1/files/${props.card.image.upload_storage}/${props.card.image.file_id}`)
     return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.card.image.upload_storage}/${props.card.image.file_id}`
+  }
 })
 </script>
 
