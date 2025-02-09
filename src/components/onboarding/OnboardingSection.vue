@@ -93,6 +93,7 @@ import { useRouter } from "vue-router";
 import { telegramStore } from "@/store/telegram.ts";
 import { useI18n } from "vue-i18n";
 import {eventBus} from "@/event_bus/eventBus.ts";
+import {profileStore} from "@/store/user-profile.ts";
 
 const { t, locale } = useI18n();
 
@@ -126,7 +127,7 @@ const fetchUserProfile = async () => {
 
 onMounted(async () => {
   await fetchUserProfile();
-  locale.value = profileStoreInstance.userProfile.settings.language
+  locale.value = profileStore().userProfile.settings.language
   setInterval(rotateCoin, 100);
 });
 

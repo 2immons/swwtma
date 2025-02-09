@@ -88,9 +88,6 @@ export const profileStore = defineStore("profile", {
     // setProfileVariables устанавливает переменные профиля
     setProfileVariables(responseData: UserGetSchema) {
       this.userProfile = responseData;
-
-      const { locale } = useI18n();
-      locale.value = responseData.settings?.language || "en";
     },
 
     // getUserProfile получает информацию о профиле пользователя
