@@ -119,7 +119,7 @@ export const questsStore = defineStore("tasks", {
   actions: {
     async fetchTasks() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/`
         const response = await axios.get(url, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "get")

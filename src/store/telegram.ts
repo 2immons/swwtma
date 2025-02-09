@@ -4,6 +4,10 @@ import axios from "axios";
 
 import { checkResponseSuccess } from "@/store/utils/apiUtils";
 import router from "@/router";
+import {questsStore} from "@/store/tasks.ts";
+import {karmaStore} from "@/store/karma.ts";
+import {cardsStore} from "@/store/cards.ts";
+import {friendsStore} from "@/store/friends.ts";
 
 interface UserData {
   username: string;
@@ -173,6 +177,10 @@ export const telegramStore = defineStore("telegram", {
 
     setInitData() {
       this.initData = this.telegramWebApp.initData;
+      questsStore().fetchTasks()
+      karmaStore().fetchKarma()
+      cardsStore().fetchCards()
+      friendsStore().fetchFriends()
     },
 
     setMockInitData() {
