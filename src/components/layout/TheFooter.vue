@@ -21,14 +21,14 @@ onUnmounted(() => {
     <div class="container">
       <nav class="footer-content">
         <router-link
-          to="/"
+          to="/home"
           :class="{
-            'ac-nav-item': $route.path === '/',
-            'nav-item': $route.path !== '/',
+            'ac-nav-item': $route.path === '/home',
+            'nav-item': $route.path !== '/home',
           }"
         >
           <img
-            v-if="$route.path !== '/'"
+            v-if="$route.path !== '/home'"
             src="../../assets/svg/footer/home.svg"
             alt=""
           />
