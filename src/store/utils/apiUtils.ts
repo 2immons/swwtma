@@ -3,7 +3,9 @@ import Cookies from "js-cookie";
 import { telegramStore } from "@/store/telegram";
 
 export async function checkResponseSuccess(origResponse: AxiosResponse, url: string, type: string, data?: any) {
+  console.log("Зашли в checkResponseSuccess")
   if (origResponse.status === 401) {
+    console.log("Потому что получили 401")
     const url = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`
     const refreshTokenResponse = await axios.post(url, {}, requestConfig);
 
