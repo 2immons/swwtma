@@ -49,7 +49,7 @@ export const settingsStore = defineStore("settings", {
 
     async changeSettings(settings: SettingsBase) {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/settings`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/settings/`
         const data = {
           language: settings.language,
           vibration: settings.vibration,

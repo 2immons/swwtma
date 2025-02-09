@@ -108,7 +108,7 @@ export const profileStore = defineStore("profile", {
 
     async startMining() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/start-mining`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/start-mining/`
         const response = await axios.post(url, {}, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "post", {})
@@ -125,7 +125,7 @@ export const profileStore = defineStore("profile", {
     // claimProcessReward отправляет запрос на получение награды за процесс
     async claimMining() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/claim-mining`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/claim-mining/`
         const response = await axios.post(url, {}, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "post", {})

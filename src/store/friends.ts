@@ -48,7 +48,7 @@ export const friendsStore = defineStore("friends", {
   actions: {
     async fetchFriends() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals/`
         const response = await axios.get(url, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "get")
@@ -64,7 +64,7 @@ export const friendsStore = defineStore("friends", {
 
     async claimReward() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals/`
         const response = await axios.post(url, {}, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "post", {})

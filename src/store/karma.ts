@@ -79,7 +79,7 @@ export const karmaStore = defineStore("karma", {
   actions: {
     async fetchKarma() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/karmas`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/karmas/`
         const response = await axios.get(url, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "get")

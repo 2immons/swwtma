@@ -80,7 +80,7 @@ export const cardsStore = defineStore("cards", {
   actions: {
     async fetchCards() {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards/`
         const response = await axios.get(url, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "get")
