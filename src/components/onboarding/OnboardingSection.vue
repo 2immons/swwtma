@@ -228,7 +228,7 @@ const isOnboardingBlankVisible = computed(() => {
   font-weight: 400
   width: 100%
 
-.container--footer, .container--header
+.container--footer, .container--header, .container--footer--tg
   justify-self: center
 
 .img-slider, .info-slider
