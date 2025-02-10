@@ -175,7 +175,7 @@ let currentWallet;
 
 onMounted(async () => {
   tonConnectUI = new TonConnectUI({
-    manifestUrl: `/tonconnect-manifest.json`,
+    manifestUrl: `https://sww.tonycrypto.site/#/tonconnect-manifest.json`,
     buttonRootId: "ton-button",
   });
 
