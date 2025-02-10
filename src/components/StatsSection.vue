@@ -94,9 +94,6 @@ onMounted(async () => {
 });
 
 const isProd = import.meta.env.MODE === "production";
-const deleteStorage = () => {
-  telegramStore().removeCompletedOnboarding();
-};
 </script>
 
 <template>
@@ -133,7 +130,7 @@ const deleteStorage = () => {
                 <div class="time">
                   <img src="../assets/svg/stats/time.svg" alt="" />
                   <p>
-                    0 {{ t("h") }}
+                    {{ miningHours }} {{ t("h") }}
                     0 {{ t("m") }}
                   </p>
                 </div>
@@ -174,7 +171,6 @@ const deleteStorage = () => {
             </div>
           </div>
         </div>
-        <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
       </div>
     </div>
   </section>

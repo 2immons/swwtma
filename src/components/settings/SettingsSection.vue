@@ -7,6 +7,7 @@ import router from "@/router";
 import { settingsStore } from "@/store/settings";
 import {profileStore} from "@/store/user-profile.ts";
 import type {Language} from "@/types/types.ts";
+import {telegramStore} from "@/store/telegram.ts";
 
 const settingsStoreInstance = settingsStore();
 
@@ -99,6 +100,10 @@ onMounted(() => {
   });
 });
 
+const deleteStorage = () => {
+  telegramStore().removeCompletedOnboarding();
+};
+
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
 
@@ -163,6 +168,37 @@ const deleteAccount = () => {
     eventBus.emit("showErrorPopup", error.message);
   }
 };
+
+import { THEME, TonConnectUI } from "@tonconnect/ui";
+let tonConnectUI: TonConnectUI;
+let currentWallet;
+
+onMounted(async () => {
+  tonConnectUI = new TonConnectUI({
+    manifestUrl: `/tonconnect-manifest.json`,
+    buttonRootId: "ton-button",
+  });
+
+  tonConnectUI.uiOptions = {
+    language: "ru",
+    uiPreferences: {
+      theme: THEME.DARK,
+    },
+  };
+
+  tonConnectUI.onStatusChange(async () => {
+    if (tonConnectUI.connected) {
+      const connectedWallet = tonConnectUI.wallet;
+      console.log("Wallet connected:", connectedWallet);
+      // if (connectedWallet)
+      //   // await paymentsStoreInstance.connectWallet(
+      //   //     connectedWallet?.account.address,
+      //   // );
+    } else {
+      console.log("Wallet disconnected");
+    }
+  });
+});
 </script>
 
 <template>
@@ -171,7 +207,11 @@ const deleteAccount = () => {
     <div class="container">
       <div class="settings-content">
         <h2>Settings</h2>
+        <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
         <div class="settings-list">
+          <div class="settings-wrapper">
+            <button id="ton-button">{{ t("connect-wallet") }}</button>
+          </div>
           <div
             class="settings-wrapper avatar-settings-wrapper"
             @click="toggleStockExchangeMenu"
