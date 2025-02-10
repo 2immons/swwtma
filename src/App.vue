@@ -160,7 +160,7 @@ button
   background: transparent
   padding: 0
   border: none
-  cursor: pointer
+  cursor: pointer !important
   -webkit-appearance: none
   color: vars.$c-main-text
   font-family: inherit

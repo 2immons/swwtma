@@ -46,5 +46,6 @@
   "link-copied": "Реферальная ссылка скопирована в буфер обмена!",
   "game-settings": "Настройки игры:",
   "connect-wallet": "Подключить кошелек",
-  "disconnect-wallet": "Отвязать кошелек"
+  "disconnect-wallet": "Отвязать кошелек",
+  "no-connected-wallet-error": "Вы еще не привязывали кошелек"
 }

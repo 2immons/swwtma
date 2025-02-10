@@ -171,19 +171,7 @@ const deleteAccount = () => {
 
 import { THEME, TonConnectUI } from "@tonconnect/ui";
 let tonConnectUI: TonConnectUI;
-let currentWallet;
-
-const connectWallet = async () => {
-  if (tonConnectUI) {
-    await tonConnectUI.modal.open();
-  } else {
-    console.error("TonConnectUI не инициализирован");
-  }
-};
-
-const disconnectWallet = async () => {
-  console.error("Кошелек отвязан");
-};
+const currentWallet = ref(undefined);
 
 onMounted(async () => {
   tonConnectUI = new TonConnectUI({
@@ -198,6 +186,10 @@ onMounted(async () => {
     },
   };
 
+  if (tonConnectUI.connected) {
+    currentWallet.value = tonConnectUI.wallet
+  }
+
   tonConnectUI.onStatusChange(async () => {
     if (tonConnectUI.connected) {
       const connectedWallet = tonConnectUI.wallet;
@@ -211,6 +203,23 @@ onMounted(async () => {
     }
   });
 });
+
+const connectWallet = async () => {
+  if (tonConnectUI) {
+    await tonConnectUI.modal.open();
+  } else {
+    console.error("TonConnectUI не инициализирован");
+  }
+};
+
+const disconnectWallet = async () => {
+  try {
+    await tonConnectUI.disconnect()
+  } catch (error) {
+    eventBus.emit("showErrorPopup", t("no-connected-wallet-error"));
+  }
+  console.error("Кошелек отвязан");
+};
 </script>
 
 <template>
@@ -219,13 +228,18 @@ onMounted(async () => {
     <div class="container">
       <div class="settings-content">
         <h2>Settings</h2>
-        <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
         <div class="settings-list">
+
+          <button @click="deleteStorage" v-if="!isProd"
+                  style="color: white; margin: 0 0 20px 0; border: 1px solid white; border-radius: 18px; padding: 10px 10px; z-index: 10">
+            Удалить данные об onboarding (dev кнопка)
+          </button>
+
           <div class="settings-wrapper">
             <div class="buttons-wrapper">
-              <button id="ton-connect" v-show="false"></button>
-              <button @click="connectWallet">{{ t("connect-wallet") }}</button>
-              <button @click="disconnectWallet">{{ t("disconnect-wallet") }}</button>
+              <button id="ton-button" v-show="false"></button>
+              <button @click="connectWallet" v-if="!currentWallet">{{ t("connect-wallet") }}</button>
+              <button @click="disconnectWallet" v-if="currentWallet">{{ t("disconnect-wallet") }}</button>
             </div>
           </div>
           <div
