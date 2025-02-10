@@ -44,5 +44,7 @@
   "enter-referal": "Enter referal link",
   "confirm-btn": "Confirm",
   "link-copied": "Referal link copied to clipboard!",
-  "game-settings": "Game settings:"
+  "game-settings": "Game settings:",
+  "connect-wallet": "Connect wallet",
+  "disconnect-wallet": "Disconnect wallet"
 }

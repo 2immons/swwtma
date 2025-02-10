@@ -173,6 +173,18 @@ import { THEME, TonConnectUI } from "@tonconnect/ui";
 let tonConnectUI: TonConnectUI;
 let currentWallet;
 
+const connectWallet = async () => {
+  if (tonConnectUI) {
+    await tonConnectUI.modal.open();
+  } else {
+    console.error("TonConnectUI не инициализирован");
+  }
+};
+
+const disconnectWallet = async () => {
+  console.error("Кошелек отвязан");
+};
+
 onMounted(async () => {
   tonConnectUI = new TonConnectUI({
     manifestUrl: `https://sww.tonycrypto.site/tonconnect-manifest.json`,
@@ -210,7 +222,11 @@ onMounted(async () => {
         <button @click="deleteStorage" v-if="!isProd" style="color: white">Удалить</button>
         <div class="settings-list">
           <div class="settings-wrapper">
-            <button id="ton-button">{{ t("connect-wallet") }}</button>
+            <div class="buttons-wrapper">
+              <button id="ton-connect" v-show="false"></button>
+              <button @click="connectWallet">{{ t("connect-wallet") }}</button>
+              <button @click="disconnectWallet">{{ t("disconnect-wallet") }}</button>
+            </div>
           </div>
           <div
             class="settings-wrapper avatar-settings-wrapper"
@@ -411,6 +427,19 @@ h2
   img
     position: absolute
     right: 21px
+
+.buttons-wrapper
+  display: grid
+  grid-template-columns: 1fr 1fr
+  width: 100%
+  color: white
+  gap: 10px
+
+  button
+    padding: 7px 5px
+    border: 1px solid vars.$c-border-color
+    border-radius: 18px
+    color: white
 
 .setting-header
   position: relative
