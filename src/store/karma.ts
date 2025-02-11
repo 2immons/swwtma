@@ -92,6 +92,26 @@ export const karmaStore = defineStore("karma", {
         throw new Error("Server error when getting karma-cards");
       }
     },
+
+    async donate() {
+      try {
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/karmas/donate`
+        const response = await axios.post(url, requestConfig);
+        const data = {
+          karma_id: props.karma_id,
+          // tx_hash: // todo: hash
+        }
+
+        const validatedResponse = await checkResponseSuccess(response, url, "post", data)
+
+        if(validatedResponse) {
+          this.categories = groupKarmasByCategory(validatedResponse.data);
+        }
+      } catch (error) {
+        console.error("Ошибка при получении карточек кармы:", error);
+        throw new Error("Server error when getting karma-cards");
+      }
+    }
   },
 
   getters: {},

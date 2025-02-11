@@ -6,6 +6,7 @@ import TaskItem from "@/components/tasks/TaskItem.vue";
 import PromoTask from "@/components/tasks/PromoTask.vue";
 import TasksCategory from "@/components/tasks/TasksCategory.vue";
 import { useI18n } from "vue-i18n";
+import CheckInPopup from "@/components/tasks/CheckInPopup.vue";
 const { t, locale } = useI18n();
 const isAtStart = ref(true);
 const isAtEnd = ref(false);
@@ -25,6 +26,11 @@ const questsStoreInstance = questsStore();
 // const promoTasks = computed(() => {
 //   return questsStoreInstance.groups;
 // });
+
+const isCheckInVisible = ref(false)
+const openCheckIn = () => {
+  isCheckInVisible.value = true;
+}
 
 onMounted(async () => {
   await questsStoreInstance.fetchTasks();
@@ -76,6 +82,7 @@ const handleMouseUp = () => {
 
 <template>
   <section class="quests">
+    <CheckInPopup :model-value="isCheckInVisible" @update:modelValue="isCheckInVisible = $event"/>
     <div class="container">
       <div class="quests-content">
         <h2>
@@ -95,9 +102,12 @@ const handleMouseUp = () => {
             :index="index"
           />
         </div>
-        <h3 v-if="isWeeklyQuests">
-          {{ t("weekly") }}
-        </h3>
+        <div class="check-in-wrapper">
+          <h3>
+            {{ t("check-in") }}
+          </h3>
+          <button @click="openCheckIn">{{ t("open") }}</button>
+        </div>
         <div class="regular-tasks">
           <div class="nav-wrapper">
             <div class="nav no-scrollbar" @scroll="handleScroll">
@@ -172,6 +182,27 @@ h2, h3
   align-items: center
   width: 95%
   gap: 20px
+
+
+.check-in-wrapper
+  width: 100%
+  margin-top: 20px
+  gap: 18px
+  display: flex
+  align-items: center
+
+  h3
+    display: flex
+    align-items: center
+    height: 100%
+
+
+  button
+    color: white
+    border-radius: 18px
+    border: 1px solid vars.$c-border-color
+    background: vars.$c-task-item-bg
+    padding: 8px 10px
 
 .promo-tasks-wrapper
   width: 100%

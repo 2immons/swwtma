@@ -47,5 +47,11 @@
   "game-settings": "Настройки игры:",
   "connect-wallet": "Подключить кошелек",
   "disconnect-wallet": "Отвязать кошелек",
-  "no-connected-wallet-error": "Вы еще не привязывали кошелек"
+  "no-connected-wallet-error": "Вы еще не привязывали кошелек",
+  "check-in": "Чек-ин",
+  "open": "Открыть",
+  "day": "День ",
+  "comeback-later": "Возвращайтесь завтра!",
+  "get-reward": "Получить награду",
+  "check-in-text": "Всем привет"
 }

@@ -47,5 +47,11 @@
   "game-settings": "Game settings:",
   "connect-wallet": "Connect wallet",
   "disconnect-wallet": "Disconnect wallet",
-  "no-connected-wallet-error": "You didn't connect any wallet yet"
+  "no-connected-wallet-error": "You didn't connect any wallet yet",
+  "check-in": "Check-in",
+  "open": "Open",
+  "day": "Day ",
+  "comeback-later": "Comeback tomorrow!",
+  "get-reward": "Get reward",
+  "check-in-text": "Hello guys"
 }

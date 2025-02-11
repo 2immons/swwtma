@@ -207,6 +207,8 @@ export interface UserGetSchema {
   karma_donates: KarmaDonateBase[];
   minings: MiningBase[];
   referrer: UserBase | null;
+  last_check_in: string;
+  streak: number;
 }
 
 export interface UserReferralIncomeSchema {

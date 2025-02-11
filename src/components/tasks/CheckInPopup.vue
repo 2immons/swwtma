@@ -5,19 +5,15 @@ import {
   onMounted,
   onBeforeUnmount,
   ref,
-  computed,
-  watch,
+  watch, computed,
 } from "vue";
-import { cardsStore } from "@/store/cards";
-import PageHeader from "@/components/layout/TheHeader.vue";
-import { karmaStore } from "@/store/karma";
-const karmaStoreInstance = karmaStore();
 import { useI18n } from "vue-i18n";
-import type { KarmaBase } from "@/types/types";
+import type {CardBase} from "@/types/types.ts";
+import CardPopup from "@/components/mining/CardPopup.vue";
+import {profileStore} from "@/store/user-profile.ts";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
-  karmaCard: KarmaBase
   modelValue: boolean;
 }>();
 
@@ -26,10 +22,6 @@ const emit = defineEmits(["update:modelValue"]);
 const closePopup = () => {
   emit("update:modelValue", false);
 };
-
-const progressWidth = computed(() => {
-  return String((props.karmaCard.current / props.karmaCard.goal) * 100) + "%";
-});
 
 const touchStartY = ref(0);
 const touchEndY = ref(0);
@@ -45,14 +37,40 @@ const onTouchMove = (event: TouchEvent) => {
 
 const onTouchEnd = () => {
   if (touchEndY.value - touchStartY.value > swipeThreshold) {
-    closePopup(); // Закрыть компонент при свайпе вниз
+    closePopup();
   }
 };
+
+
+const profileStoreInstance = profileStore()
+const fetchCheckInInfo = async () => {
+  await profileStoreInstance.getCheckInInfo()
+}
+
+const checkInInfo = computed(() => profileStoreInstance.checkInInfo.slice(1))
+const lastCheckInDate = computed(() => profileStoreInstance.userProfile.last_check_in)
+
+const canGetReward = computed(() => {
+  console.log(lastCheckInDate.value); // Используйте lastCheckInDate.value для доступа к значению
+  const now = Date.now();
+  const rewardTime = new Date(lastCheckInDate.value).getTime();
+
+  console.log(now)
+  console.log(rewardTime)
+
+  const rewardTimePlus24Hours = rewardTime + 24 * 60 * 60 * 1000;
+  // Добавляем 24 часа к времени последнего чекина
+  const remainingMilliseconds = Math.max(0, rewardTimePlus24Hours - now);
+  // Проверяем, прошло ли 24 часа
+  return remainingMilliseconds <= 0;
+});
+
 
 onMounted(async () => {
   if (props.modelValue) {
     document.body.classList.add("no-scroll");
   }
+  await fetchCheckInInfo()
 });
 
 onBeforeUnmount(() => {
@@ -71,15 +89,17 @@ watch(
   },
 );
 
-const donate = async () => {
-  await karmaStoreInstance.donate();
+const getReward = async () => {
+  await profileStoreInstance.getCheckInReward()
 }
 
-const imageUrl = computed(() => {
-      if (props.karmaCard.image)
-        return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.karmaCard.image.upload_storage}/${props.karmaCard.image.file_id}`
-    })
+// const imageUrl = computed(() => {
+//       if (props.card.image)
+//         return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.card.image.upload_storage}/${props.card.image.file_id}`
+//     })
 </script>
+
+
 
 <template>
   <Transition>
@@ -95,54 +115,30 @@ const imageUrl = computed(() => {
         <div class="container">
           <div class="wrapper no-scrollbar">
             <div class="photo">
-              <img :src=imageUrl>
+              <!--      <img src="../../assets/images/card-test.png" alt="" />-->
+              <img src="@/assets/images/calendar.png">
               <button @click="closePopup">+</button>
             </div>
             <div class="info">
-              <h3>{{ karmaCard.title }}</h3>
-              <p>{{ karmaCard.info }}</p>
+              <h3>{{ t("check-in") }}</h3>
+              <p>{{ t("check-in-text") }}</p>
             </div>
-            <hr />
-            <div class="stats">
-              <p>
-                {{ t("boost") }}: + {{ karmaCard.income_percent / 100 * (karmaCard.donate_amount || 0) }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-                /{{ t("h") }}
-              </p>
-            </div>
-            <div class="donation-goal">
-              <p>
-                {{ t("donation-goal") }}: {{ karmaCard.goal }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-                ({{ t("last-donated") }}:
-                {{ karmaCard.goal - karmaCard.current }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
-              </p>
-              <div class="donation-bar">
-                <div class="progress" :style="{ width: progressWidth }"></div>
+            <div class="calendar">
+              <div class="day" v-for="day in checkInInfo">
+                <p class="streak">
+                  {{ t("day") }}{{ day.streak }}
+                </p>
+                <p class="reward">
+                  {{ day.reward }}
+                  <img src="@/assets/svg/stats/green-coin.svg" alt="">
+                </p>
               </div>
-              <p v-if="karmaCard.is_donated">
-                {{ t("you-donated") }}: {{ karmaCard.donate_amount }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-              </p>
-              <p v-else-if="!karmaCard.is_donated">
-                {{ t("not-donated") }}
-              </p>
             </div>
-            <button
-              class="buy-btn"
-              v-if="!karmaCard.is_donated && karmaCard.status === 'active'"
-              @click="donate"
-            >
-              {{ t("donate-from") }}: {{ karmaCard.min_donation }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            <button class="buy-btn" v-if="canGetReward" @click="getReward">
+              {{ t("get-reward") }}
             </button>
-            <button
-              class="buy-btn"
-              v-else-if="karmaCard.is_donated && karmaCard.status === 'active'"
-            >
-              {{ t("donate-more") }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            <button class="buy-btn" v-else-if="!canGetReward" @click="getReward">
+              {{ t("comeback-later") }}
             </button>
           </div>
         </div>
@@ -163,6 +159,7 @@ const imageUrl = computed(() => {
   transform: translateY(100%)
 
 .card-popup
+  color: white !important
   display: flex
   width: 100%
   flex-direction: column
@@ -176,6 +173,7 @@ const imageUrl = computed(() => {
 .content
   position: fixed
   bottom: 0
+  width: 100%
   background: vars.$c-bg
   height: 80%
   max-height: 650px
@@ -196,8 +194,11 @@ const imageUrl = computed(() => {
   border-radius: 20px
   justify-content: center
   align-items: center
-  min-height: 280px
+  min-height: 100px
   overflow: hidden
+
+  img
+    height: 100px
 
 .popup-header
   position: relative
@@ -221,6 +222,29 @@ const imageUrl = computed(() => {
     line-height: 84px
     background: transparent
     color: vars.$c-main-text
+
+.calendar
+  display: grid
+  width: 100%
+  grid-template-columns: repeat(4, 1fr)
+  gap: 5px
+
+  .day
+    padding: 10px 5px
+    aspect-ratio: 1
+    width: 100%
+    border: 1px solid gray
+    background: linear-gradient(0deg, rgb(122, 176, 123) 0%, rgb(59, 155, 22) 68%)
+    border-radius: 18px
+    display: flex
+    align-items: center
+    justify-content: space-evenly
+    flex-direction: column
+    height: 100%
+
+    .reward
+      display: flex
+      gap: 5px
 
 .buttons
   display: flex
@@ -254,7 +278,13 @@ const imageUrl = computed(() => {
   border-top-left-radius: 30px
 
 .info
-  margin-top: 26px
+  width: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  margin-top: 20px
+  margin-bottom: 20px
 
   h3
     text-align: left
@@ -263,7 +293,7 @@ const imageUrl = computed(() => {
   p
     margin-top: 20px
     text-align: start
-    font-size: 10px
+    font-size: 18px
     opacity: 50%
     line-height: 16px
 
@@ -272,66 +302,13 @@ hr
   width: 100%
   border: 1px solid vars.$c-border-color
 
-.stats
-  display: flex
-  flex-direction: column
-  justify-content: start
-  align-items: start
-  width: 100%
-  gap: 12px
-
-  p
-    display: flex
-    gap: 3px
-    align-items: center
-    font-size: 14px
-    opacity: 70%
-    img
-      height: 12px
-
-.donation-goal
-  display: flex
-  flex-direction: column
-  width: 100%
-  align-items: start
-  gap: 8px
-  margin: 12px 0
-  height: 38px
-
-  p
-    text-align: start
-    display: flex
-    justify-content: center
-    align-items: center
-    gap: 3px
-    opacity: 70%
-    font-size: 11px
-
-    img
-      height: 7px
-
-  .donation-bar
-    display: flex
-    align-items: center
-    height: 4px
-    width: 100%
-    background: vars.$c-dark-element
-    border: 1px solid #FFFFFF40
-    backdrop-filter: blur(2px)
-    border-radius: 40px
-
-    .progress
-      background: vars.$c-light-element
-      height: 5px
-      border-radius: 40px
-
 .buy-btn
   margin-top: 20px
   width: 100%
   font-size: 16px
   font-weight: 700
   background: white
-  padding: 15px 0
+  padding: 22px
   border: 1px solid vars.$c-border-color
   border-radius: 100px
   display: flex

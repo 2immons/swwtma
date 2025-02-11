@@ -18,6 +18,8 @@ const mockUserProfile: UserGetSchema = {
   is_banned: false,
   is_deleted: false,
   referral_code: "string",
+  streak: 0,
+  last_check_in: "2025-02-08T21:48:27.105Z",
   balance: {
     balance: 0,
     mining_power: 0,
@@ -57,9 +59,57 @@ const mockUserProfile: UserGetSchema = {
   },
 };
 
+const mockCheckInInfo = [
+  {
+    "streak": 0,
+    "reward": 0
+  },
+  {
+    "streak": 1,
+    "reward": 1
+  },
+  {
+    "streak": 2,
+    "reward": 2
+  },
+  {
+    "streak": 3,
+    "reward": 3
+  },
+  {
+    "streak": 4,
+    "reward": 4
+  },
+  {
+    "streak": 5,
+    "reward": 0
+  },
+  {
+    "streak": 6,
+    "reward": 1
+  },
+  {
+    "streak": 7,
+    "reward": 2
+  },
+  {
+    "streak": 8,
+    "reward": 3
+  },
+  {
+    "streak": 9,
+    "reward": 4
+  },
+  {
+    "streak": 10,
+    "reward": 3000
+  }
+]
+
 export const profileStore = defineStore("profile", {
   state: () => ({
     userProfile: mockUserProfile,
+    checkInInfo: mockCheckInInfo
   }),
 
   actions: {
@@ -88,6 +138,36 @@ export const profileStore = defineStore("profile", {
     // setProfileVariables устанавливает переменные профиля
     setProfileVariables(responseData: UserGetSchema) {
       this.userProfile = responseData;
+    },
+
+    async getCheckInReward() {
+      try {
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/check-in/`
+        const response = await axios.post(url, requestConfig);
+
+        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+
+        if (validatedResponse)
+          this.updateBalance(validatedResponse.data.balance, validatedResponse.data.mining_power)
+      } catch (error) {
+        console.error("Ошибка при получении профиля пользователя:", error);
+        throw new Error("Server error when getting the user profile");
+      }
+    },
+
+    async getCheckInInfo() {
+      try {
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/check-in/`
+        const response = await axios.get(url, requestConfig);
+
+        const validatedResponse = await checkResponseSuccess(response, url, "get")
+
+        if (validatedResponse)
+          this.checkInInfo = validatedResponse.data
+      } catch (error) {
+        console.error("Ошибка при получении профиля пользователя:", error);
+        throw new Error("Server error when getting the user profile");
+      }
     },
 
     // getUserProfile получает информацию о профиле пользователя
