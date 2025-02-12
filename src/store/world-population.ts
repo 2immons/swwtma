@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { useI18n } from "vue-i18n";
 import {checkResponseSuccess, requestConfig} from "@/store/utils/apiUtils.ts";
+import type {Population} from "@/types/types.ts";
 
 const mockPopulationData = {
   population: 0,
@@ -16,7 +17,7 @@ const mockPopulationData = {
 
 export const worldPopulationStore = defineStore("world-population", {
   state: () => ({
-    worldPopulation: mockPopulationData
+    worldPopulation: mockPopulationData as Population
   }),
 
   actions: {

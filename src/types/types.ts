@@ -173,6 +173,15 @@ export interface UserBase {
   referral_code: string | null;
 }
 
+export interface Population {
+  population: number;
+  births_year: number;
+  births_today: number;
+  deaths_year: number;
+  deaths_today: number;
+  net_population_growth_year: number;
+  net_population_growth_today: number;
+}
 export interface UserCardsBase {
   card_id: number | null;
   level: number;

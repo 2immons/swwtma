@@ -5,17 +5,23 @@ import axios from "axios";
 import { worldPopulationStore } from "@/store/world-population";
 import router from "@/router";
 import { useI18n } from "vue-i18n";
+import type {Population} from "@/types/types.ts";
 const { t, locale } = useI18n();
-const population = ref("");
+const population = ref<Population>();
 const populationStore = worldPopulationStore();
 
-onMounted(async () => {
-  eventBus.emit("toggleHeaderBackBtnVisibility", true);
+const fetchPopulation = async () => {
   try {
-    population.value = await populationStore.getWorldPopulation();
+    await populationStore.getWorldPopulation()
   } catch (error) {
     eventBus.emit("showErrorPopup", error.message);
   }
+}
+
+onMounted(async () => {
+  eventBus.emit("toggleHeaderBackBtnVisibility", true);
+  await fetchPopulation()
+  population.value = populationStore.worldPopulation;
 });
 
 onBeforeUnmount(() => {
@@ -30,37 +36,37 @@ onBeforeUnmount(() => {
         <h2>World Population</h2>
         <div class="stats-list">
           <div class="stats-item">
-            <p class="title">{{ population.population }}</p>
+            <p class="title">{{ population?.population }}</p>
             <p class="hint">Current World Population</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population.birthsYear }}</p>
+            <p class="title">{{ population?.births_year }}</p>
             <p class="hint">Births this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population.birthsToday }}</p>
+            <p class="title">{{ population?.births_today }}</p>
             <p class="hint">Births today</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population.deathsYear }}</p>
+            <p class="title">{{ population?.deaths_year }}</p>
             <p class="hint">Deaths this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population.deathsToday }}</p>
+            <p class="title">{{ population?.deaths_today }}</p>
             <p class="hint">Deaths today</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population.netPopulationGrowthYear }}</p>
+            <p class="title">{{ population?.net_population_growth_year }}</p>
             <p class="hint">Net population growth this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population.netPopulationGrowthToday }}</p>
+            <p class="title">{{ population?.net_population_growth_today }}</p>
             <p class="hint">Net population growth today</p>
           </div>
         </div>
