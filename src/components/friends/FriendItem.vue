@@ -13,7 +13,7 @@ const props = defineProps<{
 
 <template>
   <div class="friend">
-    <div class="photo"></div>
+    <img :src="friend.user_image_url ? friend.user_image_url : ''" alt="" class="photo">
     <div class="info">
       <p class="name">{{ friend.username }}</p>
       <p class="boost">

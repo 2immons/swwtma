@@ -22,14 +22,16 @@ const mockReferalsResponse = {
       user_id: 0,
       total_income: 1,
       claimed_income: 4,
-      unclaimed_income: 0
+      unclaimed_income: 0,
+      user_image_url: ""
     },
     {
       username: "string",
       user_id: 2,
       total_income: 2,
       claimed_income: 3,
-      unclaimed_income: 0
+      unclaimed_income: 0,
+      user_image_url: "https://e7.pngegg.com/pngimages/875/651/png-clipart-background-brush-texture-brush-black-thumbnail.png"
     }
   ]
 } as UserReferrals

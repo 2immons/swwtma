@@ -226,6 +226,7 @@ export interface UserReferralIncomeSchema {
   total_income: number | null;
   claimed_income: number | null;
   unclaimed_income: number | null;
+  user_image_url: string | null;
 }
 
 export interface UserReferrals {
