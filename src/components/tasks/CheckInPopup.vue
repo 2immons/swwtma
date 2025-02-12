@@ -137,7 +137,7 @@ const getReward = async () => {
             <button class="buy-btn" v-if="canGetReward" @click="getReward">
               {{ t("get-reward") }}
             </button>
-            <button class="buy-btn" v-else-if="!canGetReward" @click="getReward">
+            <button class="buy-btn" v-else-if="!canGetReward">
               {{ t("comeback-later") }}
             </button>
           </div>

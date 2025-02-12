@@ -6,6 +6,7 @@ import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "@/i18n";
 import PopupWindow from "@/components/PopupWindow.vue";
 import { telegramStore } from "@/store/telegram";
+import {worldPopulationStore} from "@/store/world-population.ts";
 
 const pinia = createPinia();
 
@@ -26,6 +27,7 @@ const i18n = createI18n({
 
 telegramStoreInstance.setMiniAppSettings();
 telegramStoreInstance.setMiniAppData();
+
 
 app.use(i18n);
 

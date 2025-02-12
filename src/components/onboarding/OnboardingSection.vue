@@ -94,6 +94,7 @@ import { telegramStore } from "@/store/telegram.ts";
 import { useI18n } from "vue-i18n";
 import {eventBus} from "@/event_bus/eventBus.ts";
 import {profileStore} from "@/store/user-profile.ts";
+import {worldPopulationStore} from "@/store/world-population.ts";
 
 const { t, locale } = useI18n();
 
@@ -117,6 +118,8 @@ const footerClass = computed(() => {
   }
 });
 
+const profileStoreInstance = profileStore();
+
 const fetchUserProfile = async () => {
   try {
     await profileStoreInstance.getUserProfile();
@@ -125,9 +128,12 @@ const fetchUserProfile = async () => {
   }
 };
 
+
+const populationStoreInstance = worldPopulationStore();
 onMounted(async () => {
   await fetchUserProfile();
   locale.value = profileStore().userProfile.settings.language
+  await populationStoreInstance.getWorldPopulation()
   setInterval(rotateCoin, 100);
 });
 
