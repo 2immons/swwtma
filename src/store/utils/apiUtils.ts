@@ -51,7 +51,7 @@ function parseErrors (response: AxiosResponse) {
 export const requestConfig: AxiosRequestConfig = {
   withCredentials: true,
   headers: {
-    "X-CSRF-Token": getCsrfToken(),
+    "csrf_token": getCsrfToken(),
   }
 }
 
