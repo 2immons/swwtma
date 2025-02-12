@@ -47,10 +47,13 @@ const fetchCheckInInfo = async () => {
   await profileStoreInstance.getCheckInInfo()
 }
 
-const checkInInfo = computed(() => profileStoreInstance.checkInInfo.slice(1))
+const checkInInfo = computed(() => profileStoreInstance.checkInInfo)
 const lastCheckInDate = computed(() => profileStoreInstance.userProfile.last_check_in)
 
 const canGetReward = computed(() => {
+  if (!lastCheckInDate.value) {
+    return true
+  }
   console.log(lastCheckInDate.value); // Используйте lastCheckInDate.value для доступа к значению
   const now = Date.now();
   const rewardTime = new Date(lastCheckInDate.value).getTime();

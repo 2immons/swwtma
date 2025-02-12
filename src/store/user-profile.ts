@@ -61,10 +61,6 @@ const mockUserProfile: UserGetSchema = {
 
 const mockCheckInInfo = [
   {
-    "streak": 0,
-    "reward": 0
-  },
-  {
     "streak": 1,
     "reward": 1
   },
