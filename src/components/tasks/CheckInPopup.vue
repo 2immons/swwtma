@@ -92,6 +92,8 @@ watch(
   },
 );
 
+const userStreak = computed(() => profileStoreInstance.userProfile.streak)
+
 const getReward = async () => {
   await profileStoreInstance.getCheckInReward()
 }
@@ -127,7 +129,7 @@ const getReward = async () => {
               <p>{{ t("check-in-text") }}</p>
             </div>
             <div class="calendar">
-              <div class="day" v-for="day in checkInInfo">
+              <div v-for="day in checkInInfo" :class="day.streak > userStreak ? 'day' : 'day day--completed'">
                 <p class="streak">
                   {{ t("day") }}{{ day.streak }}
                 </p>
@@ -249,6 +251,11 @@ const getReward = async () => {
       display: flex
       gap: 5px
 
+  .day--completed
+    background: linear-gradient(0deg, rgb(82, 93, 82) 0%, rgb(73, 91, 64) 68%)
+
+    .reward, .streak
+      opacity: 0.6
 .buttons
   display: flex
   flex-direction: column

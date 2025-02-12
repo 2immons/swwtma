@@ -18,7 +18,7 @@ const mockUserProfile: UserGetSchema = {
   is_banned: false,
   is_deleted: false,
   referral_code: "string",
-  streak: 0,
+  streak: 2,
   last_check_in: "2025-02-08T21:48:27.105Z",
   balance: {
     balance: 0,
@@ -143,8 +143,12 @@ export const profileStore = defineStore("profile", {
 
         const validatedResponse = await checkResponseSuccess(response, url, "post", {})
 
-        if (validatedResponse)
+        if (validatedResponse) {
           this.updateBalance(validatedResponse.data.balance, validatedResponse.data.mining_power)
+          this.userProfile.streak = validatedResponse.data.streak
+          this.userProfile.last_check_in = validatedResponse.data.last_check_in
+        }
+
       } catch (error) {
         console.error("Ошибка при получении профиля пользователя:", error);
         throw new Error("Server error when getting the user profile");
