@@ -139,7 +139,7 @@ export const profileStore = defineStore("profile", {
     async getCheckInReward() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/check-in/`
-        const response = await axios.post(url, requestConfig);
+        const response = await axios.post(url, {}, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "post", {})
 
