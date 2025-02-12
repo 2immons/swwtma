@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import { eventBus } from "@/event_bus/eventBus";
 import axios from "axios";
 import { worldPopulationStore } from "@/store/world-population";
@@ -7,7 +7,7 @@ import router from "@/router";
 import { useI18n } from "vue-i18n";
 import type {Population} from "@/types/types.ts";
 const { t, locale } = useI18n();
-const population = ref<Population>();
+const population = computed(() => populationStore.worldPopulation)
 const populationStore = worldPopulationStore();
 
 const fetchPopulation = async () => {
@@ -21,7 +21,6 @@ const fetchPopulation = async () => {
 onMounted(async () => {
   eventBus.emit("toggleHeaderBackBtnVisibility", true);
   await fetchPopulation()
-  population.value = populationStore.worldPopulation;
 });
 
 onBeforeUnmount(() => {
