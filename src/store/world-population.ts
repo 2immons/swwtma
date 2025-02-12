@@ -13,7 +13,7 @@ const mockPopulationData = {
   deaths_today: 0,
   net_population_growth_year: 0,
   net_population_growth_today: 0
-}
+};
 
 export const worldPopulationStore = defineStore("world-population", {
   state: () => ({
@@ -49,11 +49,21 @@ export const worldPopulationStore = defineStore("world-population", {
       }
 
       this.updateInterval = setInterval(() => {
-        this.worldPopulation.population += Math.floor(Math.random() * 3) + 1; // +1..3
-        this.worldPopulation.births_today += Math.floor(Math.random() * 2) + 1; // +1..2
-        this.worldPopulation.deaths_today += Math.floor(Math.random() * 2); // +0..1
-        this.worldPopulation.net_population_growth_today =
-            this.worldPopulation.births_today - this.worldPopulation.deaths_today;
+        const birthRatePerSecond = Math.floor(Math.random() * 3) + 1; // 1..3
+        const deathRatePerSecond = Math.floor(Math.random() * 2); // 0..1
+        const netGrowthPerSecond = birthRatePerSecond - deathRatePerSecond;
+
+        this.worldPopulation.population += netGrowthPerSecond;
+        this.worldPopulation.births_today += birthRatePerSecond;
+        this.worldPopulation.deaths_today += deathRatePerSecond;
+        this.worldPopulation.net_population_growth_today += netGrowthPerSecond;
+
+        // Логика для прироста за год (пересчитанная на секунду)
+        const secondsInYear = 365 * 24 * 60 * 60;
+        this.worldPopulation.births_year += Math.round(birthRatePerSecond * (secondsInYear / 86400));
+        this.worldPopulation.deaths_year += Math.round(deathRatePerSecond * (secondsInYear / 86400));
+        this.worldPopulation.net_population_growth_year =
+            this.worldPopulation.births_year - this.worldPopulation.deaths_year;
       }, 1000); // Обновление каждую секунду
     },
 
