@@ -65,11 +65,10 @@ const claimButtonClass = computed(() => {
 
 const progressWidth = computed(() => {
   if (miningInfo.value) {
-
     console.log("Процент: ", miningInfo.value.remainingPercentage)
-    return String(miningInfo.value.remainingPercentage) + "%"
+    return miningInfo.value.remainingPercentage
   } else {
-    return "0%"
+    return 0
   }
 });
 
@@ -123,7 +122,7 @@ const isProd = import.meta.env.MODE === "production";
           <div class="mining-progress-bar">
             <div
                 class="progress"
-                :style="{ width: progressWidth }"
+                :style="{ width: progressWidth + '%' }"
                 v-if="!isClaimingPossible && !isMiningExist && !isMiningPending"
             >
               <div class="interface">
@@ -263,6 +262,7 @@ const isProd = import.meta.env.MODE === "production";
   display: flex
   justify-content: start
   align-items: center
+  width: 0
 
 .interface
   background: #767776
