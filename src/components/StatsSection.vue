@@ -160,7 +160,7 @@ const isProd = import.meta.env.MODE === "production";
                  :style="{ width: progressWidth + '%' }"
                  v-else-if="isMiningPending && isMiningExist && !isClaimingPossible">
               <div class="interface">
-                <button @click="claimReward" :class="claimButtonClass">
+                <button disabled :class="claimButtonClass">
                   {{ t("claim") }}
                 </button>
                 <div class="time">

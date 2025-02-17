@@ -185,12 +185,13 @@ const completeTask = async () => {
   .left-side
     display: flex
     gap: 21px
-    width: 90%
+    flex: 1
 
   .right-side
     display: flex
     width: 10%
     justify-content: space-between
+    gap: 5px
     min-width: 110px
 
   .info
