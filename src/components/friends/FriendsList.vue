@@ -26,7 +26,7 @@ const openReferalPopup = () => {
       @update:modelValue="isReferalPopupVisible = $event"
     />
     <div class="list-header">
-      <p>6 Friends</p>
+      <p>{{ friends.referrals?.length }} Friends</p>
       <button @click="openReferalPopup">Invite +</button>
     </div>
     <div class="list">
