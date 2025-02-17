@@ -191,6 +191,7 @@ const imageUrl = computed(() => {
   height: 80%
   max-height: 650px
   display: flex
+  width: 100%
   justify-content: center
   margin-top: 60px
   padding-bottom: 30px

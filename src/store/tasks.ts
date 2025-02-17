@@ -14,8 +14,8 @@ const mockTasksResponse = {
       tasks: [
         {
           url: "https://example.com/task1",
-          name: "string",
-          description: "string",
+          name: "st233",
+          description: "string1",
           reward: 100,
           code_required: false,
           id: 1,

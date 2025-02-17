@@ -4,6 +4,7 @@ import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
 import { useI18n } from "vue-i18n";
 import {telegramStore} from "@/store/telegram.ts";
+import {insertKForBigNumber} from "@/utils/nums.ts";
 const { t, locale } = useI18n();
 
 const profileStoreInstance = profileStore();
@@ -104,14 +105,14 @@ const isProd = import.meta.env.MODE === "production";
           <div class="stats__item stats__item--balance">
             <p>{{ t("your-balance") }}</p>
             <div class="amount">
-              {{ balance }}
+              {{ balance ? insertKForBigNumber(balance) : 0}}
               <img src="../assets/svg/stats/green-coin.svg" alt="" />
             </div>
           </div>
           <div class="stats__item stats__item--mining-speed">
             <p>{{ t("mining-speed") }}</p>
             <div class="amount">
-              + {{ power }}/{{ t("h") }}
+              + {{ power ? insertKForBigNumber(power) : 0 }}/{{ t("h") }}
               <img src="../assets/svg/stats/green-coin.svg" alt="" />
             </div>
           </div>
