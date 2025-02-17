@@ -129,8 +129,7 @@ const getJettonWalletAddress = async (CAJetton: string, walletAddress: string) =
   return null
 }
 
-const projectAddress = ref("123123123")
-const userAddress = ref("123123123123")
+const projectAddress = ref("UQB59MkJmqU000FRptsOuCSkGDbDFq7zjjb7Otk7MKizQTFW")
 
 const enum Currency {
   USDT = "USD₮",
@@ -146,7 +145,7 @@ const createTransaction = async (price: number, currency: string) => {
       .storeUint(0, 64)                         // query_id:uint64
       .storeCoins(price * 10**6)              // amount:(VarUInteger 16) -  Jetton amount for transfer (decimals = 6 - USDT, 9 - default). Function toNano use decimals = 9 (remember it)
       .storeAddress(Address.parse(projectAddress.value))  // destination:MsgAddress
-      .storeAddress(Address.parse(userAddress.value))  // response_destination:MsgAddress поменять на себя
+      .storeAddress(Address.parse(currentWallet.account.address))  // response_destination:MsgAddress поменять на себя
       .storeUint(0, 1)                          // custom_payload:(Maybe ^Cell)
       .storeCoins(1)                 // forward_ton_amount:(VarUInteger 16) - if >0, will send notification message -- возврат комиссии
       .storeUint(0,1)                           // forward_payload:(Either Cell ^Cell)
@@ -161,7 +160,7 @@ const createTransaction = async (price: number, currency: string) => {
       messages: [
         {
           //
-          address: await getJettonWalletAddress(CAJettonUSDT, userAddress.value),  // sender jetton wallet
+          address: await getJettonWalletAddress(CAJettonUSDT, currentWallet.account.address),  // sender jetton wallet
           amount: toNano("0.05").toString(),
           payload: body.toBoc().toString("base64")
         }
