@@ -261,7 +261,6 @@ const isProd = import.meta.env.MODE === "production";
   display: flex
   justify-content: start
   align-items: center
-  width: 100%
 
 .interface
   background: #767776
