@@ -5,6 +5,7 @@ import { friendsStore } from "@/store/friends";
 import { eventBus } from "@/event_bus/eventBus";
 import { type UserReferrals } from "@/types/types";
 import { useI18n } from "vue-i18n";
+import {insertKForBigNumber} from "../../utils/nums.ts";
 const { t, locale } = useI18n();
 const props = defineProps<{
   friends: UserReferrals
@@ -22,7 +23,7 @@ const claimReward = async () => {
       <div class="bg-ellepsis"></div>
       <p>You Earned:</p>
       <div class="coins">
-        <p>+ {{ friends.claimable }} <img src="../../assets/svg/stats/green-coin.svg" alt="" /></p>
+        <p>+ {{ insertKForBigNumber(friends.claimable) }} <img src="../../assets/svg/stats/green-coin.svg" alt="" /></p>
         <button @click="claimReward">Claim</button>
       </div>
     </div>
