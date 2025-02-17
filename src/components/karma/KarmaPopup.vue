@@ -88,7 +88,7 @@ watch(
 const isDonationInputsVisible = ref(false);
 
 const donate = async () => {
-  if (currentWallet) {
+  if (!currentWallet) {
     isDonationInputsVisible.value = true
     console.log(isDonationInputsVisible.value)
   }
@@ -103,7 +103,7 @@ const imageUrl = computed(() => {
         return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.karmaCard.image.upload_storage}/${props.karmaCard.image.file_id}`
     })
 
-import {beginCell, Address, toNano} from '@ton/ton'
+import {beginCell, Address, toNano, Cell} from '@ton/ton'
 import axios from "axios";
 // transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
 // response_destination:MsgAddress custom_payload:(Maybe ^Cell)
@@ -185,8 +185,10 @@ const createTransaction = async (price: number, currency: string) => {
 const donateFinal = async () => {
   const transaction = await createTransaction(price.value, selectedCurrency.value)
   const result = await connector.sendTransaction(transaction)
-  await karmaStoreInstance.donate(props.karmaCard.id, result.boc, selectedCurrency.value)
-
+  const cell = Cell.fromBase64(result.boc);
+  const buffer = cell.hash();
+  const hashHex = buffer.toString("hex");
+  await karmaStoreInstance.donate(props.karmaCard.id, hashHex, selectedCurrency.value)
 }
 </script>
 
