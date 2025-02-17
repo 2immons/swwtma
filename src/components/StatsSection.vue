@@ -63,7 +63,7 @@ const claimButtonClass = computed(() => {
   }
 });
 
-let progressWidth = 0
+const progressWidth = ref(0);
 
 const claimReward = async () => {
   await profileStoreInstance.claimMining();
@@ -88,9 +88,9 @@ onMounted(async () => {
   locale.value = profileStoreInstance.userProfile.settings.language
   if (miningInfo.value) {
     console.log("Процент: ", miningInfo.value.remainingPercentage)
-    progressWidth = miningInfo.value.remainingPercentage
+    progressWidth.value = miningInfo.value.remainingPercentage
   } else {
-    progressWidth = 0
+    progressWidth.value = 0
   }
 });
 
