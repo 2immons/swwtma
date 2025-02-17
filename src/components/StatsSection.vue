@@ -12,7 +12,7 @@ const profileStoreInstance = profileStore();
 const balance = computed(() => profileStoreInstance.getBalance);
 const power = computed(() => profileStoreInstance.getPower);
 const miningInfo = computed(() => {
-  if (profileStore().userProfile.minings.length <= 0) {
+  if (profileStoreInstance.userProfile.minings.length <= 0) {
     return undefined
   } else {
     return profileStoreInstance.getMiningInfo
@@ -65,6 +65,8 @@ const claimButtonClass = computed(() => {
 
 const progressWidth = computed(() => {
   if (miningInfo.value) {
+
+    console.log("Процент: ", miningInfo.value.remainingPercentage)
     return String(miningInfo.value.remainingPercentage) + "%"
   } else {
     return "0%"
