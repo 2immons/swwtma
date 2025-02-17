@@ -139,7 +139,7 @@ const isProd = import.meta.env.MODE === "production";
             </div>
             <div
               class="progress"
-              :style="{ width: progressWidth }"
+              :style="{ width: progressWidth + '%' }"
               v-else-if="isClaimingPossible && !isMiningPending && isMiningExist"
             >
               <div class="interface">
@@ -156,6 +156,7 @@ const isProd = import.meta.env.MODE === "production";
               </div>
             </div>
             <div class="progress"
+                 :style="{ width: progressWidth + '%' }"
                  v-else-if="isMiningPending && isMiningExist && !isClaimingPossible">
               <div class="interface">
                 <button @click="claimReward" :class="claimButtonClass">
