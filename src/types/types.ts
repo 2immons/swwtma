@@ -44,7 +44,7 @@ export interface ValidationError {
 }
 
 export interface KarmaBase {
-  id: number | null;
+  id: number;
   title: string;
   info: string;
   goal: number;

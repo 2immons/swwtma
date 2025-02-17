@@ -3,6 +3,7 @@ import { computed, defineProps, ref } from "vue";
 import KarmaPopup from "@/components/karma/KarmaPopup.vue";
 import { useI18n } from "vue-i18n";
 import type { KarmaBase } from "@/types/types";
+import {toNano} from "@ton/ton";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
@@ -23,6 +24,7 @@ const imageUrl = computed(() => {
   if (props.karmaCard.image)
     return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.karmaCard.image.upload_storage}/${props.karmaCard.image.file_id}`
 })
+
 </script>
 
 <template>

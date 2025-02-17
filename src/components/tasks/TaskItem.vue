@@ -5,6 +5,7 @@ import {storeToRefs} from "pinia";
 import {useI18n} from "vue-i18n";
 import {TaskAction, type TaskBaseSchema} from "@/types/types";
 import {telegramStore} from "@/store/telegram.ts";
+import {eventBus} from "@/event_bus/eventBus.ts";
 
 const { t, locale } = useI18n();
 
@@ -112,9 +113,25 @@ const redirectToOtherLink = () => {
   }
 };
 
+const isCodeInputVisible = computed(() => {
+  if (!props.task.code_required) {
+    return false
+  } else {
+    if (isTaskReady.value)
+      return true
+    else
+      return false
+  }
+})
+
 const completeTask = async () => {
   isTaskReady.value = false;
   isTaskVerifying.value = true;
+  if (props.task.code_required && !code.value) {
+    eventBus.emit("showErrorPopup", "Введите код!");
+    isTaskVerifying.value = false;
+    return
+  }
   const isTaskValid = await tasksStoreInstance.completeTask(props.task.id)
   isTaskVerifying.value = false;
   if (isTaskValid) {
@@ -123,45 +140,53 @@ const completeTask = async () => {
       task.is_done = true;
     }
   } else {
-    //
+    eventBus.emit("showErrorPopup", "Вы позорник!");
   }
 }
+
+const code = ref()
 
 </script>
 
 <template>
   <div class="task-item">
-    <div class="left-side">
-      <img src="../../assets/svg/tasks/battery.svg" alt="" />
-      <div class="info">
-        <p>{{ task.name }}</p>
+    <div class="upper">
+      <div class="left-side">
+        <img src="../../assets/svg/tasks/battery.svg" alt="" />
+        <div class="info">
+          <p>{{ task.name }}</p>
+        </div>
+      </div>
+      <div class="right-side">
+        <div class="income">
+          <p>+ {{ task.reward }}</p>
+          <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+        </div>
+        <div class="loader-wrapper" v-if="isTaskVerifying">
+          <div class="loader"></div>
+        </div>
+        <button
+            @click="startTask"
+            v-else-if="!isTaskVerifying && !task.is_done && !isTaskReady"
+            class="start-btn"
+        >
+          {{ t("accept-task") }}
+        </button>
+        <div class="claimed-wrapper" v-else-if="task.is_done">
+          <img src="../../assets/svg/v-icon.svg" alt="" />
+        </div>
+        <button
+            @click="completeTask"
+            v-else-if="isTaskReady"
+            class="claim-btn"
+        >
+          {{ t("claim-task") }}
+        </button>
       </div>
     </div>
-    <div class="right-side">
-      <div class="income">
-        <p>+ {{ task.reward }}</p>
-        <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-      </div>
-      <div class="loader-wrapper" v-if="isTaskVerifying">
-        <div class="loader"></div>
-      </div>
-      <button
-          @click="startTask"
-          v-else-if="!isTaskVerifying && !task.is_done && !isTaskReady"
-          class="start-btn"
-      >
-        {{ t("accept-task") }}
-      </button>
-      <div class="claimed-wrapper" v-else-if="task.is_done">
-        <img src="../../assets/svg/v-icon.svg" alt="" />
-      </div>
-      <button
-        @click="completeTask"
-        v-else-if="isTaskReady"
-        class="claim-btn"
-      >
-        {{ t("claim-task") }}
-      </button>
+    <div class="code-wrapper" v-if="isCodeInputVisible">
+      <p>Введите код</p>
+      <input type="text" v-model="code">
     </div>
   </div>
 </template>
@@ -172,6 +197,7 @@ const completeTask = async () => {
 .task-item
   padding: 20px 17px
   display: flex
+  flex-direction: column
   align-items: center
   justify-content: space-between
   width: 100%
@@ -181,6 +207,27 @@ const completeTask = async () => {
   border: 1px solid vars.$c-border-color
   border-radius: 18px
   gap: 12px
+
+.code-wrapper
+  display: flex
+  align-items: center
+  gap: 12px
+  width: 100%
+
+  p
+    flex: 1
+    text-align: start
+
+  input
+    border: 1px solid vars.$c-border-color
+    border-radius: 18px
+    
+.upper
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 100%
+  height: fit-content
 
   .left-side
     display: flex

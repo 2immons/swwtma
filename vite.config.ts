@@ -2,9 +2,11 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
+import {nodePolyfills} from "vite-plugin-node-polyfills";
+
 
 export default defineConfig(({ mode }) => ({
-  plugins: [vue(), (mode === "production" || mode == "development") ? null : vueDevTools()],
+  plugins: [vue(), nodePolyfills(), (mode === "production" || mode == "development") ? null : vueDevTools()],
   base:
     mode === "development" ? "https://sww.tonycrypto.site/" : "/",
   resolve: {

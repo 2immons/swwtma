@@ -14,6 +14,7 @@ import { karmaStore } from "@/store/karma";
 const karmaStoreInstance = karmaStore();
 import { useI18n } from "vue-i18n";
 import type { KarmaBase } from "@/types/types";
+import DonatePopup from "@/components/karma/DonatePopup.vue";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
@@ -49,9 +50,22 @@ const onTouchEnd = () => {
   }
 };
 
+import TonConnect, {type Wallet} from '@tonconnect/sdk';
+
+let connector: TonConnect;
+let currentWallet: Wallet;
+
 onMounted(async () => {
   if (props.modelValue) {
     document.body.classList.add("no-scroll");
+  }
+
+  connector = new TonConnect({
+    manifestUrl: import.meta.env.VITE_MANIFEST_URL
+  });
+  await connector.restoreConnection()
+  if (connector.wallet) {
+    currentWallet = connector.wallet
   }
 });
 
@@ -71,14 +85,111 @@ watch(
   },
 );
 
+
+const isDonationInputsVisible = ref(false);
+
 const donate = async () => {
-  await karmaStoreInstance.donate();
+  if (!currentWallet) {
+    isDonationInputsVisible.value = true
+    console.log(isDonationInputsVisible.value)
+  }
+}
+
+const selectCurrency = (currency: Currency) => {
+  selectedCurrency.value = currency
 }
 
 const imageUrl = computed(() => {
       if (props.karmaCard.image)
         return `${import.meta.env.VITE_BACKEND}/api/v1/files/${props.karmaCard.image.upload_storage}/${props.karmaCard.image.file_id}`
     })
+
+import {beginCell, Address, toNano} from '@ton/ton'
+import axios from "axios";
+// transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
+// response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+// forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
+// = InternalMsgBody;
+
+// Контракт + Адрес кошелька = Jetton Address
+//
+
+// Достает Jetton Address кошелька пользователя, который связан с определенным жетоном и пользователем,
+// используя адрес контракта Jetton и адрес кошелька пользователя из tonconnect
+
+// Jetton Address - это подкошелек, который был сгенерирован с помощью адреса котракта определенного Jetton и адресом кошелька пользователя
+const getJettonWalletAddress = async (CAJetton: string, walletAddress: string) => {
+  const jetton = Address.parse(CAJetton)
+  const wallet = Address.parse(walletAddress)
+
+  const result = await axios.get(`https://tonapi.io/v2/blockchain/accounts/${jetton}/methods/get_wallet_address?args=${wallet}`)
+  if (result.status === 200) {
+    return result.data["decoded"]["jetton_wallet_address"]
+  }
+  return null
+}
+
+const projectAddress = ref("123123123")
+const userAddress = ref("123123123123")
+
+const enum Currency {
+  USDT = "USD₮",
+  TON = "TON"
+}
+
+const selectedCurrency = ref(Currency.TON)
+const price = ref(10)
+
+const createTransaction = async (price: number, currency: string) => {
+  const body = beginCell()
+      .storeUint(0xf8a7ea5, 32)                 // jetton transfer op code
+      .storeUint(0, 64)                         // query_id:uint64
+      .storeCoins(price * 10**6)              // amount:(VarUInteger 16) -  Jetton amount for transfer (decimals = 6 - USDT, 9 - default). Function toNano use decimals = 9 (remember it)
+      .storeAddress(Address.parse(projectAddress.value))  // destination:MsgAddress
+      .storeAddress(Address.parse(userAddress.value))  // response_destination:MsgAddress поменять на себя
+      .storeUint(0, 1)                          // custom_payload:(Maybe ^Cell)
+      .storeCoins(1)                 // forward_ton_amount:(VarUInteger 16) - if >0, will send notification message -- возврат комиссии
+      .storeUint(0,1)                           // forward_payload:(Either Cell ^Cell)
+      .endCell();
+
+  let transaction;
+
+  if (currency === Currency.USDT) {
+    const CAJettonUSDT = "EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs"
+    transaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 360,
+      messages: [
+        {
+          //
+          address: await getJettonWalletAddress(CAJettonUSDT, userAddress.value),  // sender jetton wallet
+          amount: toNano("0.05").toString(),
+          payload: body.toBoc().toString("base64")
+        }
+      ]
+    }
+    return transaction
+  }
+
+  else {
+    transaction = {
+      validUntil: Math.floor(Date.now() / 1000) + 360,
+      messages: [
+        {
+          address: projectAddress.value,
+          amount: toNano(String(price)).toString(),
+        }
+      ]
+    }
+    return transaction
+  }
+}
+
+const donateFinal = async () => {
+  const transaction = await createTransaction(price.value, selectedCurrency.value)
+  const result = await connector.sendTransaction(transaction)
+  await karmaStoreInstance.donate(props.karmaCard.id, result.boc, selectedCurrency.value)
+
+}
 </script>
 
 <template>
@@ -129,9 +240,23 @@ const imageUrl = computed(() => {
                 {{ t("not-donated") }}
               </p>
             </div>
+            <div class="donation-inputs" v-if="isDonationInputsVisible">
+              <div class="amount">
+                <p>Сумма</p>
+                <input type="text" v-model="price">
+              </div>
+              <div class="currency">
+                <p>Валюта</p>
+                <div class="currencies-btn">
+                  <button :class="selectedCurrency === Currency.TON ? 'active' : '' " @click="selectCurrency(Currency.TON)">TON</button>
+                  <button :class="selectedCurrency === Currency.USDT ? 'active' : '' " @click="selectCurrency(Currency.USDT)">USDT</button>
+                </div>
+              </div>
+            </div>
+
             <button
               class="buy-btn"
-              v-if="!karmaCard.is_donated && karmaCard.status === 'active'"
+              v-if="!karmaCard.is_donated && karmaCard.status === 'active' && !isDonationInputsVisible"
               @click="donate"
             >
               {{ t("donate-from") }}: {{ karmaCard.min_donation }}
@@ -139,7 +264,26 @@ const imageUrl = computed(() => {
             </button>
             <button
               class="buy-btn"
-              v-else-if="karmaCard.is_donated && karmaCard.status === 'active'"
+              v-else-if="karmaCard.is_donated && karmaCard.status === 'active' && !isDonationInputsVisible"
+              @click="donate"
+            >
+              {{ t("donate-more") }}
+              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            </button>
+
+
+            <button
+                class="buy-btn"
+                v-if="!karmaCard.is_donated && karmaCard.status === 'active' && isDonationInputsVisible"
+                @click="donateFinal"
+            >
+              {{ t("donate-from") }}: {{ karmaCard.min_donation }}
+              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            </button>
+            <button
+                class="buy-btn"
+                v-else-if="karmaCard.is_donated && karmaCard.status === 'active' && isDonationInputsVisible"
+                @click="donateFinal"
             >
               {{ t("donate-more") }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
@@ -153,6 +297,40 @@ const imageUrl = computed(() => {
 
 <style scoped lang="sass">
 @use "@/styles/variables" as vars
+
+.donation-inputs
+  display: flex
+  flex-direction: column
+  justify-content: start
+  align-items: start
+  width: 100%
+  margin-top: 10px
+  gap: 10px
+
+  .amount
+    display: flex
+    align-items: center
+    gap: 8px
+
+  .currency
+    display: flex
+    align-items: center
+    width: 100%
+    gap: 20px
+
+    .currencies-btn
+      display: flex
+      align-items: center
+      gap: 10px
+
+      button
+        color: white
+        padding: 5px
+        border: 1px solid vars.$c-border-color
+        border-radius: 18px
+
+      .active
+        background: gray
 
 .v-enter-active,
 .v-leave-active
@@ -178,7 +356,7 @@ const imageUrl = computed(() => {
   bottom: 0
   background: vars.$c-bg
   height: 80%
-  max-height: 650px
+  max-height: 750px
   width: 100%
   display: flex
   justify-content: center

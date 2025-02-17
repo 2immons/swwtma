@@ -93,20 +93,17 @@ export const karmaStore = defineStore("karma", {
       }
     },
 
-    async donate() {
+    async donate(id: number, tx_hash: string, currency: string) {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/karmas/donate`
-        const response = await axios.post(url, requestConfig);
         const data = {
-          karma_id: props.karma_id,
-          // tx_hash: // todo: hash
+          karma_id: id,
+          tx_hash: tx_hash,
+          currency: currency
         }
+        const response = await axios.post(url, data, requestConfig);
 
         const validatedResponse = await checkResponseSuccess(response, url, "post", data)
-
-        if(validatedResponse) {
-          this.categories = groupKarmasByCategory(validatedResponse.data);
-        }
       } catch (error) {
         console.error("Ошибка при получении карточек кармы:", error);
         throw new Error("Server error when getting karma-cards");

@@ -32,7 +32,7 @@ const mockTasksResponse = {
       name: "string",
       description: "string 3",
       reward: 50,
-      code_required: false,
+      code_required: true,
       id: 2,
       category: "Category 2",
       social: "Social 2",
