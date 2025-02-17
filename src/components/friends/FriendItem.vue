@@ -3,6 +3,7 @@ import { defineProps } from "vue";
 import { friendsStore } from "@/store/friends";
 import { type UserReferralIncomeSchema } from "@/types/types"
 import { useI18n } from "vue-i18n";
+import {insertKForBigNumber} from "../../utils/nums.ts";
 const { t, locale } = useI18n();
 const friendsStoreInstance = friendsStore();
 
@@ -18,12 +19,12 @@ const props = defineProps<{
       <p class="name">{{ friend.username }}</p>
       <p class="boost">
         <img src="../../assets/svg/stats/green-coin.svg" alt="" />
-        + {{ friend.unclaimed_income }}
+        + {{ insertKForBigNumber(friend.unclaimed_income) }}
       </p>
     </div>
     <div class="total">
       <p>
-        + {{ friend.total_income }}
+        + {{ insertKForBigNumber(friend.total_income) }}
         <img src="../../assets/svg/stats/green-coin.svg" alt="" />
       </p>
     </div>
