@@ -139,7 +139,7 @@ const completeTask = async () => {
     </div>
     <div class="right-side">
       <div class="income">
-        <p>+ 699</p>
+        <p>+ {{ task.reward }}</p>
         <img src="../../assets/svg/stats/green-coin.svg" alt="" />
       </div>
       <div class="loader-wrapper" v-if="isTaskVerifying">
