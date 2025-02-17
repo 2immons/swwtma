@@ -32,7 +32,7 @@ export function extractTimeDate(isoString: string): string {
   return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
 
-export function insertKForBigNumber(value: number | null) {
+export function insertKForBigNumber(value: number | null | undefined) {
   if (!value)
     return 0
   if (value <= 999999) {
