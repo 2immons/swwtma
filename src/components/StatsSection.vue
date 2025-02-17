@@ -63,14 +63,7 @@ const claimButtonClass = computed(() => {
   }
 });
 
-const progressWidth = computed(() => {
-  if (miningInfo.value) {
-    console.log("Процент: ", miningInfo.value.remainingPercentage)
-    return miningInfo.value.remainingPercentage
-  } else {
-    return 0
-  }
-});
+let progressWidth = 0
 
 const claimReward = async () => {
   await profileStoreInstance.claimMining();
@@ -93,6 +86,12 @@ const miningHours = ref(import.meta.env.VITE_MINING_HOURS)
 onMounted(async () => {
   await fetchUserProfile();
   locale.value = profileStoreInstance.userProfile.settings.language
+  if (miningInfo.value) {
+    console.log("Процент: ", miningInfo.value.remainingPercentage)
+    progressWidth = miningInfo.value.remainingPercentage
+  } else {
+    progressWidth = 0
+  }
 });
 
 const isProd = import.meta.env.MODE === "production";
