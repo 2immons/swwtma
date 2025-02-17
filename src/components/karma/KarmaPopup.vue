@@ -14,7 +14,6 @@ import { karmaStore } from "@/store/karma";
 const karmaStoreInstance = karmaStore();
 import { useI18n } from "vue-i18n";
 import type { KarmaBase } from "@/types/types";
-import DonatePopup from "@/components/karma/DonatePopup.vue";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
