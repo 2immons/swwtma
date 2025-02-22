@@ -34,42 +34,6 @@ export const tonStore = defineStore("ton", {
   }),
 
   actions: {
-    async sendTransaction(price: number) {
-      return await this.tonConnectUI.sendTransaction(this.createTransaction(price))
-    },
-
-    createTransaction(price: number) {
-      // const body = beginCell()
-      //     .storeUint(0xf8a7ea5, 32)                 // jetton transfer op code
-      //     .storeUint(0, 64)                         // query_id:uint64
-      //     .storeCoins(price * 10**9)              // amount:(VarUInteger 16) -  Jetton amount for transfer (decimals = 6 - USDT, 9 - default). Function toNano use decimals = 9 (remember it)
-      //     .storeAddress(Address.parse(this.projectAddress))  // destination:MsgAddress
-      //     .storeAddress(Address.parse(this.projectAddress))  // response_destination:MsgAddress поменять на себя
-      //     .storeUint(0, 1)                          // custom_payload:(Maybe ^Cell)
-      //     .storeCoins(1)                 // forward_ton_amount:(VarUInteger 16) - if >0, will send notification message -- возврат комиссии
-      //     .storeUint(0,1)                           // forward_payload:(Either Cell ^Cell)
-      //     .endCell();
-
-      // const cell = beginCell()
-      //     .storeUint(99, 64) // Stores uint 99 in 64 bits
-      //     .storeAddress(Address.parse('this.projectAddress')) // Stores an address
-      //     .storeCoins(price * 10**9) // Stores 123 as coins
-      //     .endCell() // Closes the cell
-
-      const transaction = {
-        validUntil: Math.floor(Date.now() / 1000) + 360,
-        messages: [
-          {
-            address: this.projectAddress,
-            amount: toNano(String(price)).toString(),
-          }
-        ]
-      }
-      console.log(this.projectAddress)
-      console.log(Address.parse(this.projectAddress).toString())
-      return transaction
-    },
-
     async connectWallet(wallet: Wallet) {
       try {
 
@@ -104,7 +68,7 @@ export const tonStore = defineStore("ton", {
       });
 
       this.tonConnectUI = new TonConnectUI({
-        manifestUrl: "https://sww.tonycrypto.site/tonconnect-manifest.json",
+        manifestUrl: import.meta.env.VITE_MANIFEST_URL,
         buttonRootId: "ton-button",
       });
 
@@ -119,15 +83,6 @@ export const tonStore = defineStore("ton", {
       if (this.connector.wallet) {
         this.currentWallet = this.connector.wallet
         this.currentWalletAddress = this.currentWallet.account.address
-      }
-    },
-
-    async fetchLevels() {
-      try {
-
-      } catch (error) {
-        console.error("Ошибка при получении заданий:", error);
-        throw new Error("Server error when getting tasks list");
       }
     },
   },

@@ -88,7 +88,7 @@ watch(
 const isDonationInputsVisible = ref(false);
 
 const donate = async () => {
-  if (currentWallet) {
+  if (!currentWallet) {
     isDonationInputsVisible.value = true
     console.log(isDonationInputsVisible.value)
   }
