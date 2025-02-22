@@ -234,7 +234,7 @@ const currentWallet = computed(() => tonStoreInstance.currentWalletAddress)
               <button id="ton-button" v-show="false"></button>
               <button @click="connectWallet" v-if="!isWalletConnected">{{ t("connect-wallet") }}</button>
               <button @click="disconnectWallet" v-if="isWalletConnected">{{ t("disconnect-wallet") }}</button>
-              <p class="wallet-address" v-if="!isWalletConnected">0:0314bbfef243f1df9b738fdcd1b84608d77b3644180bd6dc1c71b2980ac03dbc</p>
+              <p class="wallet-address" v-if="isWalletConnected">{{ currentWallet }}</p>
             </div>
           </div>
           <div

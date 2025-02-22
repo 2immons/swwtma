@@ -3,40 +3,47 @@ import Cookies from "js-cookie";
 import { telegramStore } from "@/store/telegram";
 
 export async function checkResponseSuccess(origResponse: AxiosResponse, url: string, type: string, data?: any) {
-  console.log("Зашли в checkResponseSuccess")
+  console.log("Entering checkResponseSuccess with status:", origResponse.status);
+  
   if (origResponse.status === 401) {
-    console.log("Потому что получили 401")
-    const url = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`
-    const refreshTokenResponse = await axios.post(url, {}, requestConfig);
+    console.log("Received 401, attempting to refresh token");
+    const refreshUrl = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`;
+    try {
+      const refreshTokenResponse = await axios.post(refreshUrl, {}, requestConfig);
+      console.log("Refresh token response status:", refreshTokenResponse.status);
 
-    let newResponse;
-
-    if (refreshTokenResponse.status === 200) {
-      switch (type) {
-        case "get":
-          newResponse = await axios.get(url, requestConfig)
-          if (newResponse.status === 200) return newResponse
-          else { parseErrors(newResponse); return newResponse }
-
-        case "post":
-          newResponse = await axios.post(url, data, requestConfig)
-          if (newResponse.status === 200) return newResponse
-          else { parseErrors(newResponse); return newResponse }
-
-        case "patch":
-          newResponse = await axios.patch(url, data, requestConfig)
-          if (newResponse.status === 200) return newResponse
-          else { parseErrors(newResponse); return newResponse }
+      if (refreshTokenResponse.status === 200) {
+        let newResponse;
+        switch (type) {
+          case "get":
+            newResponse = await axios.get(url, requestConfig);
+            break;
+          case "post":
+            newResponse = await axios.post(url, data, requestConfig);
+            break;
+          case "patch":
+            newResponse = await axios.patch(url, data, requestConfig);
+            break;
+        }
+        if (newResponse && newResponse.status === 200) {
+          return newResponse;
+        } else if (newResponse) {
+          parseErrors(newResponse);
+          return newResponse;
+        }
+      } else {
+        parseErrors(refreshTokenResponse);
+        return refreshTokenResponse;
       }
-    } else {
-      parseErrors(refreshTokenResponse)
-      return refreshTokenResponse
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      throw new Error("Failed to refresh token");
     }
   } else if (origResponse.status !== 200) {
-    parseErrors(origResponse)
-    return origResponse
-  } else if (origResponse.status === 200) {
-    return origResponse
+    parseErrors(origResponse);
+    return origResponse;
+  } else {
+    return origResponse;
   }
 }
 
