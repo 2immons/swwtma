@@ -35,7 +35,7 @@ export function extractTimeDate(isoString: string): string {
 export function insertKForBigNumber(value: number | null | undefined) {
   if (!value)
     return 0
-  if (value <= 999999) {
+  if (value <= 99999) {
     return (value % 1 === 0 ? Math.floor(value) : Math.floor(value * 100) / 100).toLocaleString("ru-RU");
   } else {
     const rounded = Math.floor(value / 1000);
