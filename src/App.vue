@@ -11,6 +11,9 @@ const { t } = useI18n({ useScope: "global" });
 
 <style lang="sass">
 @use "@/styles/variables" as vars
+#ton-button
+  display: none
+
 @font-face
   font-family: 'Manrope'
   src: url('./assets/fonts/Manrope-Regular.ttf') format('truetype')

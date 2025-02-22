@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import img1 from "../../assets/images/computer.png";
-import img2 from "../../assets/images/batteries.png";
-import img3 from "../../assets/images/mining.png";
-import img4 from "../../assets/images/coins.png";
+import img1 from "../../assets/images/onboarding1.png";
+import img2 from "../../assets/images/onboarding2.png";
+import img3 from "../../assets/images/onboarding3.png";
+import img4 from "../../assets/images/onboarding4.png";
 import coin1 from "../../assets/svg/coin-anim/coin1.svg";
 import coin2 from "../../assets/svg/coin-anim/coin2.svg";
 import coin3 from "../../assets/svg/coin-anim/coin3.svg";
@@ -28,33 +28,31 @@ const telegramStoreInstance = telegramStore();
 const frames = ref([img1, img2, img3, img4]);
 const infoArray = ref([
   {
-    title_ru: "Добро пожаловать в HashSeeker!",
+    title_ru: "Welcome to Save World Web",
+    text_ru: "Играй, меняй мир и зарабатывай на добрых делах Мы отправляемся навстречу экологичному будущему",
+    title_en: "Welcome to Save World Web",
+    text_en: "Play, change the world, and earn from good deeds. We are setting off on a journey toward an eco-friendly future",
+  },
+  {
+    title_ru: "",
     text_ru:
-      "Майнинг еще никогда не был таким простым! Запустите облачный майнинг одним нажатием и начинайте зарабатывать уже сейчас",
-    title_en: "Start Cloud Mining with Just One Click",
+      "Давай познакомимся с приложением, ниже представлена home page. На этой странице отслеживается скорость добычи, клейм и твой баланс, а также нажми на землю и узнай много нового.ac",
+    title_en: "",
+    text_en: "Let's check out the app! Below is the home page. Here, you can see how fast you're mining, your claims, and your balance. Plus, click on the land to find out more cool stuff.",
+  },
+  {
+    title_ru: "",
+    text_ru:
+      "Участвуй в благотворительных сборах и получай за это вознаграждение. Выбирай область которую хочешь поддержать, и становись частью глобального движения.",
+    title_en: "",
     text_en:
-      "Begin the journey right now! Mining has never been this easy. One Click — You're Mining Tokens. Start mining for free and watch your earnings grow.",
+      "Participate in charity drives and earn rewards for doing so. Choose the area you want to support and become part of a global movement.",
   },
   {
-    title_ru: "Начните бесплатно",
-    text_ru:
-      "Восстанавливайте энергию и продолжайте получать награду, просматривая рекламу",
-    title_en: "Restore Energy by Watching Ads",
-    text_en: "Increase your mining power by simply viewing ads.",
-  },
-  {
-    title_ru: "Станьте премиум-майнером",
-    text_ru:
-      "Получайте больше наград! Автоматическое восстановление энергии, дополнительные аватарки, увеличение максимальной энергии!",
-    title_en: "Become a Premium Miner",
-    text_en:
-      "Support the project and multiply your earnings by having additional energy, profile pictures, increasing the max energy supply.",
-  },
-  {
-    title_ru: "Let's seek some cash!",
-    text_ru: "",
-    title_en: "Let's seek some cash!",
-    text_en: "",
+    title_ru: "",
+    text_ru: "Поздравляю, ты успел на этап добычи монеты, во вкладке майнинг ты можешь добывать green coin, который после листинга станет основной валютой в нашей экосистеме",
+    title_en: "",
+    text_en: "Congrats, you've made it to the coin mining stage! In the mining tab, you can mine Green Coin, which will become the main currency in our ecosystem after it's listed.",
   },
 ]);
 
@@ -112,9 +110,9 @@ const buttonText = computed(() => {
 
 const footerClass = computed(() => {
   if (telegramStoreInstance.telegramWebApp.initData) {
-    return "container container--footer--tg";
+    return "main-section--tg";
   } else {
-    return "container container--footer";
+    return "main-section";
   }
 });
 
@@ -153,7 +151,7 @@ const isOnboardingBlankVisible = computed(() => {
     @touchend="handleTouchEnd"
     @click="setCurrentIndex()"
   >
-    <div class="onboarding-blank" v-if="isOnboardingBlankVisible"></div>
+    <!-- <div class="onboarding-blank" v-if="isOnboardingBlankVisible"></div> -->
     <section class="header-section">
       <div class="container container--header">
         <div class="header">
@@ -162,23 +160,12 @@ const isOnboardingBlankVisible = computed(() => {
             v-if="currentIndex !== frames.length - 1"
           >
             {{ buttonText }}
-            <img src="../../assets/svg/arrow.svg" alt="" />
           </button>
         </div>
       </div>
     </section>
-    <section class="main-section no-scroll">
-      <div class="slider-wrapper">
-        <div
-          class="img-slider"
-          :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
-        >
-          <img v-for="(img, index) in frames" :key="index" :src="img" alt="" />
-        </div>
-      </div>
-    </section>
     <section class="footer-section no-scroll">
-      <div :class="footerClass">
+      <div class="container">
         <div class="wrapper">
           <div class="slider-wrapper slider-wrapper--text">
             <div
@@ -186,20 +173,14 @@ const isOnboardingBlankVisible = computed(() => {
               :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
             >
               <div v-for="(info, index) in infoArray" :key="index" class="info">
-                <h3>
-                  <img
-                    v-if="index === frames.length - 1"
-                    class="coin"
-                    :src="currentCoinFrame"
-                    alt=""
-                  />
-                  {{
-                    telegramStoreInstance.userData.language === "ru"
-                      ? info.title_ru
-                      : info.title_en
-                  }}
-                </h3>
-                <p>
+                <p class="info-text">
+                  <h3 v-if="info.title_ru || info.title_en">
+                    {{
+                      telegramStoreInstance.userData.language === "ru"
+                        ? info.title_ru
+                        : info.title_en
+                    }}
+                  </h3>
                   {{
                     telegramStoreInstance.userData.language === "ru"
                       ? info.text_ru
@@ -216,14 +197,38 @@ const isOnboardingBlankVisible = computed(() => {
               :class="index - 1 === currentIndex ? 'active-dot' : 'dot'"
             ></div>
           </div>
+      </div>
+      </div>
+    </section>
+    <section class="main-section no-scroll">
+      <div :class="footerClass">
+      <div class="slider-wrapper">
+        <div
+          class="img-slider"
+          :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
+        >
+          <img v-for="(img, index) in frames" :key="index" :src="img" alt="" />
         </div>
       </div>
+    </div>
     </section>
   </div>
 </template>
 
 <style scoped lang="sass">
 @use "../../styles/variables" as vars
+
+.info-text
+  padding: 30px 20px
+  border-radius: 20px
+  border: 1px solid vars.$c-border-color
+  background: rgb(255 255 255 / 13%)
+  text-align: start !important
+
+  display: flex
+  flex-direction: column
+  gap: 25px
+
 *
   color: white
 .header-section
@@ -253,23 +258,24 @@ const isOnboardingBlankVisible = computed(() => {
 .img-slider img
   width: 100%
   aspect-ratio: 1
-  object-fit: cover
+  object-fit: contain
 
 .active-dot, .dot
   height: 6px
   width: 6px
 
 .active-dot
-  background: blue
+  background: vars.$c-btn-confirm
 
 .dot
   background: #A4A4A4
 
 .onboarding-wrapper, .onboarding-wrapper--gray
   display: flex
+  gap: 30px
   flex-direction: column
   height: 100vh
-  background: #FEFEFE
+  background: #000000
   min-height: 100%
   overscroll-behavior-y: contain
 
@@ -284,22 +290,22 @@ const isOnboardingBlankVisible = computed(() => {
 section
   justify-content: inherit
 
-.main-section
-  flex: 1
-  height: 60vh
-
 .footer-section
-  background: vars.$c-bg
-  height: 40vh
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  background: #000000
 
 .container
   gap: 22px
   height: 100%
 
-.container--footer
-  margin-bottom: 10px
+.main-section
+  margin-bottom: 10px !important
+  width: 100%
 
-.container--footer--tg
+.main-section--tg
   margin-bottom: calc(10px + var(--tg-safe-area-inset-bottom))
 
 .header
@@ -316,13 +322,6 @@ section
     line-height: 16px
     font-weight: 400
     position: relative
-    margin-right: 30px
-
-    img
-      position: absolute
-      height: 20px
-      right: -22px
-      top: -1px
 
 .wrapper
   display: flex

@@ -1,4 +1,7 @@
 {
+  "open-donate": "Вложить",
+  "min-price-error": "Минимум",
+  "skip": "Пропустить",
   "start": "Запустить",
   "accept-task": "Начать",
   "russian": "Русский",
@@ -39,6 +42,7 @@
   "last-donated": "осталось",
   "donate-from": "Вложить от",
   "donate-more": "Вложить еще",
+  "donate-final": "Отправить",
   "not-donated": "Вы еще ничего не вкладывали",
   "buy": "Купить за",
   "enter-referal": "Введите реферальную ссылку",

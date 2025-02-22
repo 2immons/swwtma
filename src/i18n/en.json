@@ -1,4 +1,6 @@
 {
+  "min-price-error": "Min",
+  "skip": "Skip",
   "start": "Start",
   "accept-task": "Start",
   "russian": "Russian",
@@ -38,6 +40,7 @@
   "you-donated": "You donated",
   "last-donated": "last",
   "donate-from": "Donate from",
+  "donate-final": "Send",
   "donate-more": "Donate more",
   "not-donated": "You didn't donate yet",
   "buy": "Buy",

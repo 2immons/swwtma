@@ -88,7 +88,7 @@ watch(
 const isDonationInputsVisible = ref(false);
 
 const donate = async () => {
-  if (currentWallet) {
+  if (!currentWallet) {
     isDonationInputsVisible.value = true
     console.log(isDonationInputsVisible.value)
   }
@@ -105,6 +105,7 @@ const imageUrl = computed(() => {
 
 import {beginCell, Address, toNano, Cell} from '@ton/ton'
 import axios from "axios";
+import {Currency, tonStore} from "@/store/ton.ts";
 // transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
 // response_destination:MsgAddress custom_payload:(Maybe ^Cell)
 // forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
@@ -128,12 +129,8 @@ const getJettonWalletAddress = async (CAJetton: string, walletAddress: string) =
   return null
 }
 
-const projectAddress = ref("UQB59MkJmqU000FRptsOuCSkGDbDFq7zjjb7Otk7MKizQTFW")
-
-const enum Currency {
-  USDT = "USD₮",
-  TON = "TON"
-}
+const tonStoreInstance = tonStore();
+const projectAddress = computed(() => tonStoreInstance.projectAddress)
 
 const selectedCurrency = ref(Currency.TON)
 const price = ref(10)
@@ -182,14 +179,54 @@ const createTransaction = async (price: number, currency: string) => {
   }
 }
 
+const isMinPriceError = ref(false);
+
 const donateFinal = async () => {
+  if (price.value < props.karmaCard.min_donation) {
+    isMinPriceError.value = true
+  }
+
   const transaction = await createTransaction(price.value, selectedCurrency.value)
   const result = await connector.sendTransaction(transaction)
+
   const cell = Cell.fromBase64(result.boc);
   const buffer = cell.hash();
   const hashHex = buffer.toString("hex");
   await karmaStoreInstance.donate(props.karmaCard.id, hashHex, selectedCurrency.value)
 }
+
+const isWalletConnected = computed(() => {
+  if (tonStoreInstance.currentWallet)
+    return true
+  else
+    return false
+})
+
+
+const tonConnectUI = computed(() => tonStoreInstance.tonConnectUI)
+
+onMounted(async () => {
+  if (tonConnectUI.value) {
+    tonConnectUI.value.onStatusChange(async () => {
+      if (tonConnectUI.value?.connected) {
+        const connectedWallet = tonConnectUI.value.wallet;
+        console.log("Wallet connected:", connectedWallet);
+        if (connectedWallet)
+          await tonStoreInstance.connectWallet(connectedWallet);
+      } else {
+        console.log("Wallet disconnected");
+      }
+    });
+  }
+});
+
+const connectWallet = async () => {
+  if (tonConnectUI) {
+    tonConnectUI.value?.modal.open();
+  } else {
+    console.error("TonConnectUI не инициализирован");
+  }
+};
 </script>
 
 <template>
@@ -243,7 +280,8 @@ const donateFinal = async () => {
             <div class="donation-inputs" v-if="isDonationInputsVisible">
               <div class="amount">
                 <p>Сумма</p>
-                <input type="text" v-model="price">
+                <input type="number" v-model="price" min="10">
+                <p class="error-text" v-if="isMinPriceError">{{ `${t("min-price-error")}: ${karmaCard.min_donation}` }}</p>
               </div>
               <div class="currency">
                 <p>Валюта</p>
@@ -255,37 +293,35 @@ const donateFinal = async () => {
             </div>
 
             <button
-              class="buy-btn"
-              v-if="!karmaCard.is_donated && karmaCard.status === 'active' && !isDonationInputsVisible"
-              @click="donate"
+                class="buy-btn"
+                v-if="karmaCard.is_donated && !isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
+                @click="connectWallet"
             >
-              {{ t("donate-from") }}: {{ karmaCard.min_donation }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+              {{ t("connect-wallet") }}
             </button>
+
             <button
               class="buy-btn"
-              v-else-if="karmaCard.is_donated && karmaCard.status === 'active' && !isDonationInputsVisible"
+              v-if="karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
               @click="donate"
             >
-              {{ t("donate-more") }}
+              {{ t("donate-more") }}: {{ karmaCard.min_donation }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
-
-
             <button
                 class="buy-btn"
-                v-if="!karmaCard.is_donated && karmaCard.status === 'active' && isDonationInputsVisible"
-                @click="donateFinal"
+                v-if="!karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
+                @click="donate"
             >
               {{ t("donate-from") }}: {{ karmaCard.min_donation }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
             <button
                 class="buy-btn"
-                v-else-if="karmaCard.is_donated && karmaCard.status === 'active' && isDonationInputsVisible"
+                v-else-if="karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
                 @click="donateFinal"
             >
-              {{ t("donate-more") }}
+              {{ t("donate-final") }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
           </div>
@@ -297,6 +333,9 @@ const donateFinal = async () => {
 
 <style scoped lang="sass">
 @use "@/styles/variables" as vars
+
+.error-text
+  color: #ba113f
 
 .donation-inputs
   display: flex

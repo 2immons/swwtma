@@ -8,6 +8,7 @@ import { settingsStore } from "@/store/settings";
 import {profileStore} from "@/store/user-profile.ts";
 import type {Language} from "@/types/types.ts";
 import {telegramStore} from "@/store/telegram.ts";
+import {tonStore} from "@/store/ton.ts";
 
 const settingsStoreInstance = settingsStore();
 
@@ -169,56 +170,47 @@ const deleteAccount = () => {
   }
 };
 
-import { THEME, TonConnectUI } from "@tonconnect/ui";
-let tonConnectUI: TonConnectUI;
-const currentWallet = ref(undefined);
+const tonStoreInstance = tonStore();
+
+const tonConnectUI = computed(() => tonStoreInstance.tonConnectUI)
+
+const isProd = import.meta.env.MODE === "production";
+
+const isWalletConnected = computed(() => {
+  if (tonStoreInstance.currentWallet)
+    return true
+  else
+    return false
+})
 
 onMounted(async () => {
-  tonConnectUI = new TonConnectUI({
-    manifestUrl: import.meta.env.VITE_MANIFEST_URL,
-    buttonRootId: "ton-button",
-  });
-
-  tonConnectUI.uiOptions = {
-    language: "ru",
-    uiPreferences: {
-      theme: THEME.DARK,
-    },
-  };
-
-  if (tonConnectUI.connected) {
-    currentWallet.value = tonConnectUI.wallet
+  if (tonConnectUI.value) {
+    tonConnectUI.value.onStatusChange(async () => {
+      if (tonConnectUI.value?.connected) {
+        const connectedWallet = tonConnectUI.value.wallet;
+        console.log("Wallet connected:", connectedWallet);
+        if (connectedWallet)
+          await tonStoreInstance.connectWallet(connectedWallet);
+      } else {
+        console.log("Wallet disconnected");
+      }
+    });
   }
-
-  tonConnectUI.onStatusChange(async () => {
-    if (tonConnectUI.connected) {
-      const connectedWallet = tonConnectUI.wallet;
-      console.log("Wallet connected:", connectedWallet);
-      // if (connectedWallet)
-      //   // await paymentsStoreInstance.connectWallet(
-      //   //     connectedWallet?.account.address,
-      //   // );
-    } else {
-      console.log("Wallet disconnected");
-    }
-  });
 });
 
 const connectWallet = async () => {
   if (tonConnectUI) {
-    await tonConnectUI.modal.open();
+    tonConnectUI.value?.modal.open();
   } else {
     console.error("TonConnectUI не инициализирован");
   }
 };
 
 const disconnectWallet = async () => {
-  try {
-    await tonConnectUI.disconnect()
-  } catch (error) {
-    eventBus.emit("showErrorPopup", t("no-connected-wallet-error"));
+  await tonStoreInstance.disconnectWallet()
+  if (tonConnectUI) {
+    await tonConnectUI.value?.disconnect()
   }
-  console.error("Кошелек отвязан");
 };
 </script>
 
