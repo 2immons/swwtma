@@ -120,9 +120,8 @@ export const questsStore = defineStore("tasks", {
     async fetchTasks() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/`
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get")
+        const validatedResponse = await checkResponseSuccess(url, "get")
 
         if(validatedResponse) {
           this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
@@ -137,9 +136,8 @@ export const questsStore = defineStore("tasks", {
     async completeTask(id: number, secret?: string) {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion/?task_id=${id}&secret=${secret}`
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+        const validatedResponse = await checkResponseSuccess(url, "post", {})
 
         if (validatedResponse) {
           if (validatedResponse.status === 200) {

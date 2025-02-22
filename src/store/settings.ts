@@ -55,9 +55,8 @@ export const settingsStore = defineStore("settings", {
           vibration: settings.vibration,
           animation: settings.animation,
         }
-        const response = await axios.patch(url, data, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "patch", data)
+        const validatedResponse = await checkResponseSuccess(url, "patch", data)
 
         if (validatedResponse)
           profileStore().userProfile.settings = validatedResponse.data;

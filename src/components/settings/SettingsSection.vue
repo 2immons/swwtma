@@ -214,6 +214,7 @@ const disconnectWallet = async () => {
 };
 
 import { useTonAddress } from 'ton-ui-vue';
+import {Address} from "@ton/ton";
 
 const currentWallet = computed(() => {
   return tonStoreInstance.currentWalletAddress
@@ -238,7 +239,7 @@ const currentWallet = computed(() => {
               <button id="ton-button" v-show="false"></button>
               <button @click="connectWallet" v-if="!isWalletConnected">{{ t("connect-wallet") }}</button>
               <button @click="disconnectWallet" v-if="isWalletConnected">{{ t("disconnect-wallet") }}</button>
-              <p class="wallet-address" v-if="isWalletConnected">{{ useTonAddress(true) }}</p>
+              <p class="wallet-address" v-if="isWalletConnected"> {{ Address.parse(currentWallet).toString({ bounceable: true }) }}</p>
             </div>
           </div>
           <div

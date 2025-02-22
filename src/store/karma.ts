@@ -80,9 +80,8 @@ export const karmaStore = defineStore("karma", {
     async fetchKarma() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/karmas/`
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get")
+        const validatedResponse = await checkResponseSuccess(url, "get")
 
         if(validatedResponse) {
           this.categories = groupKarmasByCategory(validatedResponse.data);
@@ -101,9 +100,8 @@ export const karmaStore = defineStore("karma", {
           tx_hash: tx_hash,
           currency: currency
         }
-        const response = await axios.post(url, data, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", data)
+        const validatedResponse = await checkResponseSuccess(url, "post", data)
       } catch (error) {
         console.error("Ошибка при получении карточек кармы:", error);
         throw new Error("Server error when getting karma-cards");

@@ -25,9 +25,8 @@ export const worldPopulationStore = defineStore("world-population", {
     async getWorldPopulation() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/population/`;
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get");
+        const validatedResponse = await checkResponseSuccess(url, "get");
 
         if (validatedResponse) {
           // Сбрасываем значения

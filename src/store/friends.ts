@@ -51,9 +51,8 @@ export const friendsStore = defineStore("friends", {
     async fetchFriends() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals/`
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get")
+        const validatedResponse = await checkResponseSuccess(url, "get")
 
         if(validatedResponse) {
           this.friends = validatedResponse.data;
@@ -67,9 +66,8 @@ export const friendsStore = defineStore("friends", {
     async claimReward() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/referrals/`
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+        const validatedResponse = await checkResponseSuccess(url, "post", {})
 
         if(validatedResponse) {
           this.friends = validatedResponse.data;

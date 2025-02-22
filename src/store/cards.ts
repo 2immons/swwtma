@@ -81,9 +81,8 @@ export const cardsStore = defineStore("cards", {
     async fetchCards() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards/`
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get")
+        const validatedResponse = await checkResponseSuccess(url, "get")
 
         if (validatedResponse)
           this.cards = validatedResponse.data;
@@ -96,9 +95,8 @@ export const cardsStore = defineStore("cards", {
     async purchaseCard(id: number) {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards/purchase/?card_id=${id}`;
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {});
+        const validatedResponse = await checkResponseSuccess(url, "post", {});
 
         if (validatedResponse) {
           profileStore().userProfile = validatedResponse.data;
@@ -112,9 +110,8 @@ export const cardsStore = defineStore("cards", {
     async upgradeCard(id: number) {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/cards/upgrade/?card_id=${id}`
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+        const validatedResponse = await checkResponseSuccess(url, "post", {})
 
         if (validatedResponse)
           profileStore().userProfile = validatedResponse.data

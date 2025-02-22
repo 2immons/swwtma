@@ -139,9 +139,8 @@ export const profileStore = defineStore("profile", {
     async getCheckInReward() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/check-in/`
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+        const validatedResponse = await checkResponseSuccess(url, "post", {})
 
         if (validatedResponse) {
           this.updateBalance(validatedResponse.data.balance, validatedResponse.data.mining_power)
@@ -158,9 +157,8 @@ export const profileStore = defineStore("profile", {
     async getCheckInInfo() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/check-in/`
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get")
+        const validatedResponse = await checkResponseSuccess(url, "get")
 
         if (validatedResponse)
           this.checkInInfo = validatedResponse.data
@@ -174,9 +172,8 @@ export const profileStore = defineStore("profile", {
     async getUserProfile() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/?extra=all`
-        const response = await axios.get(url, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "get")
+        const validatedResponse = await checkResponseSuccess(url, "get")
 
         if (validatedResponse)
           this.setProfileVariables(validatedResponse.data);
@@ -189,9 +186,8 @@ export const profileStore = defineStore("profile", {
     async startMining() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/start-mining/`
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+        const validatedResponse = await checkResponseSuccess(url, "post", {})
         if (validatedResponse) {
           const responseData = validatedResponse.data as MiningStartOut
           this.updateMining(responseData)
@@ -206,9 +202,8 @@ export const profileStore = defineStore("profile", {
     async claimMining() {
       try {
         const url = `${import.meta.env.VITE_BACKEND}/api/v1/users/claim-mining/`
-        const response = await axios.post(url, {}, requestConfig);
 
-        const validatedResponse = await checkResponseSuccess(response, url, "post", {})
+        const validatedResponse = await checkResponseSuccess(url, "post", {})
         if (validatedResponse) {
           this.updateBalance(validatedResponse.data.balance, validatedResponse.data.mining_power)
           this.userProfile.minings[this.userProfile.minings.length - 1].status = 'completed'
