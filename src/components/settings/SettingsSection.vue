@@ -212,6 +212,8 @@ const disconnectWallet = async () => {
     await tonConnectUI.value?.disconnect()
   }
 };
+
+const currentWallet = computed(() => tonStoreInstance.currentWalletAddress)
 </script>
 
 <template>
@@ -232,6 +234,7 @@ const disconnectWallet = async () => {
               <button id="ton-button" v-show="false"></button>
               <button @click="connectWallet" v-if="!isWalletConnected">{{ t("connect-wallet") }}</button>
               <button @click="disconnectWallet" v-if="isWalletConnected">{{ t("disconnect-wallet") }}</button>
+              <p class="wallet-address" v-if="isWalletConnected">{{ currentWallet }}</p>
             </div>
           </div>
           <div
@@ -433,6 +436,13 @@ h2
   img
     position: absolute
     right: 21px
+
+.wallet-address
+  overflow: hidden
+  text-overflow: ellipsis
+  display: flex
+  align-items: center
+  color: gray
 
 .buttons-wrapper
   display: grid

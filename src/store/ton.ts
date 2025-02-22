@@ -27,7 +27,7 @@ export enum Currency {
 export const tonStore = defineStore("ton", {
   state: () => ({
     currentWallet: import.meta.env.MODE !== "production" ? mockWallet : null as Wallet | null,
-    currentWalletAddress: "",
+    currentWalletAddress: "UQB59MkJmqU000FRptsOuCSkGDbDFq7zjjb7Otk7MKizQTFW",
     connector: {} as TonConnect,
     tonConnectUI: {} as TonConnectUI,
     projectAddress: "UQB59MkJmqU000FRptsOuCSkGDbDFq7zjjb7Otk7MKizQTFW",

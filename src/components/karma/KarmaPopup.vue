@@ -187,12 +187,14 @@ const donateFinal = async () => {
   }
 
   const transaction = await createTransaction(price.value, selectedCurrency.value)
-  const result = await connector.sendTransaction(transaction)
+  if (tonConnectUI) {
+    const result = await tonConnectUI.value.sendTransaction(transaction)
 
-  const cell = Cell.fromBase64(result.boc);
-  const buffer = cell.hash();
-  const hashHex = buffer.toString("hex");
-  await karmaStoreInstance.donate(props.karmaCard.id, hashHex, selectedCurrency.value)
+    const cell = Cell.fromBase64(result.boc);
+    const buffer = cell.hash();
+    const hashHex = buffer.toString("hex");
+    await karmaStoreInstance.donate(props.karmaCard.id, hashHex, selectedCurrency.value)
+  }
 }
 
 const isWalletConnected = computed(() => {
