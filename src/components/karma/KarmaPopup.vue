@@ -353,6 +353,10 @@ const connectWallet = async () => {
     align-items: center
     gap: 8px
 
+    p
+      color: gray
+      font-size: 14px
+
     input
       border-radius: 15px
       padding: 2px 5px

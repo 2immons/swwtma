@@ -17,6 +17,50 @@ const mockTasksResponse = {
           name: "st233",
           description: "string1",
           reward: 100,
+          action: "special",
+          code_required: false,
+          id: 1,
+          category: "Category 1",
+          social: "Social 1",
+          is_done: false,
+        },
+        {
+          url: "https://example.com/task1",
+          name: "st233",
+          description: "string1",
+          reward: 100,
+          action: "special",
+          code_required: false,
+          id: 1,
+          category: "Category 1",
+          social: "Social 1",
+          is_done: false,
+        },
+      ],
+    },
+    {
+      name: "Group 12",
+      description: "Description for Group 1",
+      is_active: true,
+      tasks: [
+        {
+          url: "https://example.com/task1",
+          name: "st233",
+          description: "string1",
+          reward: 100,
+          action: "special",
+          code_required: false,
+          id: 1,
+          category: "Category 1",
+          social: "Social 1",
+          is_done: false,
+        },
+        {
+          url: "https://example.com/task1",
+          name: "st233",
+          description: "string1",
+          reward: 100,
+          action: "special",
           code_required: false,
           id: 1,
           category: "Category 1",
@@ -29,7 +73,7 @@ const mockTasksResponse = {
   solo_tasks: [
     {
       url: "https://example.com/solo_task1",
-      name: "string",
+      name: "string2",
       description: "string 3",
       reward: 50,
       code_required: true,
@@ -126,6 +170,7 @@ export const questsStore = defineStore("tasks", {
         if(validatedResponse) {
           this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
           this.soloTasks = validatedResponse.data.solo_tasks;
+          this.groups = validatedResponse.data.groups;
         }
       } catch (error) {
         console.error("Ошибка при получении заданий:", error);

@@ -222,11 +222,13 @@ const code = ref()
   p
     flex: 1
     text-align: start
+    color: gray
+    font-size: 14px
 
   input
     border-radius: 15px
     padding: 2px 5px
-    border: 1px solid gray
+    border: 1px solid vars.$c-border-color
     
 .upper
   display: flex
