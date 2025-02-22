@@ -22,7 +22,7 @@ const mockUserProfile: UserGetSchema = {
   last_check_in: "2025-02-08T21:48:27.105Z",
   balance: {
     balance: 0,
-    mining_power: 0,
+    mining_power: 123.222,
   },
   settings: {
     language: "ru",

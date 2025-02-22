@@ -224,8 +224,9 @@ const code = ref()
     text-align: start
 
   input
-    border: 1px solid vars.$c-border-color
-    border-radius: 18px
+    border-radius: 15px
+    padding: 2px 5px
+    border: 1px solid gray
     
 .upper
   display: flex

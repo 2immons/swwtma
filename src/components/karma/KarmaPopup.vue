@@ -353,6 +353,11 @@ const connectWallet = async () => {
     align-items: center
     gap: 8px
 
+    input
+      border-radius: 15px
+      padding: 2px 5px
+      border: 1px solid vars.$c-border-color
+
   .currency
     display: flex
     align-items: center

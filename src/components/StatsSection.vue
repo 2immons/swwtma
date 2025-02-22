@@ -4,7 +4,7 @@ import { profileStore } from "@/store/user-profile";
 import { eventBus } from "@/event_bus/eventBus";
 import { useI18n } from "vue-i18n";
 import {telegramStore} from "@/store/telegram.ts";
-import {insertKForBigNumber} from "@/utils/nums.ts";
+import {insertKForBigNumber, insertKForBigNumberSpeed} from "@/utils/nums.ts";
 const { t, locale } = useI18n();
 
 const profileStoreInstance = profileStore();
@@ -113,7 +113,7 @@ const isProd = import.meta.env.MODE === "production";
           <div class="stats__item stats__item--mining-speed">
             <p>{{ t("mining-speed") }}</p>
             <div class="amount">
-              + {{ insertKForBigNumber(power) }}/{{ t("h") }}
+              + {{ insertKForBigNumberSpeed(power) }}/{{ t("h") }}
               <img src="../assets/svg/stats/green-coin.svg" alt="" />
             </div>
           </div>
@@ -226,15 +226,15 @@ const isProd = import.meta.env.MODE === "production";
       align-items: center
       justify-content: start
       gap: 7px
-      font-size: 27px
+      font-size: 24px
       font-weight: 600
       line-height: 36px
 
       @media (max-width: 390px)
-        font-size: 19px
+        font-size: 18px
 
       @media (max-width: 325px)
-        font-size: 17px
+        font-size: 16px
 
 .mining-progress-wrapper
   background: vars.$c-dark-element

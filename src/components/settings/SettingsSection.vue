@@ -239,7 +239,7 @@ const currentWallet = computed(() => {
               <button id="ton-button" v-show="false"></button>
               <button @click="connectWallet" v-if="!isWalletConnected">{{ t("connect-wallet") }}</button>
               <button @click="disconnectWallet" v-if="isWalletConnected">{{ t("disconnect-wallet") }}</button>
-              <p class="wallet-address" v-if="isWalletConnected"> {{ Address.parse(currentWallet).toString({ bounceable: true }) }}</p>
+              <p class="wallet-address" v-if="isWalletConnected"> {{ Address.parse(currentWallet).toString({ urlSafe: true, bounceable: true }) }}</p>
             </div>
           </div>
           <div
