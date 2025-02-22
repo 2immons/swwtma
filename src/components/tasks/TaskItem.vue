@@ -80,7 +80,19 @@ const setupStory = () => {
 const isTaskVerifying = ref(false);
 const isTaskReady = ref(false);
 
+const tasks = computed(() => tasksStoreInstance.tasks)
+
+const taskNameById = computed(() => {
+  const foundTask = tasks.value.some(
+      (currentTask) => currentTask.id === props.task.id,
+  );
+  return foundTask || props.task;
+});
+
 const startTask = async () => {
+  if (props.task.parent_task_id) {
+    eventBus.emit("showErrorPopup", `${t("need-to-complete-another-task")}: ${taskNameById}`);
+  }
   isTaskReady.value = true;
   switch (props.task.action) {
     case TaskAction.redirect_tg:

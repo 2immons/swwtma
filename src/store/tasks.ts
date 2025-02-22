@@ -110,13 +110,16 @@ const mockTasksResponse = {
   ],
   tasks: [
     {
-      url: "https://example.com/task2",
+      url: "https://example.com/solo_task2",
+      name: "string",
+      description: "string 2",
       reward: 75,
       code_required: true,
       id: 3,
       category: "Category 3",
       social: "Social 3",
       is_done: true,
+      action: "redirect_other_social"
     },
   ],
 };
@@ -158,6 +161,7 @@ export const questsStore = defineStore("tasks", {
     categories: groupTasksByCategory(mockTasksResponse.solo_tasks),
     soloTasks: mockTasksResponse.solo_tasks,
     groups: mockTasksResponse.groups,
+    tasks: mockTasksResponse.tasks,
   }),
 
   actions: {
@@ -171,6 +175,7 @@ export const questsStore = defineStore("tasks", {
           this.categories = groupTasksByCategory(validatedResponse.data.solo_tasks);
           this.soloTasks = validatedResponse.data.solo_tasks;
           this.groups = validatedResponse.data.groups;
+          this.tasks = validatedResponse.data.tasks;
         }
       } catch (error) {
         console.error("Ошибка при получении заданий:", error);

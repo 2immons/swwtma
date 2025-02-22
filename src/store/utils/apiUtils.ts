@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 import { telegramStore } from "@/store/telegram";
 
 export async function checkResponseSuccess(url: string, type: string, data?: any) {
+  let response
   try {
-    let response
     switch (type) {
       case "get":
         response = await axios.get(url, requestConfig);
@@ -73,7 +73,7 @@ function parseErrors (response: AxiosResponse) {
 export const requestConfig: AxiosRequestConfig = {
   withCredentials: true,
   headers: {
-    "csrf_token": getCsrfToken(),
+    "X-CSRF-Token": getCsrfToken(),
   }
 }
 

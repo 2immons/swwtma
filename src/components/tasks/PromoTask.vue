@@ -21,6 +21,13 @@ const openPromoTask = async () => {
   }
 };
 
+const groupRewardsSum = () => {
+  let sum = 0;
+  for task in props.group.tasks {
+    sum += task.re
+  }
+}
+
 const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
   if (tasks) {
     if (tasks.every((task) => task.is_done)) {
@@ -76,18 +83,11 @@ const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
           </button>
         </router-link>
         <button
-          @click="claimReward"
           v-else-if="getGroupTaskStatus(props.group.tasks) === 'COMPLETED'"
           class="claim-btn"
         >
-          {{ t("claim-task") }}
+          {{ t("completed") }}
         </button>
-        <div
-          class="claimed-wrapper"
-          v-else-if="promoTask.promo_task_status === 'CLAIMED'"
-        >
-          <p>Completed</p>
-        </div>
         <div class="benefits">
           <p>
             + 699
@@ -115,6 +115,7 @@ const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
 
 .promo-task-box
   position: relative
+  height: 100%
   background: vars.$c-dark-element
   width: 100%
   display: flex
