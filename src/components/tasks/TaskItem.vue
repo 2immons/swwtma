@@ -132,7 +132,12 @@ const completeTask = async () => {
     isTaskVerifying.value = false;
     return
   }
-  const isTaskValid = await tasksStoreInstance.completeTask(props.task.id)
+  let isTaskValid
+  if (props.task.code_required) {
+    isTaskValid = await tasksStoreInstance.completeTask(props.task.id, code.value)
+  } else {
+    isTaskValid = await tasksStoreInstance.completeTask(props.task.id)
+  }
   isTaskVerifying.value = false;
   if (isTaskValid) {
     const task = tasksStoreInstance.soloTasks.find((task) => task.id === props.task.id)
@@ -236,7 +241,6 @@ const code = ref()
 
   .right-side
     display: flex
-    width: 10%
     justify-content: space-between
     gap: 5px
     min-width: 110px

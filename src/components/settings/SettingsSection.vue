@@ -213,7 +213,11 @@ const disconnectWallet = async () => {
   }
 };
 
-const currentWallet = computed(() => tonStoreInstance.currentWalletAddress)
+import { useTonAddress } from 'ton-ui-vue';
+
+const currentWallet = computed(() => {
+  return tonStoreInstance.currentWalletAddress
+})
 </script>
 
 <template>
@@ -234,7 +238,7 @@ const currentWallet = computed(() => tonStoreInstance.currentWalletAddress)
               <button id="ton-button" v-show="false"></button>
               <button @click="connectWallet" v-if="!isWalletConnected">{{ t("connect-wallet") }}</button>
               <button @click="disconnectWallet" v-if="isWalletConnected">{{ t("disconnect-wallet") }}</button>
-              <p class="wallet-address" v-if="isWalletConnected">{{ currentWallet }}</p>
+              <p class="wallet-address" v-if="isWalletConnected">{{ useTonAddress(true) }}</p>
             </div>
           </div>
           <div

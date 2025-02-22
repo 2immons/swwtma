@@ -43,6 +43,17 @@ export function insertKForBigNumber(value: number | null | undefined) {
   }
 }
 
+export function insertKForBigNumberSpeed(value: number | null | undefined) {
+  if (!value)
+    return 0
+  if (value <= 99999) {
+    return (value % 1 === 0 ? Math.floor(value) : Math.floor(value * 10) / 10).toLocaleString("ru-RU");
+  } else {
+    const rounded = Math.floor(value / 1000);
+    return `${rounded}К`;
+  }
+}
+
 export function insertKForBigNumberTest(value: number) {
   value = Math.floor(value);
   if (value <= 999999) {

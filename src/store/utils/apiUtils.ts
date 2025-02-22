@@ -7,10 +7,11 @@ export async function checkResponseSuccess(origResponse: AxiosResponse, url: str
   
   if (origResponse.status === 401) {
     console.log("Received 401, attempting to refresh token");
-    const refreshUrl = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh`;
+    const refreshUrl = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh/`;
     try {
       const refreshTokenResponse = await axios.post(refreshUrl, {}, requestConfig);
       console.log("Refresh token response status:", refreshTokenResponse.status);
+      console.log("Refresh token response data:", refreshTokenResponse.data);
 
       if (refreshTokenResponse.status === 200) {
         let newResponse;
