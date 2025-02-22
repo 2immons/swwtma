@@ -230,8 +230,8 @@ const disconnectWallet = async () => {
           <div class="settings-wrapper">
             <div class="buttons-wrapper">
               <button id="ton-button" v-show="false"></button>
-              <button @click="connectWallet" v-if="!currentWallet">{{ t("connect-wallet") }}</button>
-              <button @click="disconnectWallet" v-if="currentWallet">{{ t("disconnect-wallet") }}</button>
+              <button @click="connectWallet" v-if="!isWalletConnected">{{ t("connect-wallet") }}</button>
+              <button @click="disconnectWallet" v-if="isWalletConnected">{{ t("disconnect-wallet") }}</button>
             </div>
           </div>
           <div
