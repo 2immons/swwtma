@@ -104,7 +104,7 @@ export const tonStore = defineStore("ton", {
       });
 
       this.tonConnectUI = new TonConnectUI({
-        manifestUrl: "https://hash-seeker.com/tonconnect-manifest.json",
+        manifestUrl: "https://sww.tonycrypto.site/tonconnect-manifest.json",
         buttonRootId: "ton-button",
       });
 
