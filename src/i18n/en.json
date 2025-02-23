@@ -1,4 +1,5 @@
 {
+  "already-max-level": "Max level",
   "task-not-completed": "Task is not completed!",
   "need-to-complete-another-task": "Before you have to complete task",
   "balance-error": "Insufficient balance",
