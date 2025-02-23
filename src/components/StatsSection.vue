@@ -139,7 +139,7 @@ const isProd = import.meta.env.MODE === "production";
               </div>
             </div>
             <div
-              class="progress"
+              class="progress progress--center"
               :style="{ width: progressWidth + '%' }"
               v-else-if="isClaimingPossible && !isMiningPending && isMiningExist"
             >
@@ -247,6 +247,10 @@ const isProd = import.meta.env.MODE === "production";
   position: relative
   overflow: hidden
   border: 1px solid vars.$c-border-color
+
+.progress--center
+  justify-content: center !important
+
 .progress
   position: absolute
   left: 0
@@ -259,10 +263,19 @@ const isProd = import.meta.env.MODE === "production";
   width: 0
 
 .interface--center
-  justify-content: center !important
   margin: 0 !important
 
   .claim-btn
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 5px 14px
+    width: fit-content
+    border-radius: 50px
+    font-size: 10px
+    font-weight: bold
+    backdrop-filter: blur(2px)
+    gap: 3px
     background: vars.$c-light-element
     color: vars.$c-main-text
 
