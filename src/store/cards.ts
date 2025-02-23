@@ -99,7 +99,12 @@ export const cardsStore = defineStore("cards", {
         const validatedResponse = await checkResponseSuccess(url, "post", {});
 
         if (validatedResponse) {
-          profileStore().userProfile = validatedResponse.data;
+          if (validatedResponse.status === 200) {
+            profileStore().userProfile = validatedResponse.data;
+            return true
+          } else if (validatedResponse.status === 409) {
+            return false
+          }
         }
       } catch (error) {
         console.error("Ошибка при получении профиля пользователя:", error);

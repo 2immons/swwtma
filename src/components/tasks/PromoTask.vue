@@ -22,11 +22,14 @@ const openPromoTask = async () => {
 };
 
 const groupRewardsSum = () => {
-  let sum = 0;
-  for task in props.group.tasks {
-    sum += task.re
+  if (props.group.tasks) {
+    let sum = 0;
+    for (const task of props.group.tasks) {
+      sum += task.reward;
+    }
+    return sum;
   }
-}
+};
 
 const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
   if (tasks) {
@@ -86,11 +89,11 @@ const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
           v-else-if="getGroupTaskStatus(props.group.tasks) === 'COMPLETED'"
           class="claim-btn"
         >
-          {{ t("completed") }}
+          {{ t("claimed") }}
         </button>
         <div class="benefits">
           <p>
-            + 699
+            + {{ groupRewardsSum }}
             <img src="../../assets/svg/stats/green-coin--small.svg" alt="" />
           </p>
         </div>

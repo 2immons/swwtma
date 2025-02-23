@@ -1,4 +1,6 @@
 {
+  "need-to-complete-another-task": "Before you have to complete task",
+  "balance-error": "Insufficient balance",
   "min-price-error": "Min",
   "skip": "Skip",
   "start": "Start",

@@ -12,6 +12,7 @@ import PageHeader from "@/components/layout/TheHeader.vue";
 const cardsStoreInstance = cardsStore();
 import { useI18n } from "vue-i18n";
 import type { CardBase } from "@/types/types";
+import {eventBus} from "@/event_bus/eventBus.ts";
 const { t, locale } = useI18n();
 
 const props = defineProps<{
@@ -67,7 +68,10 @@ watch(
 
 const purchaseCard = async () => {
   if (!props.card.is_bought) {
-    await cardsStoreInstance.purchaseCard(props.card.id)
+    const isValid = await cardsStoreInstance.purchaseCard(props.card.id)
+    if (!isValid) {
+      eventBus.emit("showErrorPopup", t("balance-error"))
+    }
   } else {
     await cardsStoreInstance.upgradeCard(props.card.id)
   }
