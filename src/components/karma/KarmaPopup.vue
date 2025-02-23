@@ -296,7 +296,7 @@ const connectWallet = async () => {
 
             <button
                 class="buy-btn"
-                v-if="karmaCard.is_donated && !isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
+                v-if="!isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
                 @click="connectWallet"
             >
               {{ t("connect-wallet") }}
@@ -312,7 +312,7 @@ const connectWallet = async () => {
             </button>
             <button
                 class="buy-btn"
-                v-if="!karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
+                v-else-if="!karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
                 @click="donate"
             >
               {{ t("donate-from") }}: {{ karmaCard.min_donation }}
