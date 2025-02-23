@@ -137,6 +137,10 @@ export enum TaskAction {
   special = "special",
 }
 
+export enum CheckTypes {
+  MANUAL = "manual"
+}
+
 export interface TaskBaseSchema {
   url: string;
   name: string;
@@ -149,6 +153,7 @@ export interface TaskBaseSchema {
   is_done: boolean;
   parent_task_id?: number;
   action: TaskAction;
+  check_type?: CheckTypes
 }
 
 export interface TaskGroupBaseSchema {

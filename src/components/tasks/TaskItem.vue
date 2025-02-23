@@ -3,7 +3,7 @@ import {computed, defineProps, ref} from "vue";
 import {questsStore} from "@/store/tasks";
 import {storeToRefs} from "pinia";
 import {useI18n} from "vue-i18n";
-import {TaskAction, type TaskBaseSchema} from "@/types/types";
+import {CheckTypes, TaskAction, type TaskBaseSchema} from "@/types/types";
 import {telegramStore} from "@/store/telegram.ts";
 import {eventBus} from "@/event_bus/eventBus.ts";
 
@@ -155,6 +155,11 @@ const completeTask = async () => {
     isTaskValid = await tasksStoreInstance.completeTask(props.task.id, code.value)
   } else {
     isTaskValid = await tasksStoreInstance.completeTask(props.task.id)
+  }
+
+  if (props.task.check_type === CheckTypes.MANUAL) {
+    eventBus.emit("showInfoPopup", t("task-pending-manual"))
+    return
   }
 
   isTaskVerifying.value = false;
