@@ -147,7 +147,7 @@ export interface TaskBaseSchema {
   category: string | null;
   social: string | null;
   is_done: boolean;
-  parent_task_id: number | null;
+  parent_task_id?: number;
   action: TaskAction;
 }
 

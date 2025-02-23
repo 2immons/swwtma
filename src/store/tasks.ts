@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import {checkResponseSuccess, getCsrfToken, requestConfig} from "@/store/utils/apiUtils";
-import { type TaskBaseSchema } from "@/types/types";
+import {TaskAction, type TaskBaseSchema} from "@/types/types";
 import {profileStore} from "@/store/user-profile.ts";
 
 // Mock data
@@ -119,9 +119,9 @@ const mockTasksResponse = {
       category: "Category 3",
       social: "Social 3",
       is_done: true,
-      action: "redirect_other_social"
+      action: "redirect_other"
     },
-  ],
+  ] as TaskBaseSchema[],
 };
 
 // Function to group tasks by category and add an index

@@ -84,7 +84,7 @@ const tasks = computed(() => tasksStoreInstance.tasks)
 
 const taskNameById = computed(() => {
   const foundTask = tasks.value.some(
-      (currentTask) => currentTask.id === props.task.id,
+      (currentTask) => currentTask.parent_task_id === props.task.parent_task_id,
   );
   return foundTask || props.task.name;
 });
@@ -99,10 +99,16 @@ const startTask = async () => {
     case TaskAction.redirect_tg:
       redirectToTelegramLink();
       break;
+    case TaskAction.redirect_tg_code:
+      redirectToTelegramLink();
+      break;
     case TaskAction.tg_subscription_check:
       redirectToTelegramLink();
       break;
     case TaskAction.redirect_other:
+      redirectToOtherLink();
+      break;
+    case TaskAction.redirect_other_code:
       redirectToOtherLink();
       break;
     case TaskAction.tg_story:
