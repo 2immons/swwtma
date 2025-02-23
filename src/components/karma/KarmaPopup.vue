@@ -341,14 +341,13 @@ const connectWallet = async () => {
   margin-top: 10px
   gap: 10px
 
+  p
+    font-size: 14px
+
   .amount
     display: flex
     align-items: center
     gap: 8px
-
-    p
-      color: gray
-      font-size: 14px
 
     input
       border-radius: 15px
