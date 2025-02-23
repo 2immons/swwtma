@@ -106,6 +106,7 @@ const imageUrl = computed(() => {
 import {beginCell, Address, toNano, Cell} from '@ton/ton'
 import axios from "axios";
 import {Currency, tonStore} from "@/store/ton.ts";
+import {eventBus} from "@/event_bus/eventBus.ts";
 // transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
 // response_destination:MsgAddress custom_payload:(Maybe ^Cell)
 // forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
@@ -183,7 +184,7 @@ const isMinPriceError = ref(false);
 
 const donateFinal = async () => {
   if (price.value < props.karmaCard.min_donation) {
-    isMinPriceError.value = true
+    eventBus.emit("showErrorPopup", `${t("min-price-error")}: ${props.karmaCard.min_donation}`)
   }
 
   const transaction = await createTransaction(price.value, selectedCurrency.value)
@@ -283,7 +284,6 @@ const connectWallet = async () => {
               <div class="amount">
                 <p>Сумма</p>
                 <input type="number" v-model="price" min="10">
-                <p class="error-text" v-if="isMinPriceError">{{ `${t("min-price-error")}: ${karmaCard.min_donation}` }}</p>
               </div>
               <div class="currency">
                 <p>Валюта</p>
