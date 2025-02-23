@@ -87,14 +87,10 @@ const taskNameById = computed(() => {
   if (foundTask) {
     return foundTask.name;
   }
-  return null;
+  return "N/A";
 });
 
 const startTask = async () => {
-  if (props.task.parent_task_id) {
-    eventBus.emit("showErrorPopup", `${t("need-to-complete-another-task")}: ${taskNameById}`);
-    return
-  }
   isTaskReady.value = true;
   switch (props.task.action) {
     case TaskAction.redirect_tg:
@@ -164,6 +160,9 @@ const completeTask = async () => {
     if (task) {
       task.is_done = true;
     }
+  } else if (props.task.parent_task_id) {
+      eventBus.emit("showErrorPopup", `${t("need-to-complete-another-task")}: ${taskNameById}`);
+      return
   } else {
     eventBus.emit("showErrorPopup", t("task-not-completed"));
   }

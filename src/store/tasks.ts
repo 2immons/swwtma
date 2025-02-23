@@ -193,6 +193,8 @@ export const questsStore = defineStore("tasks", {
           if (validatedResponse.status === 200) {
             profileStore().updateBalance(validatedResponse.data.balance.balance)
             return true
+          } else {
+            return false
           }
         }
       } catch (error) {
