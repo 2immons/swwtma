@@ -83,10 +83,9 @@ const isTaskReady = ref(false);
 const tasks = computed(() => tasksStoreInstance.tasks)
 
 const taskNameById = computed(() => {
-  const foundTask = tasks.value.some(
-      (currentTask) => currentTask.id === props.task.parent_task_id,
-  );
-  return foundTask.name;
+  const foundTask = tasks.value.some((currentTask) => currentTask.id === props.task.parent_task_id,);
+  if (foundTask)
+    return props.task.name
 });
 
 const startTask = async () => {
