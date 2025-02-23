@@ -264,6 +264,7 @@ const isProd = import.meta.env.MODE === "production";
 
 .interface--center
   margin: 0 !important
+  padding-right: 0
 
   .claim-btn
     display: flex
