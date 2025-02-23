@@ -52,11 +52,11 @@ const isMiningPending = computed(() => {
 })
 
 const claimButtonClass = computed(() => {
-  if (isMiningExist) {
-    if (isClaimingPossible) {
-      return "claim-button--active"
-    } else {
+  if (isMiningExist.value) {
+    if (isMiningPending.value) {
       return "claim-button"
+    } else {
+      return "claim-button--active"
     }
   } else {
     return "claim-button--active"
