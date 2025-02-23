@@ -146,12 +146,12 @@ const isOnboardingBlankVisible = computed(() => {
 
 <template>
   <div
-    class="onboarding-wrapper no-scroll"
+    class="onboarding-wrapper"
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
     @click="setCurrentIndex()"
   >
-    <!-- <div class="onboarding-blank" v-if="isOnboardingBlankVisible"></div> -->
+     <div class="onboarding-blank" v-if="isOnboardingBlankVisible"></div>
     <section class="header-section">
       <div class="container container--header">
         <div class="header">
@@ -313,7 +313,7 @@ section
   width: 100%
   display: flex
   justify-content: end
-  padding: 16px 0
+  padding: 10px 0 16px 0
 
   button
     display: flex
