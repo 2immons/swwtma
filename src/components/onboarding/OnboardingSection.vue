@@ -146,7 +146,7 @@ const isOnboardingBlankVisible = computed(() => {
 
 <template>
   <div
-    class="onboarding-wrapper"
+    class="onboarding-wrapper no-scroll"
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
     @click="setCurrentIndex()"

@@ -33,10 +33,6 @@ html, body
   position: relative
   overscroll-behavior-y: contain
 
-.no-scroll
-  overflow: hidden
-  touch-action: none
-
 *
   // Отключение выделения текста
   user-select: none
