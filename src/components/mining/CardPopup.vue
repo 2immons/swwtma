@@ -159,9 +159,8 @@ const imageUrl = computed(() => {
               {{ t("buy") }} {{ targetLevel?.upgrade_cost }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
-            <button class="buy-btn" @click="purchaseCard()" v-else-if="card.user_card?.max_level">
-              {{ t("already-max-level") }} {{ targetLevel?.upgrade_cost }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+            <button class="buy-btn" v-else-if="card.user_card?.max_level">
+              {{ t("already-max-level") }}
             </button>
           </div>
         </div>
