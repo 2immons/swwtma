@@ -24,7 +24,7 @@ const claimReward = async () => {
       <p>You Earned:</p>
       <div class="coins">
         <p>+ {{ insertKForBigNumber(friends.claimable) }} <img src="../../assets/svg/stats/green-coin.svg" alt="" /></p>
-        <button @click="claimReward">Claim</button>
+        <button @click="claimReward">{{ t("claim") }}</button>
       </div>
     </div>
     <div class="help">
