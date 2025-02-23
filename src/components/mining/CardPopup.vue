@@ -155,7 +155,7 @@ const imageUrl = computed(() => {
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
               </p>
             </div>
-            <button class="buy-btn" @click="purchaseCard()" v-if="card.is_available && card.user_card?.max_level">
+            <button class="buy-btn" @click="purchaseCard()" v-if="card.is_available && !card.user_card?.max_level">
               {{ t("buy") }} {{ targetLevel?.upgrade_cost }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
