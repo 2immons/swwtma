@@ -80,13 +80,7 @@ const purchaseCard = async () => {
 const targetLevel = computed(() => {
   if (props.card.is_bought) {
     if (props.card.user_card?.max_level) {
-      const targetLevel = props.card.user_card.level;
-
-      for (let i = 0; i < props.card.level_map.length; i++) {
-        if (props.card.level_map[i].level === targetLevel) {
-          return props.card.level_map[i];
-        }
-      }
+      return props.card.user_card;
     } else {
       if (props.card.user_card) {
         const targetLevel = props.card.user_card.level + 1;

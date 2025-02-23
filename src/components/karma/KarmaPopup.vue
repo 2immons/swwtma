@@ -287,7 +287,7 @@ const connectWallet = async () => {
                 <input type="number" v-model="price" min="10">
               </div>
               <div class="currency">
-                <p>Валюта</p>
+                <p>{{ t("currency") }}</p>
                 <div class="currencies-btn">
                   <button :class="selectedCurrency === Currency.TON ? 'active' : '' " @click="selectCurrency(Currency.TON)">TON</button>
                   <button :class="selectedCurrency === Currency.USDT ? 'active' : '' " @click="selectCurrency(Currency.USDT)">USDT</button>
@@ -305,18 +305,10 @@ const connectWallet = async () => {
 
             <button
               class="buy-btn"
-              v-else-if="karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
+              v-else-if="isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
               @click="donate"
             >
-              {{ t("donate-more") }}: {{ karmaCard.min_donation }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
-            </button>
-            <button
-                class="buy-btn"
-                v-else-if="!karmaCard.is_donated && isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
-                @click="donate"
-            >
-              {{ t("donate-from") }}: {{ karmaCard.min_donation }}
+              {{ karmaCard.is_donated ? t("donate-more") : t("donate-from") }}: {{ karmaCard.min_donation }}
               <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
             </button>
             <button
