@@ -158,12 +158,12 @@ const completeTask = async () => {
   }
   isTaskVerifying.value = false;
   if (isTaskValid) {
-    const task = tasksStoreInstance.soloTasks.find((task) => task.id === props.task.id)
+    const task = tasksStoreInstance.tasks.find((task) => task.id === props.task.id)
     if (task) {
       task.is_done = true;
     }
   } else {
-    eventBus.emit("showErrorPopup", "Вы позорник!");
+    eventBus.emit("showErrorPopup", t("task-not-completed"));
   }
 }
 
