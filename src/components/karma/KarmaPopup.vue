@@ -458,6 +458,7 @@ const connectWallet = async () => {
 
 .info
   margin-top: 26px
+  width: 100%
 
   h3
     text-align: left
