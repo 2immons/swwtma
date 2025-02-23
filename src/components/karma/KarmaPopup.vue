@@ -183,7 +183,7 @@ const createTransaction = async (price: number, currency: string) => {
 const isMinPriceError = ref(false);
 
 const donateFinal = async () => {
-  if (price.value < props.karmaCard.min_donation) {
+  if (price.value <= props.karmaCard.min_donation) {
     eventBus.emit("showErrorPopup", `${t("min-price-error")}: ${props.karmaCard.min_donation}`)
     return
   }
