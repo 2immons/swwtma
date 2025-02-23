@@ -86,7 +86,7 @@ const taskNameById = computed(() => {
   const foundTask = tasks.value.some(
       (currentTask) => currentTask.id === props.task.id,
   );
-  return foundTask || props.task;
+  return foundTask || props.task.name;
 });
 
 const startTask = async () => {

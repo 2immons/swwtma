@@ -93,7 +93,7 @@ const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
         </button>
         <div class="benefits">
           <p>
-            + {{ groupRewardsSum }}
+            + {{ groupRewardsSum() }}
             <img src="../../assets/svg/stats/green-coin--small.svg" alt="" />
           </p>
         </div>
