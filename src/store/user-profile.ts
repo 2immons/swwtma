@@ -206,7 +206,7 @@ export const profileStore = defineStore("profile", {
         const validatedResponse = await checkResponseSuccess(url, "post", {})
         if (validatedResponse) {
           this.updateBalance(validatedResponse.data.balance, validatedResponse.data.mining_power)
-          this.userProfile.minings[this.userProfile.minings.length - 1].status = 'completed'
+          this.userProfile.minings = []
         }
       } catch (error) {
         console.error("Ошибка при получении награды за процесс:", error);
