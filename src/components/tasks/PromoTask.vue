@@ -88,6 +88,7 @@ const getGroupTaskStatus = (tasks: TaskBaseSchema[] | null): string => {
         <button
           v-else-if="getGroupTaskStatus(props.group.tasks) === 'COMPLETED'"
           class="claim-btn"
+          disabled
         >
           {{ t("claimed") }}
         </button>
