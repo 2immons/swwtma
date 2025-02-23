@@ -84,7 +84,7 @@ const tasks = computed(() => tasksStoreInstance.tasks)
 
 const taskNameById = computed(() => {
   const foundTask = tasks.value.some(
-      (currentTask) => currentTask.parent_task_id === props.task.parent_task_id,
+      (currentTask) => currentTask.id === props.task.parent_task_id,
   );
   return foundTask || props.task.name;
 });
