@@ -3,7 +3,7 @@ import axios from "axios";
 import { TonConnect, type Wallet } from "@tonconnect/sdk";
 import {telegramStore} from "@/store/telegram.ts";
 import {Address, beginCell, Cell, toNano} from "@ton/ton";
-import {Locales, THEME, TonConnectUI} from "@tonconnect/ui";
+import { type Locales, THEME, TonConnectUI} from "@tonconnect/ui";
 
 let connector: TonConnect;
 
