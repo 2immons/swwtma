@@ -157,8 +157,6 @@ const completeTask = async () => {
     isTaskValid = await tasksStoreInstance.completeTask(props.task.id)
   }
 
-  if (props.task.)
-
   isTaskVerifying.value = false;
   if (isTaskValid) {
     const task = tasksStoreInstance.tasks.find((task) => task.id === props.task.id)
