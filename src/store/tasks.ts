@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import {checkResponseSuccess, getCsrfToken, requestConfig} from "@/store/utils/apiUtils";
+import {checkResponseSuccess, getCsrfToken, getRequestConfig} from "@/store/utils/apiUtils";
 import {TaskAction, type TaskBaseSchema} from "@/types/types";
 import {profileStore} from "@/store/user-profile.ts";
 

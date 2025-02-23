@@ -1,4 +1,4 @@
-import axios, { Axios, type AxiosResponse, type AxiosRequestConfig } from "axios";
+import axios, { Axios, type AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 import { telegramStore } from "@/store/telegram";
 
@@ -7,13 +7,13 @@ export async function checkResponseSuccess(url: string, type: string, data?: any
   try {
     switch (type) {
       case "get":
-        response = await axios.get(url, requestConfig);
+        response = await axios.get(url, getRequestConfig());
         break;
       case "post":
-        response = await axios.post(url, data, requestConfig)
+        response = await axios.post(url, data, getRequestConfig())
         break;
       case "patch":
-        response = await axios.patch(url, data, requestConfig)
+        response = await axios.patch(url, data, getRequestConfig())
         break;
     }
     if (response && response.status !== 200) {
@@ -27,7 +27,7 @@ export async function checkResponseSuccess(url: string, type: string, data?: any
       console.log("Received 401, attempting to refresh token");
       const refreshUrl = `${import.meta.env.VITE_BACKEND}/api/v1/auth/refresh/`;
       try {
-        const refreshTokenResponse = await axios.post(refreshUrl, {}, requestConfig);
+        const refreshTokenResponse = await axios.post(refreshUrl, {}, getRequestConfig());
         console.log("Refresh token response status:", refreshTokenResponse.status);
         console.log("Refresh token response data:", refreshTokenResponse.data);
 
@@ -35,13 +35,13 @@ export async function checkResponseSuccess(url: string, type: string, data?: any
           let newResponse;
           switch (type) {
             case "get":
-              newResponse = await axios.get(url, requestConfig);
+              newResponse = await axios.get(url, getRequestConfig());
               break;
             case "post":
-              newResponse = await axios.post(url, data, requestConfig);
+              newResponse = await axios.post(url, data, getRequestConfig());
               break;
             case "patch":
-              newResponse = await axios.patch(url, data, requestConfig);
+              newResponse = await axios.patch(url, data, getRequestConfig());
               break;
           }
           if (newResponse && newResponse.status === 200) {
@@ -70,10 +70,12 @@ function parseErrors (response: AxiosResponse) {
   throw new Error("Запрос отработал с ошибкой. " + errors);
 }
 
-export const requestConfig: AxiosRequestConfig = {
-  withCredentials: true,
-  headers: {
-    "X-CSRF-Token": getCsrfToken(),
+export function getRequestConfig() {
+  return {
+    withCredentials: true,
+    headers: {
+      "X-CSRF-Token": getCsrfToken(),
+    }
   }
 }
 

@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { type KarmaBase } from '@/types/types'
 import { telegramStore } from "@/store/telegram";
-import { checkResponseSuccess, requestConfig } from "@/store/utils/apiUtils";
+import { checkResponseSuccess, getRequestConfig } from "@/store/utils/apiUtils";
 
 // Convert the array to an object keyed by karma id
 const mockKarmasResponse = [

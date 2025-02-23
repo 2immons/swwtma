@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useI18n } from "vue-i18n";
-import {checkResponseSuccess, getCsrfToken, requestConfig} from "@/store/utils/apiUtils";
+import {checkResponseSuccess, getCsrfToken, getRequestConfig } from "@/store/utils/apiUtils";
 import {
   type MiningBase,
   type MiningStartOut,
@@ -10,7 +10,7 @@ import {
   type UserGetSchema,
 } from "@/types/types";
 
-const mockUserProfile: UserGetSchema = {
+const  mockUserProfile: UserGetSchema = {
   id: 0,
   user_id: 0,
   username: "string",

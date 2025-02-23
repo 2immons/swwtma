@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 import { useI18n } from "vue-i18n";
-import { checkResponseSuccess, requestConfig } from "@/store/utils/apiUtils.ts";
+import { checkResponseSuccess, getRequestConfig } from "@/store/utils/apiUtils.ts";
 import type { Population } from "@/types/types.ts";
 
 const mockPopulationData = {
@@ -18,7 +18,7 @@ const mockPopulationData = {
 export const worldPopulationStore = defineStore("world-population", {
   state: () => ({
     worldPopulation: mockPopulationData as Population,
-    updateInterval: null as number | null, // Интервал обновления
+    updateInterval: null as NodeJS.Timeout | null, // Интервал обновления
   }),
 
   actions: {
@@ -61,8 +61,7 @@ export const worldPopulationStore = defineStore("world-population", {
         const secondsInYear = 365 * 24 * 60 * 60;
         this.worldPopulation.births_year += Math.round(birthRatePerSecond * (secondsInYear / 86400));
         this.worldPopulation.deaths_year += Math.round(deathRatePerSecond * (secondsInYear / 86400));
-        this.worldPopulation.net_population_growth_year =
-            this.worldPopulation.births_year - this.worldPopulation.deaths_year;
+        this.worldPopulation.net_population_growth_year = this.worldPopulation.births_year - this.worldPopulation.deaths_year;
       }, 1000); // Обновление каждую секунду
     },
 

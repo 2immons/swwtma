@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 import { telegramStore } from "@/store/telegram";
-import { checkResponseSuccess, requestConfig } from "@/store/utils/apiUtils";
+import { checkResponseSuccess, getRequestConfig } from "@/store/utils/apiUtils";
 import { type CardBase } from "@/types/types"
 import { profileStore } from "./user-profile";
 
