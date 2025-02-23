@@ -185,7 +185,7 @@ export const questsStore = defineStore("tasks", {
 
     async completeTask(id: number, secret?: string) {
       try {
-        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion/?task_id=${id}&secret=${secret}`
+        const url = `${import.meta.env.VITE_BACKEND}/api/v1/tasks/check-completion?task_id=${id}&secret=${secret}`
 
         const validatedResponse = await checkResponseSuccess(url, "post", {})
 
