@@ -92,6 +92,7 @@ const taskNameById = computed(() => {
 const startTask = async () => {
   if (props.task.parent_task_id) {
     eventBus.emit("showErrorPopup", `${t("need-to-complete-another-task")}: ${taskNameById}`);
+    return
   }
   isTaskReady.value = true;
   switch (props.task.action) {
