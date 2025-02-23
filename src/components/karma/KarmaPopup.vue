@@ -49,25 +49,6 @@ const onTouchEnd = () => {
   }
 };
 
-import TonConnect, {type Wallet} from '@tonconnect/sdk';
-
-let connector: TonConnect;
-let currentWallet: Wallet;
-
-onMounted(async () => {
-  if (props.modelValue) {
-    document.body.classList.add("no-scroll");
-  }
-
-  connector = new TonConnect({
-    manifestUrl: import.meta.env.VITE_MANIFEST_URL
-  });
-  await connector.restoreConnection()
-  if (connector.wallet) {
-    currentWallet = connector.wallet
-  }
-});
-
 onBeforeUnmount(() => {
   document.body.classList.remove("no-scroll");
 });
@@ -86,11 +67,11 @@ watch(
 
 
 const isDonationInputsVisible = ref(false);
+const currentWallet = computed(() => tonStore().currentWallet as Wallet)
 
 const donate = async () => {
-  if (currentWallet) {
+  if (currentWallet.value) {
     isDonationInputsVisible.value = true
-    console.log(isDonationInputsVisible.value)
   }
 }
 
@@ -107,6 +88,7 @@ import {beginCell, Address, toNano, Cell} from '@ton/ton'
 import axios from "axios";
 import {Currency, tonStore} from "@/store/ton.ts";
 import {eventBus} from "@/event_bus/eventBus.ts";
+import type {Wallet} from "@tonconnect/sdk";
 // transfer#0f8a7ea5 query_id:uint64 amount:(VarUInteger 16) destination:MsgAddress
 // response_destination:MsgAddress custom_payload:(Maybe ^Cell)
 // forward_ton_amount:(VarUInteger 16) forward_payload:(Either Cell ^Cell)
@@ -142,7 +124,7 @@ const createTransaction = async (price: number, currency: string) => {
       .storeUint(0, 64)                         // query_id:uint64
       .storeCoins(price * 10**6)              // amount:(VarUInteger 16) -  Jetton amount for transfer (decimals = 6 - USDT, 9 - default). Function toNano use decimals = 9 (remember it)
       .storeAddress(Address.parse(projectAddress.value))  // destination:MsgAddress
-      .storeAddress(Address.parse(currentWallet.account.address))  // response_destination:MsgAddress поменять на себя
+      .storeAddress(Address.parse(currentWallet.value.account.address))  // response_destination:MsgAddress поменять на себя
       .storeUint(0, 1)                          // custom_payload:(Maybe ^Cell)
       .storeCoins(1)                 // forward_ton_amount:(VarUInteger 16) - if >0, will send notification message -- возврат комиссии
       .storeUint(0,1)                           // forward_payload:(Either Cell ^Cell)
@@ -157,7 +139,7 @@ const createTransaction = async (price: number, currency: string) => {
       messages: [
         {
           //
-          address: await getJettonWalletAddress(CAJettonUSDT, currentWallet.account.address),  // sender jetton wallet
+          address: await getJettonWalletAddress(CAJettonUSDT, currentWallet.value.account.address),  // sender jetton wallet
           amount: toNano("0.05").toString(),
           payload: body.toBoc().toString("base64")
         }
