@@ -146,7 +146,7 @@ const isOnboardingBlankVisible = computed(() => {
 
 <template>
   <div
-    class="onboarding-wrapper no-scroll"
+    class="onboarding-wrapper"
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
     @click="setCurrentIndex()"
@@ -164,7 +164,7 @@ const isOnboardingBlankVisible = computed(() => {
         </div>
       </div>
     </section>
-    <section class="footer-section no-scroll">
+    <section class="footer-section">
       <div class="container">
         <div class="wrapper">
           <div class="slider-wrapper slider-wrapper--text">
@@ -200,7 +200,7 @@ const isOnboardingBlankVisible = computed(() => {
       </div>
       </div>
     </section>
-    <section class="main-section no-scroll">
+    <section class="main-section">
       <div :class="footerClass">
       <div class="slider-wrapper">
         <div
@@ -274,9 +274,7 @@ const isOnboardingBlankVisible = computed(() => {
   display: flex
   gap: 30px
   flex-direction: column
-  height: 100vh
   background: #000000
-  min-height: 100%
   overscroll-behavior-y: contain
 
 .onboarding-blank

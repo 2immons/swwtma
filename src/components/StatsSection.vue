@@ -143,17 +143,10 @@ const isProd = import.meta.env.MODE === "production";
               :style="{ width: progressWidth + '%' }"
               v-else-if="isClaimingPossible && !isMiningPending && isMiningExist"
             >
-              <div class="interface">
-                <button :class="claimButtonClass" @click="claimReward">
-                  {{ t("claim") }}
+              <div class="interface interface--center">
+                <button @click="claimReward" class="claim-btn">
+                  {{ t("claim-task") }}
                 </button>
-                <div class="time">
-                  <img src="../assets/svg/stats/time.svg" alt="" />
-                  <p>
-                    0 {{ t("h") }}
-                    0 {{ t("m") }}
-                  </p>
-                </div>
               </div>
             </div>
             <div class="progress"
@@ -265,6 +258,14 @@ const isProd = import.meta.env.MODE === "production";
   align-items: center
   width: 0
 
+.interface--center
+  justify-content: center !important
+  margin: 0 !important
+
+  .claim-btn
+    background: vars.$c-light-element
+    color: vars.$c-main-text
+
 .interface
   background: #767776
   border-radius: 50px
@@ -277,6 +278,9 @@ const isProd = import.meta.env.MODE === "production";
   line-height: 13.66px
   text-align: center
   font-size: 10px
+
+
+
 
   .claim-button, .claim-button--active
     width: 75px
