@@ -14,6 +14,7 @@ onMounted(() => {
 onUnmounted(() => {
   eventBus.off("toggleFooterVisibility");
 });
+// 2
 </script>
 
 <template>
