@@ -402,6 +402,10 @@ const connectWallet = async () => {
   min-height: 280px
   overflow: hidden
 
+  img
+    height: 600px !important
+    width: 600px !important
+
 .popup-header
   position: relative
   margin-top: 16px
