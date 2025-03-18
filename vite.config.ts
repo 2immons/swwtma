@@ -22,11 +22,4 @@ export default defineConfig(({ mode }) => ({
       },
     },
   },
-  server: {
-    host: true,
-    port: 5175,
-    strictPort: true,
-    allowedHosts: ["sww.tonycrypto.site"],
-    cors: true
-  },
 }));
