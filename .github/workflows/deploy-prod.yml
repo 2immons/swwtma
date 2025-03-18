@@ -20,7 +20,7 @@ jobs:
 
     - name: Deploy services
       run: |
-        ssh -v -o StrictHostKeyChecking=no deployuser@37.252.23.91 << 'EOF'
+        ssh -v -o StrictHostKeyChecking=no root@37.252.23.91 << 'EOF'
           cd /var/www/swwtma
           git reset --hard HEAD
           git clean -fd
