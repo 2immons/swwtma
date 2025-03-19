@@ -71,7 +71,6 @@ function parseErrors (response: AxiosResponse) {
 }
 
 export function getRequestConfig() {
-  console.log(getCsrfToken())
   return {
     withCredentials: true,
     headers: {
