@@ -16,10 +16,10 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: mode === "production",
-      },
-    },
+    // terserOptions: {
+    //   compress: {
+    //     drop_console: mode === "production",
+    //   },
+    // },
   },
 }));
