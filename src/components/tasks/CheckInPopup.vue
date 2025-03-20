@@ -121,7 +121,7 @@ const getReward = async () => {
           <div class="wrapper no-scrollbar">
             <div class="photo">
               <!--      <img src="../../assets/images/card-test.png" alt="" />-->
-              <img src="@/assets/images/calendar.png">
+              <img src="@/assets/svg/tasks/reward.png">
               <button @click="closePopup">+</button>
             </div>
             <div class="info">
@@ -176,6 +176,7 @@ const getReward = async () => {
   top: 0
 
 .content
+  box-shadow: 0 -6px 54px 0px rgba(255, 255, 255, 0.47)
   position: fixed
   bottom: 0
   width: 100%
@@ -233,26 +234,34 @@ const getReward = async () => {
   width: 100%
   grid-template-columns: repeat(4, 1fr)
   gap: 5px
+  margin-top: 10px
 
   .day
     padding: 10px 5px
     aspect-ratio: 1
     width: 100%
-    border: 1px solid gray
-    background: linear-gradient(0deg, rgb(122, 176, 123) 0%, rgb(59, 155, 22) 68%)
-    border-radius: 18px
+    background: linear-gradient(0deg, #525E56 0%, #1F5732 42%)
+    border-radius: 20px
     display: flex
     align-items: center
     justify-content: space-evenly
     flex-direction: column
     height: 100%
 
+    p
+      font-size: 14px
+
+
     .reward
       display: flex
       gap: 5px
 
+      img
+        height: 14px
+        width: 14px
+
   .day--completed
-    background: linear-gradient(0deg, rgb(82, 93, 82) 0%, rgb(73, 91, 64) 68%)
+    background: linear-gradient(0deg, #262727 0%, #20432C 100%)
 
     .reward, .streak
       opacity: 0.6
