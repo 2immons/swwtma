@@ -365,18 +365,18 @@ const currentWallet = computed(() => {
             </div>
           </div>
 
-          <h4>{{ t("game-settings") }}</h4>
+<!--          <h4>{{ t("game-settings") }}</h4>-->
 
-          <div class="sliders">
-            <div class="settings-wrapper">
-              <h3>{{ t("vibration") }}</h3>
-              <SliderButton @click="changeVibration"/>
-            </div>
-            <div class="settings-wrapper">
-              <h3>{{ t("coin-animation") }}</h3>
-              <SliderButton @click="changeAnimation"/>
-            </div>
-          </div>
+<!--          <div class="sliders">-->
+<!--            <div class="settings-wrapper">-->
+<!--              <h3>{{ t("vibration") }}</h3>-->
+<!--              <SliderButton @click="changeVibration"/>-->
+<!--            </div>-->
+<!--            <div class="settings-wrapper">-->
+<!--              <h3>{{ t("coin-animation") }}</h3>-->
+<!--              <SliderButton @click="changeAnimation"/>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
         <p class="politic">Политика конфедициальности</p>
       </div>

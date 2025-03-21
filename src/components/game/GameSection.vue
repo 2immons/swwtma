@@ -2,8 +2,7 @@
 
 <template>
   <div class="game-bg">
-    <h3>Game</h3>
-    <button>Claim</button>
+    <h3>Coming soon!</h3>
   </div>
 </template>
 
