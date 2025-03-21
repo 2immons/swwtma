@@ -402,6 +402,8 @@ const connectWallet = async () => {
   min-height: 280px
   overflow: hidden
 
+
+
   img
     aspect-ratio: 1
     width: 100%
