@@ -248,7 +248,7 @@ const connectWallet = async () => {
               <p>
                 {{ t("donation-goal") }}: {{ karmaCard.goal }} USDT
                 ({{ t("last-donated") }}:
-                {{ karmaCard.goal - karmaCard.current }} USDT
+                {{ karmaCard.goal - karmaCard.current }} USDT)
               </p>
               <div class="donation-bar">
                 <div class="progress" :style="{ width: progressWidth }"></div>
