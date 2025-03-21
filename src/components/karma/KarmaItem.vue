@@ -144,7 +144,6 @@ const imageUrl = computed(() => {
     border-radius: 9px
 
     img
-      aspect-ratio: 1
       height: 100%
       object-fit: cover
       object-position: center

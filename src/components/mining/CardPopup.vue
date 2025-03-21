@@ -129,7 +129,7 @@ const imageUrl = computed(() => {
             <div class="photo">
               <!--      <img src="../../assets/images/card-test.png" alt="" />-->
               <img :src=imageUrl>
-              <button @click="closePopup">+</button>
+              <button @click="closePopup" class="close-btn">+</button>
             </div>
             <div class="info">
               <h3>{{ card.title }}</h3>
@@ -213,7 +213,6 @@ const imageUrl = computed(() => {
   overflow: hidden
 
   img
-    aspect-ratio: 1
     height: 100%
     object-fit: cover
     object-position: center
@@ -230,7 +229,7 @@ const imageUrl = computed(() => {
   overflow: hidden
   margin-bottom: 20px
 
-  button
+  .close-btn
     position: absolute
     right: 10px
     top: -25px

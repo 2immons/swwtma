@@ -230,7 +230,7 @@ const connectWallet = async () => {
           <div class="wrapper no-scrollbar">
             <div class="photo">
               <img :src=imageUrl>
-              <button @click="closePopup">+</button>
+              <button @click="closePopup" class="close-btn">+</button>
             </div>
             <div class="info">
               <h3>{{ karmaCard.title }}</h3>
@@ -403,7 +403,6 @@ const connectWallet = async () => {
   overflow: hidden
 
   img
-    aspect-ratio: 1
     height: 100%
     object-fit: cover
     object-position: center
@@ -420,7 +419,7 @@ const connectWallet = async () => {
   overflow: hidden
   margin-bottom: 20px
 
-  button
+  .close-btn
     position: absolute
     right: 10px
     top: -25px
