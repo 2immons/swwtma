@@ -419,16 +419,16 @@ const connectWallet = async () => {
   overflow: hidden
   margin-bottom: 20px
 
-  .close-btn
-    position: absolute
-    right: 10px
-    top: -25px
-    rotate: 45deg
-    font-weight: 200
-    font-size: 60px
-    line-height: 84px
-    background: transparent
-    color: vars.$c-main-text
+.close-btn
+  position: absolute
+  right: 10px
+  top: -25px
+  rotate: 45deg
+  font-weight: 200
+  font-size: 60px
+  line-height: 84px
+  background: transparent
+  color: vars.$c-main-text
 
 .buttons
   display: flex
