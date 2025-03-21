@@ -309,6 +309,7 @@ const connectWallet = async () => {
 .error-text
   color: #ba113f
 
+
 .donation-inputs
   display: flex
   flex-direction: column
