@@ -403,8 +403,8 @@ const connectWallet = async () => {
   overflow: hidden
 
   img
-    height: 600px !important
-    width: 600px !important
+    aspect-ratio: 1
+    width: 100%
 
 .popup-header
   position: relative
