@@ -174,6 +174,8 @@ const completeTask = async () => {
   } else {
     eventBus.emit("showErrorPopup", t("task-not-completed"));
   }
+
+  await tasksStoreInstance.fetchTasks();
 }
 
 const code = ref()
