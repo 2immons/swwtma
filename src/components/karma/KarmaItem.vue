@@ -143,6 +143,10 @@ const imageUrl = computed(() => {
     border: 1px solid vars.$c-border-color
     border-radius: 9px
 
+    img
+      height: 600px
+      width: 600px
+
   .info
     position: relative
     display: flex

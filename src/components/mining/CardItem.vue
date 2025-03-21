@@ -164,8 +164,8 @@ const imageUrl = computed(() => {
   border-radius: 18px
 
   img
-    height: 100%
-    width: 120%
+    height: 600px
+    width: 600px
     object-fit: cover
     object-position: center
 
