@@ -59,15 +59,13 @@ const imageUrl = computed(() => {
       <div class="footer">
         <div class="donation-goal">
           <p>
-            {{ t("donation-goal") }}: {{ karmaCard.goal }}
-            <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+            {{ t("donation-goal") }}: {{ karmaCard.goal }} USDT
           </p>
           <div class="donation-bar">
             <div class="progress" :style="{ width: progressWidth }"></div>
           </div>
           <p v-if="karmaCard.is_donated">
-            {{ t("you-donated") }}: {{ karmaCard.donate_amount }}
-            <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+            {{ t("you-donated") }}: {{ karmaCard.donate_amount }} USDT
           </p>
         </div>
         <button
@@ -75,8 +73,7 @@ const imageUrl = computed(() => {
           v-if="!karmaCard.is_donated && karmaCard.status === 'active'"
           @click="openCardPopup"
         >
-          {{ t("donate-from") }} {{ karmaCard.min_donation }}
-          <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+          {{ t("donate-from") }} {{ karmaCard.min_donation }} USDT
         </button>
         <button
           class="buy-btn"
@@ -84,7 +81,6 @@ const imageUrl = computed(() => {
           @click="openCardPopup"
         >
           {{ t("donate-more") }}
-          <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
         </button>
       </div>
     </div>

@@ -246,18 +246,15 @@ const connectWallet = async () => {
             </div>
             <div class="donation-goal">
               <p>
-                {{ t("donation-goal") }}: {{ karmaCard.goal }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+                {{ t("donation-goal") }}: {{ karmaCard.goal }} USDT
                 ({{ t("last-donated") }}:
-                {{ karmaCard.goal - karmaCard.current }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />)
+                {{ karmaCard.goal - karmaCard.current }} USDT
               </p>
               <div class="donation-bar">
                 <div class="progress" :style="{ width: progressWidth }"></div>
               </div>
               <p v-if="karmaCard.is_donated">
-                {{ t("you-donated") }}: {{ karmaCard.donate_amount }}
-                <img src="../../assets/svg/stats/green-coin.svg" alt="" />
+                {{ t("you-donated") }}: {{ karmaCard.donate_amount }} USDT
               </p>
               <p v-else-if="!karmaCard.is_donated">
                 {{ t("not-donated") }}
@@ -290,16 +287,14 @@ const connectWallet = async () => {
               v-else-if="isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
               @click="donate"
             >
-              {{ karmaCard.is_donated ? t("donate-more") : t("donate-from") }}: {{ karmaCard.min_donation }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+              {{ karmaCard.is_donated ? t("donate-more") : t("donate-from") }}: {{ karmaCard.min_donation }} USDT
             </button>
             <button
                 class="buy-btn"
                 v-else-if="isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
                 @click="donateFinal"
             >
-              {{ t("donate-final") }}
-              <img src="../../assets/svg/stats/green-coin--black.svg" alt="" />
+              {{ t("donate-final") }} USDT
             </button>
           </div>
         </div>
