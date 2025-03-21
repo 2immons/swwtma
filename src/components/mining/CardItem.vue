@@ -165,7 +165,7 @@ const imageUrl = computed(() => {
 
   img
     aspect-ratio: 1
-    width: 100%
+    height: 100%
     object-fit: cover
     object-position: center
 
