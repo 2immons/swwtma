@@ -118,8 +118,10 @@ export const cardsStore = defineStore("cards", {
 
         const validatedResponse = await checkResponseSuccess(url, "post", {})
 
-        if (validatedResponse)
+        if (validatedResponse) {
           profileStore().userProfile = validatedResponse.data
+          return true
+        }
       } catch (error) {
         console.error("Ошибка при получении профиля пользователя:", error);
         throw new Error("Server error when getting the user profile");

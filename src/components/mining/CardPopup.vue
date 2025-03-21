@@ -73,7 +73,11 @@ const purchaseCard = async () => {
       eventBus.emit("showErrorPopup", t("balance-error"))
     }
   } else {
-    await cardsStoreInstance.upgradeCard(props.card.id)
+    const isValid = await cardsStoreInstance.upgradeCard(props.card.id)
+    if (isValid) {
+      await cardsStoreInstance.fetchCards();
+      closePopup();
+    }
   }
 }
 
