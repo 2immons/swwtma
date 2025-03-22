@@ -17,7 +17,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@tonconnect/ui": "^2.0.11",
+    "@tonconnect/ui": "2.0.5",
     "buffer": "^6.0.3",
     "gameanalytics": "^4.4.7",
     "js-cookie": "^3.0.5",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@intlify/vue-i18n-bridge": "^1.1.0",
     "@ton/ton": "^15.2.1",
-    "@tonconnect/sdk": "^3.0.6",
+    "@tonconnect/sdk": "3.0.3",
     "@tsconfig/node22": "^22.0.0",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.9.3",

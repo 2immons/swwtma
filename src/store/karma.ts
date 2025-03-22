@@ -73,7 +73,7 @@ function groupKarmasByCategory(
 
 export const karmaStore = defineStore("karma", {
   state: () => ({
-    categories: groupKarmasByCategory(mockKarmasResponse)
+    categories: import.meta.env.MODE === "production" ? [] : groupKarmasByCategory(mockKarmasResponse)
   }),
 
   actions: {

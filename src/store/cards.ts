@@ -8,7 +8,7 @@ import { profileStore } from "./user-profile";
 
 export const cardsStore = defineStore("cards", {
   state: () => ({
-    cards: [
+    cards: import.meta.env.MODE === "production" ? [] as CardBase[] : [
       {
         title: "string",
         info: "string",

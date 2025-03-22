@@ -158,10 +158,10 @@ const getGroupTaskStatus = (tasks: TaskBaseSchema[]): string => {
 
 export const questsStore = defineStore("tasks", {
   state: () => ({
-    categories: groupTasksByCategory(mockTasksResponse.solo_tasks),
-    soloTasks: mockTasksResponse.solo_tasks,
-    groups: mockTasksResponse.groups,
-    tasks: mockTasksResponse.tasks,
+    categories: import.meta.env.MODE === "production" ? [] : groupTasksByCategory(mockTasksResponse.solo_tasks),
+    soloTasks: import.meta.env.MODE === "production" ? [] : mockTasksResponse.solo_tasks,
+    groups: import.meta.env.MODE === "production" ? []: mockTasksResponse.groups,
+    tasks: import.meta.env.MODE === "production" ? []: mockTasksResponse.tasks,
   }),
 
   actions: {

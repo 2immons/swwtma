@@ -44,7 +44,7 @@ export const friendsStore = defineStore("friends", {
   state: () => ({
     referalText: "Присоединяйтесь!",
     referalLink: getReferalLink(profileStore().userProfile.referral_code),
-    friends: mockReferalsResponse
+    friends: import.meta.env.MODE === "production" ? {} as UserReferrals : mockReferalsResponse
   }),
 
   actions: {
