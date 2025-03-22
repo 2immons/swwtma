@@ -70,7 +70,7 @@ const isDonationInputsVisible = ref(false);
 const currentWallet = computed(() => tonStore().currentWallet as Wallet)
 
 const donate = async () => {
-  if (!currentWallet.value) {
+  if (currentWallet.value) {
     isDonationInputsVisible.value = true
   }
 }
