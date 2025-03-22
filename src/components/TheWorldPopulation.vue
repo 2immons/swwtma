@@ -26,6 +26,10 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   eventBus.emit("toggleHeaderBackBtnVisibility", false);
 });
+
+const formatNumber = (num: number | undefined) => {
+  return num ? num.toLocaleString("ru-RU") : "0";
+};
 </script>
 
 <template>
@@ -35,37 +39,37 @@ onBeforeUnmount(() => {
         <h2>World Population</h2>
         <div class="stats-list">
           <div class="stats-item">
-            <p class="title">{{ population?.population }}</p>
+            <p class="title">{{ formatNumber(population?.population) }}</p>
             <p class="hint">Current World Population</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population?.births_year }}</p>
+            <p class="title">{{ formatNumber(population?.births_year) }}</p>
             <p class="hint">Births this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population?.births_today }}</p>
+            <p class="title">{{ formatNumber(population?.births_today) }}</p>
             <p class="hint">Births today</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population?.deaths_year }}</p>
+            <p class="title">{{ formatNumber(population?.deaths_year) }}</p>
             <p class="hint">Deaths this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population?.deaths_today }}</p>
+            <p class="title">{{ formatNumber(population?.deaths_today) }}</p>
             <p class="hint">Deaths today</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population?.net_population_growth_year }}</p>
+            <p class="title">{{ formatNumber(population?.net_population_growth_year) }}</p>
             <p class="hint">Net population growth this year</p>
           </div>
           <hr />
           <div class="stats-item">
-            <p class="title">{{ population?.net_population_growth_today }}</p>
+            <p class="title">{{ formatNumber(population?.net_population_growth_today) }}</p>
             <p class="hint">Net population growth today</p>
           </div>
         </div>

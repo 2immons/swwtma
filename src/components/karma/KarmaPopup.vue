@@ -70,7 +70,7 @@ const isDonationInputsVisible = ref(false);
 const currentWallet = computed(() => tonStore().currentWallet as Wallet)
 
 const donate = async () => {
-  if (currentWallet.value) {
+  if (!currentWallet.value) {
     isDonationInputsVisible.value = true
   }
 }
@@ -182,7 +182,7 @@ const donateFinal = async () => {
 }
 
 const isWalletConnected = computed(() => {
-  if (tonStoreInstance.currentWallet)
+  if (!tonStoreInstance.currentWallet)
     return true
   else
     return false
@@ -213,6 +213,11 @@ const connectWallet = async () => {
     console.error("TonConnectUI не инициализирован");
   }
 };
+
+const closeDonationInputs = () => {
+  isDonationInputsVisible.value = false
+}
+
 </script>
 
 <template>
@@ -225,6 +230,29 @@ const connectWallet = async () => {
       @touchmove="onTouchMove"
       @touchend="onTouchEnd"
     >
+      <div class="payment-modal" v-if="isDonationInputsVisible" @click.stop @click="closeDonationInputs">
+        <div class="container">
+          <div class="payment-modal-content" @click.stop>
+            <h2 style="margin-bottom: 40px">{{ t("karma-title") }}</h2>
+            <div class="donation-inputs" v-if="isDonationInputsVisible">
+              <div class="currency-amount">
+                <div class="currencies-btn">
+                  <button :class="selectedCurrency === Currency.TON ? 'active' : '' " @click="selectCurrency(Currency.TON)">TON</button>
+                  <button :class="selectedCurrency === Currency.USDT ? 'active' : '' " @click="selectCurrency(Currency.USDT)">USDT</button>
+                </div>
+                <input type="number" v-model="price" :min="props.karmaCard.min_donation">
+              </div>
+            </div>
+            <button
+                class="buy-btn"
+                v-if="isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
+                @click="donateFinal"
+            >
+              {{ t("donate-final") }}
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="content" @click.stop>
         <div class="container">
           <div class="wrapper no-scrollbar">
@@ -247,8 +275,7 @@ const connectWallet = async () => {
             <div class="donation-goal">
               <p>
                 {{ t("donation-goal") }}: {{ karmaCard.goal }} USDT
-                ({{ t("last-donated") }}:
-                {{ karmaCard.goal - karmaCard.current }} USDT)
+                ({{ karmaCard.goal - karmaCard.current + " USDT " + t("last-donated") }})
               </p>
               <div class="donation-bar">
                 <div class="progress" :style="{ width: progressWidth }"></div>
@@ -259,19 +286,6 @@ const connectWallet = async () => {
               <p v-else-if="!karmaCard.is_donated">
                 {{ t("not-donated") }}
               </p>
-            </div>
-            <div class="donation-inputs" v-if="isDonationInputsVisible">
-              <div class="amount">
-                <p>Сумма</p>
-                <input type="number" v-model="price" min="10">
-              </div>
-              <div class="currency">
-                <p>{{ t("currency") }}</p>
-                <div class="currencies-btn">
-                  <button :class="selectedCurrency === Currency.TON ? 'active' : '' " @click="selectCurrency(Currency.TON)">TON</button>
-                  <button :class="selectedCurrency === Currency.USDT ? 'active' : '' " @click="selectCurrency(Currency.USDT)">USDT</button>
-                </div>
-              </div>
             </div>
 
             <button
@@ -287,14 +301,7 @@ const connectWallet = async () => {
               v-else-if="isWalletConnected && karmaCard.status === 'active' && !isDonationInputsVisible"
               @click="donate"
             >
-              {{ karmaCard.is_donated ? t("donate-more") : t("donate-from") }}: {{ karmaCard.min_donation }} USDT
-            </button>
-            <button
-                class="buy-btn"
-                v-else-if="isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
-                @click="donateFinal"
-            >
-              {{ t("donate-final") }} USDT
+              {{ karmaCard.is_donated ? t("donate-more") : t("donate-from") + " " + karmaCard.min_donation + " USDT" }}
             </button>
           </div>
         </div>
@@ -305,6 +312,23 @@ const connectWallet = async () => {
 
 <style scoped lang="sass">
 @use "@/styles/variables" as vars
+
+.payment-modal
+  position: absolute
+  width: 100%
+  height: 100%
+  background: rgba(0, 0, 0, 0.78)
+  z-index: 100
+  display: flex
+  justify-content: center
+  align-items: center
+
+.payment-modal-content
+  width: 100%
+  background: vars.$c-dark-element-solid
+  border-radius: 15px
+  height: fit-content
+  padding: 20px
 
 .error-text
   color: #ba113f
@@ -332,25 +356,36 @@ const connectWallet = async () => {
       padding: 2px 5px
       border: 1px solid vars.$c-border-color
 
-  .currency
+.currency-amount
+  display: flex
+  flex-direction: column
+  width: 100%
+  justify-content: center
+  align-items: center
+  gap: 10px
+
+  input
     display: flex
-    align-items: center
+    background: transparent
+    border: none
+    color: white
+    font-size: 30px
     width: 100%
-    gap: 20px
+    text-align: center
 
-    .currencies-btn
-      display: flex
-      align-items: center
-      gap: 10px
+.currencies-btn
+  display: flex
+  align-items: center
+  gap: 10px
 
-      button
-        color: white
-        padding: 5px
-        border: 1px solid vars.$c-border-color
-        border-radius: 18px
+  button
+    color: white
+    padding: 5px
+    border: 1px solid vars.$c-border-color
+    border-radius: 18px
 
-      .active
-        background: gray
+  .active
+    background: gray
 
 .v-enter-active,
 .v-leave-active
