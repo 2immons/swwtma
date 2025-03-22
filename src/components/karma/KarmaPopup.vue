@@ -267,7 +267,7 @@ const closeDonationInputs = () => {
             <hr />
             <div class="stats">
               <p>
-                {{ t("boost") }}: + {{ karmaCard.income_percent / 100 * (karmaCard.donate_amount || 0) }}
+                {{ t("boost") }}: + {{ karmaCard.boost }}
                 <img src="../../assets/svg/stats/green-coin.svg" alt="" />
                 /{{ t("h") }}
               </p>

@@ -44,7 +44,7 @@ const imageUrl = computed(() => {
       <div class="info">
         <p class="card__title">{{ karmaCard.title }}</p>
         <p class="card__boost" v-if="karmaCard.status === 'active'">
-          {{ t("boost") }}: + {{ karmaCard.income_percent / 100 * (karmaCard.donate_amount || 0) }}
+          {{ t("boost") }}: + {{ karmaCard.boost }}
           <img
             src="../../assets/svg/stats/green-coin--light-green.svg"
             alt=""

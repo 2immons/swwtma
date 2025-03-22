@@ -48,6 +48,7 @@ export interface KarmaBase {
   title: string;
   info: string;
   goal: number;
+  boost: number;
   current: number;
   image: CustomImageField | null;
   backdrop: string;
