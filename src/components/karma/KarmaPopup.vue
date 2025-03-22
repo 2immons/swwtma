@@ -182,7 +182,7 @@ const donateFinal = async () => {
 }
 
 const isWalletConnected = computed(() => {
-  if (!tonStoreInstance.currentWallet)
+  if (tonStoreInstance.currentWallet)
     return true
   else
     return false
