@@ -30,7 +30,7 @@ export const tonStore = defineStore("ton", {
     currentWalletAddress: "", // "UQB59MkJmqU000FRptsOuCSkGDbDFq7zjjb7Otk7MKizQTFW",
     connector: {} as TonConnect,
     tonConnectUI: {} as TonConnectUI,
-    projectAddress: "UQB59MkJmqU000FRptsOuCSkGDbDFq7zjjb7Otk7MKizQTFW",
+    projectAddress: "UQCf6G_nyw5wXRp0A895P2gpuxA-gurJ2revx0sKJnFEOwyg",
   }),
 
   actions: {
