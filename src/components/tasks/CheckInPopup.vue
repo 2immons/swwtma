@@ -121,8 +121,8 @@ const getReward = async () => {
           <div class="wrapper no-scrollbar">
             <div class="photo">
               <!--      <img src="../../assets/images/card-test.png" alt="" />-->
-              <img src="@/assets/svg/tasks/reward.png">
-              <button @click="closePopup">+</button>
+              <img src="@/assets/svg/tasks/reward.svg">
+              <button @click="closePopup" class="close-btn">+</button>
             </div>
             <div class="info">
               <h3>{{ t("check-in") }}</h3>
@@ -193,6 +193,17 @@ const getReward = async () => {
 .container
   height: 100%
 
+.close-btn
+  position: absolute
+  right: 10px
+  top: -25px
+  rotate: 45deg
+  font-weight: 200
+  font-size: 60px
+  line-height: 84px
+  background: transparent
+  color: #F7F7F7
+
 .photo
   position: relative
   display: flex
@@ -240,13 +251,14 @@ const getReward = async () => {
     padding: 10px 5px
     aspect-ratio: 1
     width: 100%
-    background: linear-gradient(0deg, #525E56 0%, #1F5732 42%)
-    border-radius: 20px
+    background: linear-gradient(0deg, rgba(34,240,125,0.4) 0%, rgba(73, 73, 73, 0.44) 43%)
+    border-radius: 18px
     display: flex
     align-items: center
     justify-content: space-evenly
     flex-direction: column
     height: 100%
+    border: 1px solid #575757
 
     p
       font-size: 14px
@@ -261,10 +273,13 @@ const getReward = async () => {
         width: 14px
 
   .day--completed
-    background: linear-gradient(0deg, #262727 0%, #20432C 100%)
+    background: #171E19
+    opacity: 0.4
 
-    .reward, .streak
-      opacity: 0.6
+    p
+      opacity: 0.4
+      color: white
+
 .buttons
   display: flex
   flex-direction: column

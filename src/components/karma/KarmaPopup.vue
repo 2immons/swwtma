@@ -233,19 +233,22 @@ const closeDonationInputs = () => {
       <div class="payment-modal" v-if="isDonationInputsVisible" @click.stop @click="closeDonationInputs">
         <div class="container">
           <div class="payment-modal-content" @click.stop>
-            <h2 style="margin-bottom: 40px">{{ t("karma-title") }}</h2>
+            <h2 class="payment-modal-title">{{ t("karma-title") }}</h2>
             <div class="donation-inputs" v-if="isDonationInputsVisible">
               <div class="currency-amount">
-                <div class="currencies-btn">
-                  <button :class="selectedCurrency === Currency.TON ? 'active' : '' " @click="selectCurrency(Currency.TON)">TON</button>
-                  <button :class="selectedCurrency === Currency.USDT ? 'active' : '' " @click="selectCurrency(Currency.USDT)">USDT</button>
-                </div>
                 <input type="number" v-model="price" :min="props.karmaCard.min_donation">
+                <div class="currencies-btn">
+                  <button :class="selectedCurrency === Currency.TON ? 'active' : '' " @click="selectCurrency(Currency.TON)">
+                    <img src="../../assets/svg/pay/ton.svg" alt="">TON</button>
+                  <button :class="selectedCurrency === Currency.USDT ? 'active' : '' " @click="selectCurrency(Currency.USDT)">
+                    <img src="../../assets/svg/pay/usdt.svg" alt="">USDT
+                  </button>
+                </div>
               </div>
             </div>
             <button
                 class="buy-btn"
-                v-if="isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
+                v-if="!isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
                 @click="donateFinal"
             >
               {{ t("donate-final") }}
@@ -330,6 +333,13 @@ const closeDonationInputs = () => {
   height: fit-content
   padding: 20px
 
+.currency-amount
+  margin: 30px 0
+
+.payment-modal-title
+  opacity: 0.6
+  font-size: 12px
+
 .error-text
   color: #ba113f
 
@@ -340,7 +350,6 @@ const closeDonationInputs = () => {
   justify-content: start
   align-items: start
   width: 100%
-  margin-top: 10px
   gap: 10px
 
   p
@@ -380,9 +389,12 @@ const closeDonationInputs = () => {
 
   button
     color: white
-    padding: 5px
+    padding: 5px 8px
     border: 1px solid vars.$c-border-color
     border-radius: 18px
+    display: flex
+    gap: 8px
+    align-items: center
 
   .active
     background: gray
