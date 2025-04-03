@@ -17,7 +17,7 @@ const fetchFriends = async () => {
   try {
     await friendsStoreInstance.fetchFriends();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 };
 

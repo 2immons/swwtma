@@ -84,7 +84,7 @@ const fetchUserProfile = async () => {
   try {
     await profileStoreInstance.getUserProfile();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 };
 

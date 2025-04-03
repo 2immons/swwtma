@@ -17,7 +17,7 @@ const fetchKarmas = async () => {
   try {
     await karmaStoreInstance.fetchKarma();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+  //  eventBus.emit("showErrorPopup", error.message);
   }
 };
 

@@ -15,7 +15,7 @@ const fetchCards = async () => {
   try {
     await cardsStoreInstance.fetchCards();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 };
 

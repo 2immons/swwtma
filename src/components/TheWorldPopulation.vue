@@ -14,7 +14,7 @@ const fetchPopulation = async () => {
   try {
     await populationStore.getWorldPopulation()
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 }
 

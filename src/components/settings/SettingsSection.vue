@@ -141,7 +141,7 @@ const setLanguage = async (language: Language) => {
   try {
     await settingsStoreInstance.changeLanguage(language);
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    // eventBus.emit("showErrorPopup", error.message);
   }
 };
 
@@ -149,7 +149,7 @@ const changeVibration = async() => {
   try {
     await settingsStoreInstance.changeVibration();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 }
 
@@ -157,7 +157,7 @@ const changeAnimation = async() => {
   try {
     await settingsStoreInstance.changeAnimation();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 }
 
@@ -166,7 +166,7 @@ const deleteAccount = () => {
   try {
     settingsStoreInstance.deleteAccount();
   } catch (error) {
-    eventBus.emit("showErrorPopup", error.message);
+    //eventBus.emit("showErrorPopup", error.message);
   }
 };
 
