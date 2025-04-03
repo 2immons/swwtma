@@ -248,7 +248,7 @@ const closeDonationInputs = () => {
             </div>
             <button
                 class="buy-btn"
-                v-if="!isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
+                v-if="isWalletConnected && karmaCard.status === 'active' && isDonationInputsVisible"
                 @click="donateFinal"
             >
               {{ t("donate-final") }}
