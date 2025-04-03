@@ -315,7 +315,7 @@ const closeDonationInputs = () => {
 
 <style scoped lang="sass">
 @use "@/styles/variables" as vars
-
+//БЮЛЯ
 .payment-modal
   position: absolute
   width: 100%
