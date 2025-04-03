@@ -89,7 +89,7 @@ export const telegramStore = defineStore("telegram", {
                     err,
                 );
               } else {
-                console.log("Статус онбординга успешно сохранен:", success);
+                console.log("Статус онбординга успешно   сохранен:", success);
               }
             },
         );
