@@ -36,8 +36,8 @@ const karmaCards = ref<KarmaBase[]>(
 );
 
 const srcToCategoryIcons = ref([
-  recyclingIcon,
   medIcon,
+  recyclingIcon,
   animalsIcon,
   animalsIcon,
 ]);
