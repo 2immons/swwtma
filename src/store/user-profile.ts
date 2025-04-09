@@ -7,7 +7,7 @@ import {
   type MiningStartOut,
   type MiningStatus,
   type UserBase,
-  type UserGetSchema,
+  type UserGetSchema, UserReferrals,
 } from "@/types/types";
 
 const  mockUserProfile: UserGetSchema = {
@@ -104,8 +104,8 @@ const mockCheckInInfo = [
 
 export const profileStore = defineStore("profile", {
   state: () => ({
-    userProfile: mockUserProfile,
-    checkInInfo: mockCheckInInfo
+    userProfile: import.meta.env.MODE === "production" ? {} as UserGetSchema : mockUserProfile,
+    checkInInfo: import.meta.env.MODE === "production" ? [] : mockCheckInInfo
   }),
 
   actions: {

@@ -146,7 +146,7 @@ const completeTask = async () => {
   isTaskReady.value = false;
   isTaskVerifying.value = true;
   if (props.task.code_required && !code.value) {
-    eventBus.emit("showErrorPopup", "Введите код!");
+    eventBus.emit("showErrorPopup", t("enter-code"));
     isTaskVerifying.value = false;
     return
   }

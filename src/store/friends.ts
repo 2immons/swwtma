@@ -37,7 +37,7 @@ const mockReferalsResponse = {
 } as UserReferrals
 
 function getReferalLink(code: string | null) {
-  return `https://t.me/EcologyWorkers_bot/saveworldweb?startapp=${code}`
+  return `https://t.me/saveworldweb_bot/?startapp=${code}`
 }
 
 export const friendsStore = defineStore("friends", {
