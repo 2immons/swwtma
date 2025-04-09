@@ -34,7 +34,7 @@ const copy = async () => {
   );
   eventBus.emit("showInfoPopup", t("link-copied"));
   closePopup();
-}
+};
 
 const referalLink = computed(() => {
   return friendsStoreInstance.referalLink
